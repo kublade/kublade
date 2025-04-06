@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/production/Dockerfile.fpm
+    container_name: obms
+    restart: always
+    working_dir: /var/www/html
+    environment:
+      - APP_ENV=production
+    volumes:
+      - .:/var/www/html
+    networks:
+      - obms
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:latest
+    container_name: obms_nginx
+    restart: always
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./docker/production/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - obms
+
+  db:
+    image: mysql:8
+    container_name: obms_db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=laravel
+      - MYSQL_USER=sail
+      - MYSQL_PASSWORD=password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - obms
+
+  redis:
+    image: redis:alpine
+    container_name: obms_redis
+    restart: always
+    networks:
+      - obms
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/production/Dockerfile.worker
+    container_name: obms_horizon
+    restart: always
+    working_dir: /var/www/html
+    command: ["php", "artisan", "horizon"]
+    environment:
+      - APP_ENV=production
+    volumes:
+      - db_data:/var/lib/mysql
+    depends_on:
+      - redis
+      - app
+    networks:
+      - obms
+
+volumes:
+  db_data:
+
+networks:
+  obms:
+    driver: bridge

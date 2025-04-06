@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Generate a token
+        id: generate-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.SEMANTIC_RELEASE_APP_ID }}
+          private_key: ${{ secrets.SEMANTIC_RELEASE_KEY_PEM }}
+      - name: Release
+        uses: cycjimmy/semantic-release-action@v4
+        id: semantic-release
+        with:
+          semantic_version: 22.0.5
+          extra_plugins: |
+            @semantic-release/changelog@6.0.3
+            @semantic-release/git@10.0.1
+            conventional-changelog-conventionalcommits@7.0.2
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}

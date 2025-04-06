@@ -1,0 +1,46 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Node.js 20.9.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.9.0'
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          extensions: curl, fileinfo, imagick, imap, json, pdo
+      - name: Install PHP dependencies
+        run: composer install
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+      - name: Build and push app image
+        run: |
+          docker build -t ghcr.io/kublade/core-app:${{ github.ref_name }} -f docker/production/Dockerfile.fpm .
+          docker push ghcr.io/kublade/core-app:${{ github.ref_name }}
+          docker tag ghcr.io/kublade/core-app:${{ github.ref_name }} ghcr.io/kublade/core-app:latest
+          docker push ghcr.io/kublade/core-app:latest
+      - name: Build and push worker image
+        run: |
+          docker build -t ghcr.io/kublade/core-worker:${{ github.ref_name }} -f docker/production/Dockerfile.worker .
+          docker push ghcr.io/kublade/core-worker:${{ github.ref_name }}
+          docker tag ghcr.io/kublade/core-worker:${{ github.ref_name }} ghcr.io/kublade/core-worker:latest
+          docker push ghcr.io/kublade/core-worker:latest

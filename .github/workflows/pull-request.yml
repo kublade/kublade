@@ -1,0 +1,49 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint_commit:
+    name: Lint commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.9.0'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run commit lint
+        run: npx commitlint --from="$(git merge-base HEAD origin/${{ github.event.pull_request.base.ref }})"
+
+  check_code:
+    name: Check code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          composer install --ignore-platform-reqs --no-scripts
+
+      - name: Run Pint
+        run: vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=2G
