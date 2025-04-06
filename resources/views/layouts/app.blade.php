@@ -20,8 +20,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand py-3 px-4 me-0" href="{{ url('/') }}">
+                    <img src="/logo.svg" class="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -31,34 +31,47 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
-                            <li class="nav-item dropdown ms-4 me-3">
-                                <a id="navbarDropdown" class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ __('No project selected') }}
+                            <li class="nav-item dropdown ms-4 me-4">
+                                <a id="navbarDropdown" class="btn btn-primary dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="bi bi-boxes"></i>
+                                    @if (!empty(request()->get('project')))
+                                        {{ request()->get('project')->name }}
+                                    @else
+                                        {{ __('No project selected') }}
+                                    @endif
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('project.index') }}">
+                                        Overview
+                                    </a>
+                                    <hr class="dropdown-divider">
                                     @if (!empty(request()->get('projects')))
                                         @foreach (request()->get('projects') as $project)
-                                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                            <a class="dropdown-item" href="{{ route('project.details', ['project_id' => $project->id]) }}">
                                                 {{ $project->name }}
                                             </a>
                                         @endforeach
                                         <hr class="dropdown-divider">
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('project.add') }}">
                                         {{ __('Add project') }}
                                     </a>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Templates') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Clusters') }}</a>
-                            </li>
-                            @if (!empty(request()->get('projects')))
+                            @if (empty(request()->get('project')))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">{{ __('Clusters') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">{{ __('Templates') }}</a>
+                                </li>
+                            @else
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">{{ __('Deployments') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">{{ __('Users') }}</a>
                                 </li>
                             @endif
                         @endauth
