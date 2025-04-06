@@ -3,9 +3,27 @@
 
 // Variables
 @import 'variables';
+@import 'bootstrap-icons/font/bootstrap-icons.min.css';
 
 // Bootstrap
 $primary: #333333;
 $secondary: #0074BA;
 
 @import 'bootstrap/scss/bootstrap';
+
+.navbar {
+    height: 5rem;
+    padding: 0;
+
+    &-brand {
+        align-items: center;
+        background-color: var(--bs-primary);
+        display: flex;
+        height: 5rem;
+        justify-content: center;
+
+        .logo {
+            height: 1.5rem;
+        }
+    }
+}
