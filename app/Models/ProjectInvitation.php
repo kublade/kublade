@@ -7,25 +7,25 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Project.
+ * Class ProjectInvitation.
  *
- * This class is the model for projects.
+ * This class is the model for project users.
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
  * @property string $user_id
- * @property string $name
+ * @property string $project_id
+ * @property bool   $invitation_accepted
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Project extends Model
+class ProjectInvitation extends Model
 {
     use SoftDeletes;
     use HasUuids;
@@ -40,22 +40,31 @@ class Project extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'invitation_accepted' => 'boolean',
+    ];
+
+    /**
      * Relation to user.
      *
      * @return HasOne
      */
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
-     * Relation to invitations.
+     * Relation to project.
      *
-     * @return HasMany
+     * @return HasOne
      */
-    public function invitations(): HasMany
+    public function project(): HasOne
     {
-        return $this->hasMany(ProjectInvitation::class, 'project_id', 'id');
+        return $this->hasOne(Project::class, 'id', 'project_id');
     }
 }

@@ -28,7 +28,13 @@ class IdentifyProject
      */
     public function handle(Request $request, Closure $next)
     {
-        $projects = Project::where('user_id', '=', Auth::id())->get();
+        $projects = Project::where(function ($query) {
+            $query->where('user_id', '=', Auth::id())
+                ->orWhereHas('invitations', function ($query) {
+                    $query->where('user_id', '=', Auth::id())
+                        ->where('invitation_accepted', '=', true);
+                });
+        })->get();
 
         if (! empty($projects)) {
             $request->attributes->add(['projects' => $projects]);
@@ -38,7 +44,6 @@ class IdentifyProject
             /* @var Project|null $tenant */
             $project = (clone $projects)
                 ->where('id', '=', $request->project_id)
-                ->where('user_id', '=', Auth::id())
                 ->first();
 
             if (! empty($project)) {

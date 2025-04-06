@@ -70,9 +70,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">{{ __('Deployments') }}</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('Users') }}</a>
-                                </li>
+                                @if (request()->get('project')->user_id === Auth::id())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}">{{ __('Users') }}</a>
+                                    </li>
+                                @endif
                             @endif
                         @endauth
                     </ul>
@@ -99,6 +101,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('project.invitations') }}">
+                                        {{ __('Invitations') }}
+                                    </a>
+                                    <hr class="dropdown-divider">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
