@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82335b593232c4f2ebfb63282b970c4e",
+    "content-hash": "07e3e5d0dedaccf11ba17e907f3b03f1",
     "packages": [
         {
             "name": "brick/math",
@@ -3348,6 +3348,57 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "sagalbot/encryptable",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sagalbot/encryptable.git",
+                "reference": "dc302dbd5e3771c81fd930bb53edfe4b4ee16195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sagalbot/encryptable/zipball/dc302dbd5e3771c81fd930bb53edfe4b4ee16195",
+                "reference": "dc302dbd5e3771c81fd930bb53edfe4b4ee16195",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "illuminate/database": "^5.4",
+                "illuminate/encryption": "^5.4",
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sagalbot\\Encryptable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Sagal",
+                    "email": "sagalbot@gmail.com"
+                }
+            ],
+            "description": "Allows you to store Eloquent properties encrypted in your database, and automatically decrypt when accessed.",
+            "keywords": [
+                "eloquent",
+                "encryption",
+                "laravel",
+                "laravel 5"
+            ],
+            "support": {
+                "issues": "https://github.com/sagalbot/encryptable/issues",
+                "source": "https://github.com/sagalbot/encryptable/tree/v1.0.1"
+            },
+            "time": "2020-05-03T19:00:54+00:00"
         },
         {
             "name": "symfony/clock",
