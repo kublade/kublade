@@ -172,10 +172,13 @@ class ProjectController extends Controller
                 ->where('user_id', '=', Auth::id())
                 ->first()
         ) {
+            $user = User::where('email', '=', $request->email)->first();
+            
             if (
+                $user &&
                 $projectInvitation = ProjectInvitation::create([
                     'project_id' => $project_id,
-                    'user_id'    => Auth::id(),
+                    'user_id'    => $user->id,
                 ])
             ) {
                 return redirect()->route('project.invitations')->with('success', __('Invitation created.'));
