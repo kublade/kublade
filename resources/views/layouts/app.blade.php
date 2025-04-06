@@ -20,7 +20,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand py-3 px-4 me-0" href="{{ url('/') }}">
+                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ url('/') }}">
                     <img src="/logo.svg" class="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -32,7 +32,7 @@
                     <ul class="navbar-nav me-auto">
                         @auth
                             <li class="nav-item dropdown ms-4 me-4">
-                                <a id="navbarDropdown" class="btn btn-primary dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="btn btn-secondary text-white dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <i class="bi bi-boxes"></i>
                                     @if (!empty(request()->get('project')))
                                         {{ request()->get('project')->name }}
@@ -61,12 +61,12 @@
                             </li>
                             @if (empty(request()->get('project')))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('Clusters') }}</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="#">{{ __('Templates') }}</a>
                                 </li>
                             @else
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">{{ __('Clusters') }}</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">{{ __('Deployments') }}</a>
                                 </li>

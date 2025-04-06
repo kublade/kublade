@@ -14,6 +14,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**
@@ -58,5 +59,15 @@ class User extends Authenticatable
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relation to clusters.
+     *
+     * @return HasMany
+     */
+    public function clusters(): HasMany
+    {
+        return $this->hasMany(Cluster::class, 'user_id', 'id');
     }
 }
