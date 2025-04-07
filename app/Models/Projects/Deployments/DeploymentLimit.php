@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Projects\Deployments;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,24 +11,32 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class ProjectInvitation.
+ * Class DeploymentLimit.
  *
- * This class is the model for project users.
+ * This class is the model for deployment data.
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
- * @property string $user_id
- * @property string $project_id
- * @property bool   $invitation_accepted
+ * @property string $deployment_id
+ * @property bool   $is_active
+ * @property float  $memory
+ * @property float  $cpu
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class ProjectInvitation extends Model
+class DeploymentLimit extends Model
 {
     use SoftDeletes;
     use HasUuids;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'deployment_limits';
 
     /**
      * The attributes that aren't mass assignable.
@@ -40,31 +48,21 @@ class ProjectInvitation extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'invitation_accepted' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
-     * Relation to user.
+     * Relation to order.
      *
      * @return HasOne
      */
-    public function user(): HasOne
+    public function order(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    /**
-     * Relation to project.
-     *
-     * @return HasOne
-     */
-    public function project(): HasOne
-    {
-        return $this->hasOne(Project::class, 'id', 'project_id');
+        return $this->hasOne(Deployment::class, 'id', 'deployment_id');
     }
 }

@@ -2,33 +2,40 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Kubernetes\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Project.
+ * Class NodeStatusAddress.
  *
- * This class is the model for projects.
+ * This class is the model for kubernetes node status address.
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
- * @property string $user_id
- * @property string $name
+ * @property string $node_id
+ * @property string $type
+ * @property string $address
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Project extends Model
+class NodeStatusAddress extends Model
 {
     use SoftDeletes;
     use HasUuids;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'node_status_addresses';
 
     /**
      * The attributes that aren't mass assignable.
@@ -40,22 +47,12 @@ class Project extends Model
     ];
 
     /**
-     * Relation to user.
+     * Relation to node.
      *
      * @return HasOne
      */
-    public function user(): HasOne
+    public function node(): HasOne
     {
-        return $this->hasOne(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * Relation to invitations.
-     *
-     * @return HasMany
-     */
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(ProjectInvitation::class, 'project_id', 'id');
+        return $this->hasOne(Node::class, 'id', 'node_id');
     }
 }

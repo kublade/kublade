@@ -26,7 +26,6 @@ return new class () extends Migration {
 
         Schema::create('node_specs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('provider_id')->nullable();
             $table->timestamps();
@@ -35,7 +34,6 @@ return new class () extends Migration {
 
         Schema::create('node_spec_cidrs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_spec_id')->references('id')->on('node_specs');
             $table->string('cidr');
             $table->timestamps();
@@ -44,7 +42,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_capacities', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->bigInteger('cpu')->unsigned();
             $table->bigInteger('ephemeral_storage')->unsigned();
@@ -58,7 +55,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_allocatables', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->bigInteger('cpu')->unsigned();
             $table->bigInteger('ephemeral_storage')->unsigned();
@@ -72,7 +68,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_conditions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('type');
             $table->string('status');
@@ -86,7 +81,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_addresses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('type');
             $table->string('address');
@@ -96,7 +90,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_daemon_endpoints', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('name');
             $table->integer('port');
@@ -106,7 +99,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_node_infos', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('machine_id');
             $table->string('system_uuid');
@@ -124,7 +116,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->bigInteger('size_bytes')->unsigned();
             $table->timestamps();
@@ -133,7 +124,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_image_names', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_image_id')->references('id')->on('node_status_images');
             $table->string('name');
             $table->timestamps();
@@ -142,7 +132,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_volume_uses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('name');
             $table->timestamps();
@@ -151,7 +140,6 @@ return new class () extends Migration {
 
         Schema::create('node_status_volume_attachments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('name');
             $table->string('device_path');
@@ -161,7 +149,6 @@ return new class () extends Migration {
 
         Schema::create('node_metrics', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->foreignUuid('node_id')->references('id')->on('nodes');
             $table->string('cpu_usage');
             $table->string('memory_usage');
@@ -325,7 +312,6 @@ return new class () extends Migration {
             $table->double('storage');
             $table->double('memory');
             $table->double('pods');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -337,7 +323,6 @@ return new class () extends Migration {
             $table->double('storage');
             $table->double('memory');
             $table->double('pods');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -349,7 +334,6 @@ return new class () extends Migration {
             $table->double('storage');
             $table->double('memory');
             $table->double('pods');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -367,7 +351,6 @@ return new class () extends Migration {
             $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
             $table->double('cpu');
             $table->double('memory');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -377,7 +360,6 @@ return new class () extends Migration {
             $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
             $table->double('cpu');
             $table->double('memory');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -387,7 +369,6 @@ return new class () extends Migration {
             $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
             $table->double('cpu');
             $table->double('memory');
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

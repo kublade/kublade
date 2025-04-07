@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Kubernetes\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,28 +11,33 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class ClusterResource.
+ * Class ServicePort.
  *
- * This class is the model for cluster resources.
+ * This class is the model for kubernetes service ports.
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
- * @property string $cluster_id
- * @property string $type
- * @property float  $cpu
- * @property float  $memory
- * @property float  $storage
- * @property float  $gpu
- * @property float  $pods
+ * @property string $service_id
+ * @property string $name
+ * @property string $protocol
+ * @property int    $port
+ * @property string $target_port
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class ClusterResource extends Model
+class ServicePort extends Model
 {
     use SoftDeletes;
     use HasUuids;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'service_ports';
 
     /**
      * The attributes that aren't mass assignable.
@@ -44,12 +49,12 @@ class ClusterResource extends Model
     ];
 
     /**
-     * Relation to cluster.
+     * Relation to service.
      *
      * @return HasOne
      */
-    public function cluster(): HasOne
+    public function service(): HasOne
     {
-        return $this->hasOne(Cluster::class, 'id', 'cluster_id');
+        return $this->hasOne(Service::class, 'id', 'service_id');
     }
 }

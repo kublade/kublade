@@ -14,6 +14,7 @@ return new class () extends Migration {
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
             $table->integer('reserved_ports')->default(0);
             $table->timestamps();
