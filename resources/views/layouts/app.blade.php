@@ -46,7 +46,7 @@
                                         Overview
                                     </a>
                                     <hr class="dropdown-divider">
-                                    @if (!empty(request()->get('projects')))
+                                    @if (request()->get('projects')->isNotEmpty())
                                         @foreach (request()->get('projects') as $project)
                                             <a class="dropdown-item" href="{{ route('project.details', ['project_id' => $project->id]) }}">
                                                 {{ $project->name }}
