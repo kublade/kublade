@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Kubernetes\Clusters;
 
+use App\Models\Projects\Projects\Project;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +34,13 @@ class Cluster extends Model
     use HasUuids;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'clusters';
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var bool|string[]
@@ -51,13 +60,23 @@ class Cluster extends Model
     }
 
     /**
+     * Relation to project.
+     *
+     * @return HasOne
+     */
+    public function project(): HasOne
+    {
+        return $this->hasOne(Project::class, 'id', 'project_id');
+    }
+
+    /**
      * Relation to k8s credentials.
      *
      * @return HasOne
      */
     public function k8sCredentials(): HasOne
     {
-        return $this->hasOne(ClusterK8sCredential::class, 'cluster_id', 'id');
+        return $this->hasOne(K8sCredential::class, 'cluster_id', 'id');
     }
 
     /**
@@ -67,7 +86,7 @@ class Cluster extends Model
      */
     public function gitCredentials(): HasOne
     {
-        return $this->hasOne(ClusterGitCredential::class, 'cluster_id', 'id');
+        return $this->hasOne(GitCredential::class, 'cluster_id', 'id');
     }
 
     /**
@@ -77,7 +96,7 @@ class Cluster extends Model
      */
     public function resources(): HasMany
     {
-        return $this->hasMany(ClusterResource::class, 'cluster_id', 'id');
+        return $this->hasMany(Resource::class, 'cluster_id', 'id');
     }
 
     /**
@@ -87,6 +106,6 @@ class Cluster extends Model
      */
     public function namespaces(): HasMany
     {
-        return $this->hasMany(ClusterNamespace::class, 'cluster_id', 'id');
+        return $this->hasMany(Ns::class, 'cluster_id', 'id');
     }
 }

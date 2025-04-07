@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\ProjectInvitation;
+use App\Models\Projects\Projects\Project;
+use App\Models\Projects\Projects\ProjectInvitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +60,7 @@ class ProjectController extends Controller
                 'name'    => $request->name,
             ])
         ) {
-            return redirect()->route('project.details', ['id' => $project->id])->with('success', __('Project added.'));
+            return redirect()->route('project.details', ['project_id' => $project->id])->with('success', __('Project added.'));
         }
 
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));

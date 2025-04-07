@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\Project;
+use App\Models\Projects\Projects\Project;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

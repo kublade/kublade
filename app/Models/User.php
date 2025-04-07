@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Projects\Deployments\Deployment;
+use App\Models\Projects\Projects\Project;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +18,13 @@ class User extends Authenticatable
     use HasFactory;
 
     use Notifiable;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -69,5 +78,15 @@ class User extends Authenticatable
     public function clusters(): HasMany
     {
         return $this->hasMany(Cluster::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relation to deployments.
+     *
+     * @return HasMany
+     */
+    public function deployments(): HasMany
+    {
+        return $this->hasMany(Deployment::class, 'user_id', 'id');
     }
 }
