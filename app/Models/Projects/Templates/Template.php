@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * Class Template.
@@ -22,7 +23,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $id
  * @property string $user_id
  * @property string $name
- * @property int    $reserved_ports
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -66,5 +66,57 @@ class Template extends Model
     public function fields(): HasMany
     {
         return $this->hasMany(TemplateField::class, 'template_id', 'id');
+    }
+
+    /**
+     * Relation to template ports.
+     *
+     * @return HasMany
+     */
+    public function ports(): HasMany
+    {
+        return $this->hasMany(TemplatePort::class, 'template_id', 'id');
+    }
+
+    /**
+     * Relation to template directories.
+     *
+     * @return HasMany
+     */
+    public function directories(): HasMany
+    {
+        return $this->hasMany(TemplateDirectory::class, 'template_id', 'id')
+            ->whereNull('parent_id');
+    }
+
+    /**
+     * Relation to template files.
+     *
+     * @return HasMany
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(TemplateFile::class, 'template_id', 'id')
+            ->whereNull('template_directory_id');
+    }
+
+    /**
+     * Get the tree of the template.
+     *
+     * @return Collection
+     */
+    public function getTreeAttribute(): Collection
+    {
+        $subFolders = $this->directories?->transform(function ($directory) {
+            return $directory->tree;
+        })->toArray() ?? [];
+        $subFiles = $this->files?->transform(function ($file) {
+            return $file->tree;
+        })->toArray() ?? [];
+
+        return collect([
+            ...$subFolders,
+            ...$subFiles,
+        ]);
     }
 }

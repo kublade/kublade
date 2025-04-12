@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Projects\Templates\Template;
+use App\Models\Projects\Templates\TemplateFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -20,17 +21,24 @@ class TemplateController extends Controller
     }
 
     /**
-     * Show the project dashboard.
+     * Show the template dashboard.
+     *
+     * @param string $template_id
+     * @param string $file_id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function page_index()
+    public function page_index(string $template_id = null, string $file_id = null)
     {
-        return view('template.index');
+        return view('template.index', [
+            'templates' => Template::all(),
+            'template'  => $template_id ? Template::where('id', $template_id)->first() : null,
+            'file'      => $file_id ? TemplateFile::where('id', $file_id)->first() : null,
+        ]);
     }
 
     /**
-     * Show the project add page.
+     * Show the template add page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -40,7 +48,7 @@ class TemplateController extends Controller
     }
 
     /**
-     * Add a new project.
+     * Add a new template.
      *
      * @param Request $request
      *
@@ -49,15 +57,13 @@ class TemplateController extends Controller
     public function action_add(Request $request)
     {
         Validator::make($request->toArray(), [
-            'name'           => ['required', 'string', 'max:255'],
-            'reserved_ports' => ['required', 'numeric', 'min:0', 'max:65535'],
+            'name' => ['required', 'string', 'max:255'],
         ])->validate();
 
         if (
             $template = Template::create([
-                'user_id'        => Auth::id(),
-                'name'           => $request->name,
-                'reserved_ports' => $request->reserved_ports,
+                'user_id' => Auth::id(),
+                'name'    => $request->name,
             ])
         ) {
             return redirect()->route('template.details', ['template_id' => $template->id])->with('success', __('Template added.'));
@@ -67,28 +73,37 @@ class TemplateController extends Controller
     }
 
     /**
-     * Show the project update page.
+     * Show the template update page.
+     *
+     * @param string $template_id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function page_update()
+    public function page_update(string $template_id)
     {
-        return view('template.update');
+        if (
+            $template = Template::where('id', $template_id)
+                ->where('user_id', '=', Auth::id())
+                ->first()
+        ) {
+            return view('template.update', ['template' => $template]);
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
     }
 
     /**
-     * Update the project.
+     * Update the template.
      *
-     * @param string  $project_id
+     * @param string  $template_id
      * @param Request $request
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function action_update(string $project_id, Request $request)
+    public function action_update(string $template_id, Request $request)
     {
         Validator::make($request->toArray(), [
-            'name'           => ['required', 'string', 'max:255'],
-            'reserved_ports' => ['required', 'numeric', 'min:0', 'max:65535'],
+            'name' => ['required', 'string', 'max:255'],
         ])->validate();
 
         if (
@@ -97,8 +112,7 @@ class TemplateController extends Controller
                 ->first()
         ) {
             $template->update([
-                'name'           => $request->name,
-                'reserved_ports' => $request->reserved_ports,
+                'name' => $request->name,
             ]);
 
             return redirect()->route('template.index')->with('success', __('Template updated.'));
@@ -108,13 +122,13 @@ class TemplateController extends Controller
     }
 
     /**
-     * Delete the project.
+     * Delete the template.
      *
-     * @param string $project_id
+     * @param string $template_id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function action_delete(string $project_id)
+    public function action_delete(string $template_id)
     {
         if (
             $template = Template::where('id', $template_id)

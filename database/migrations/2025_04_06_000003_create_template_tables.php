@@ -21,6 +21,17 @@ return new class () extends Migration {
             $table->softDeletes();
         });
 
+        Schema::create('template_ports', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('template_id')->references('id')->on('templates');
+            $table->string('group')->default('services');
+            $table->string('claim')->nullable();
+            $table->integer('preferred_port')->nullable();
+            $table->boolean('random')->default(true);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('template_fields', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('template_id')->references('id')->on('templates');

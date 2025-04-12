@@ -7,6 +7,7 @@ namespace App\Models\Projects\Templates;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -64,5 +65,60 @@ class TemplateDirectory extends Model
     public function parent(): HasOne
     {
         return $this->hasOne(TemplateDirectory::class, 'id', 'parent_id');
+    }
+
+    /**
+     * Relation to folders.
+     *
+     * @return HasMany
+     */
+    public function folders(): HasMany
+    {
+        return $this->hasMany(TemplateDirectory::class, 'parent_id', 'id');
+    }
+
+    /**
+     * Relation to files.
+     *
+     * @return HasMany
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(TemplateFile::class, 'template_directory_id', 'id');
+    }
+
+    /**
+     * Get the tree attribute.
+     *
+     * @return object
+     */
+    public function getTreeAttribute(): object
+    {
+        $subFolders = $this->folders->map(function ($child) {
+            return $child->tree;
+        })->toArray() ?? [];
+        $subFiles = $this->files->map(function ($file) {
+            return $file->tree;
+        })->toArray() ?? [];
+
+        return (object) [
+            'type'     => 'folder',
+            'id'       => $this->id,
+            'name'     => $this->name,
+            'children' => collect([
+                ...$subFolders,
+                ...$subFiles,
+            ]),
+        ];
+    }
+
+    /**
+     * Get the path attribute.
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return $this->parent ? $this->parent->path . '/' . $this->name : '/' . $this->name;
     }
 }

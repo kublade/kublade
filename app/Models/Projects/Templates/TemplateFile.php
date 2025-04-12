@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
+ * @property string $template_id
  * @property string $template_directory_id
  * @property string $name
  * @property string $mime_type
@@ -54,5 +55,40 @@ class TemplateFile extends Model
     public function directory(): HasOne
     {
         return $this->hasOne(TemplateDirectory::class, 'id', 'template_directory_id');
+    }
+
+    /**
+     * Relation to template.
+     *
+     * @return HasOne
+     */
+    public function template(): HasOne
+    {
+        return $this->hasOne(Template::class, 'id', 'template_id');
+    }
+
+    /**
+     * Get the tree attribute.
+     *
+     * @return object
+     */
+    public function getTreeAttribute(): object
+    {
+        return (object) [
+            'type'      => 'file',
+            'id'        => $this->id,
+            'name'      => $this->name,
+            'mime_type' => $this->mime_type,
+        ];
+    }
+
+    /**
+     * Get the path attribute.
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return $this->directory ? $this->directory->path . '/' . $this->name : '/' . $this->name;
     }
 }

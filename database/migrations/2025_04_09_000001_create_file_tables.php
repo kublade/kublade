@@ -23,9 +23,11 @@ return new class () extends Migration {
 
         Schema::create('template_files', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('template_id')->references('id')->on('templates');
             $table->foreignUuid('template_directory_id')->nullable()->references('id')->on('template_directories');
             $table->string('name');
             $table->string('mime_type');
+            $table->longText('content');
             $table->timestamps();
             $table->softDeletes();
         });

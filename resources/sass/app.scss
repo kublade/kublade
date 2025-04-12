@@ -27,3 +27,46 @@ $secondary: #f55247;
         }
     }
 }
+
+.file-tree {
+    list-style: none;
+    margin-bottom: 0;
+
+    &:not(&--child) {
+        padding-left: 0;
+    }
+
+    &--child {
+        padding-left: 1.5rem;
+    }
+
+    ul {
+        display: flex;
+        gap: 0.25rem;
+        flex-direction: column;
+    }
+
+    li {
+        display: flex;
+        gap: 0.25rem;
+        flex-direction: column;
+
+        > span, a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875em;
+
+            i:not(.file-tree-action) {
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        > a {
+            text-decoration: none;
+        }
+    }
+}

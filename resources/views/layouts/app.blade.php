@@ -61,7 +61,7 @@
                             </li>
                             @if (empty(request()->get('project')))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('Templates') }}</a>
+                                    <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
                                 </li>
                             @else
                                 <li class="nav-item">
