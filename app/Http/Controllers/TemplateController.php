@@ -85,11 +85,7 @@ class TemplateController extends Controller
      */
     public function page_update(string $template_id)
     {
-        if (
-            $template = Template::where('id', $template_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($template = Template::where('id', $template_id)->first()) {
             return view('template.update', ['template' => $template]);
         }
 
@@ -110,11 +106,7 @@ class TemplateController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ])->validate();
 
-        if (
-            $template = Template::where('id', $template_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($template = Template::where('id', $template_id)->first()) {
             $template->update([
                 'name' => $request->name,
             ]);
@@ -134,11 +126,7 @@ class TemplateController extends Controller
      */
     public function action_delete(string $template_id)
     {
-        if (
-            $template = Template::where('id', $template_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($template = Template::where('id', $template_id)->first()) {
             $template->delete();
 
             return redirect()->route('template.index')->with('success', __('Template deleted.'));

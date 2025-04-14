@@ -2,6 +2,15 @@
 
 @section('content')
 <div class="container">
+    @if (!empty($template))
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ route('template.index') }}" class="btn btn-sm btn-secondary text-white">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    @endif
     <div class="row justify-content-center">
         @if (!empty($template))
             <div class="col-md-4">
@@ -45,6 +54,13 @@
                             {{ $file->path }}
                         </div>
                     @endif
+                @else
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        {{ __('Templates') }}
+                        <a href="{{ route('template.add') }}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus"></i>
+                        </a>
+                    </div>
                 @endif
                 <div class="card-body{{ !empty($file) ? ' p-0 overflow-hidden rounded' : '' }}">
                     @if (!empty($template))

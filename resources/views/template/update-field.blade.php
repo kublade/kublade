@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <a href="{{ route('template.details', ['template_id' => $template->id]) }}" class="btn btn-sm btn-secondary text-white">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card mb-3">

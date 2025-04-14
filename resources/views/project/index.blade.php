@@ -2,10 +2,24 @@
 
 @section('content')
 <div class="container">
+    @if (!empty(request()->get('project')))
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ route('project.index') }}" class="btn btn-sm btn-secondary text-white">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Project') }}</div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    {{ __('Projects') }}
+                    @if (empty(request()->get('project')))
+                        <a href="{{ route('project.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                    @endif
+                </div>
 
                 <div class="card-body">
                     @if (!empty(request()->get('project')))
