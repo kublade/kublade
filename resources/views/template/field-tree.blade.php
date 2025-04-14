@@ -1,13 +1,13 @@
 <ul class="field-tree">
     @foreach ($template->fields as $field)
         <li class="d-flex justify-content-between align-items-start flex-row file-tree-li">
-            <span class="d-flex align-items-center gap-2">
+            <span class="d-flex align-items-center gap-3">
                 @if ($field->secret)
                     <i class="bi bi-shield-shaded"></i>
                 @else
                     <i class="bi bi-code-square"></i>
                 @endif
-                <div class="d-flex flex-column lh-1">
+                <div class="d-flex flex-column lh-1 align-items-start">
                     {{ $field->label ?? __('N/A') }}
                     <span class="text-muted">{{ $field->key }}</span>
                 </div>

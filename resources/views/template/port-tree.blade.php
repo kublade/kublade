@@ -1,9 +1,9 @@
 <ul class="field-tree">
     @foreach ($template->ports as $port)
         <li class="d-flex justify-content-between align-items-start flex-row file-tree-li">
-            <span class="d-flex align-items-center gap-2">
+            <span class="d-flex align-items-center gap-3">
                 <i class="bi bi-ethernet"></i>
-                <div class="d-flex flex-column lh-1">
+                <div class="d-flex flex-column lh-1 align-items-start">
                     {{ $port->group }}
                     <span class="text-muted">{{ $port->claim ?? __('default') }}:{{ $port->preferred_port ?? __('any') }}</span>
                 </div>
