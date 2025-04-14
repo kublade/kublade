@@ -27,12 +27,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>{{ __('Ports') }}</span>
-                        <a href="#" class="btn btn-sm btn-primary">
+                        <a href="{{ route('template.port.add', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary">
                             <i class="bi bi-plus"></i>
                         </a>
                     </div>
                     <div class="card-body">
-                        
+                        @include('template.port-tree', ['template' => $template])
                     </div>
                 </div>
             </div>

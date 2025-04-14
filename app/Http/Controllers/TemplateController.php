@@ -9,6 +9,7 @@ use App\Models\Projects\Templates\TemplateDirectory;
 use App\Models\Projects\Templates\TemplateField;
 use App\Models\Projects\Templates\TemplateFieldOption;
 use App\Models\Projects\Templates\TemplateFile;
+use App\Models\Projects\Templates\TemplatePort;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -677,6 +678,122 @@ class TemplateController extends Controller
             $option->delete();
 
             return redirect()->route('template.field.update', ['template_id' => $template_id, 'field_id' => $field_id])->with('success', __('Option deleted.'));
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
+
+    /**
+     * Show the template add port page.
+     *
+     * @param string $template_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function page_add_port(string $template_id)
+    {
+        return view('template.add-port', [
+            'template' => Template::where('id', $template_id)->first(),
+        ]);
+    }
+
+    /**
+     * Add a new port.
+     *
+     * @param string  $template_id
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_add_port(string $template_id, Request $request)
+    {
+        Validator::make($request->toArray(), [
+            'template_id'    => ['required', 'string'],
+            'group'          => ['required', 'string'],
+            'claim'          => ['nullable', 'string'],
+            'preferred_port' => ['nullable', 'numeric'],
+            'random'         => ['nullable', 'boolean'],
+        ])->validate();
+
+        TemplatePort::create([
+            'template_id'    => $request->template_id,
+            'group'          => $request->group,
+            'claim'          => $request->claim,
+            'preferred_port' => $request->preferred_port,
+            'random'         => $request->random,
+        ]);
+
+        return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('Port added.'));
+    }
+
+    /**
+     * Show the template update port page.
+     *
+     * @param string $template_id
+     * @param string $port_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function page_update_port(string $template_id, string $port_id)
+    {
+        return view('template.update-port', [
+            'template' => Template::where('id', $template_id)->first(),
+            'port'     => TemplatePort::where('id', $port_id)->first(),
+        ]);
+    }
+
+    /**
+     * Update the port.
+     *
+     * @param string  $template_id
+     * @param string  $port_id
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_update_port(string $template_id, string $port_id, Request $request)
+    {
+        Validator::make($request->toArray(), [
+            'template_id'    => ['required', 'string'],
+            'group'          => ['required', 'string'],
+            'claim'          => ['nullable', 'string'],
+            'preferred_port' => ['nullable', 'numeric'],
+            'random'         => ['nullable', 'boolean'],
+        ])->validate();
+
+        $port = TemplatePort::where('id', $port_id)->first();
+
+        if (empty($port)) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        $port->update([
+            'template_id'    => $request->template_id,
+            'group'          => $request->group,
+            'claim'          => $request->claim,
+            'preferred_port' => $request->preferred_port,
+            'random'         => ! empty($request->random),
+        ]);
+
+        return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('Port updated.'));
+    }
+
+    /**
+     * Delete the port.
+     *
+     * @param string $template_id
+     * @param string $port_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_delete_port(string $template_id, string $port_id)
+    {
+        if (
+            $port = TemplatePort::where('id', $port_id)->first()
+        ) {
+            $port->delete();
+
+            return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('Port deleted.'));
         }
 
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
