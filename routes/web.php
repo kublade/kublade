@@ -35,5 +35,27 @@ Route::middleware([
     Route::post('/templates/{template_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update'])->name('template.update.action');
     Route::get('/templates/{template_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete'])->name('template.delete.action');
     Route::get('/templates/{template_id}', [App\Http\Controllers\TemplateController::class, 'page_index'])->name('template.details');
-    Route::get('/templates/{template_id}/{file_id}', [App\Http\Controllers\TemplateController::class, 'page_index'])->name('template.details_file');
+
+    Route::get('/templates/{template_id}/folder/add', [App\Http\Controllers\TemplateController::class, 'page_add_folder'])->name('template.folder.add');
+    Route::post('/templates/{template_id}/folder/add', [App\Http\Controllers\TemplateController::class, 'action_add_folder'])->name('template.folder.add.action');
+    Route::get('/templates/{template_id}/folder/{folder_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_folder'])->name('template.folder.update');
+    Route::post('/templates/{template_id}/folder/{folder_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_folder'])->name('template.folder.update.action');
+    Route::get('/templates/{template_id}/folder/{folder_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_folder'])->name('template.folder.delete.action');
+    Route::get('/templates/{template_id}/file/add', [App\Http\Controllers\TemplateController::class, 'page_add_file'])->name('template.file.add');
+    Route::post('/templates/{template_id}/file/add', [App\Http\Controllers\TemplateController::class, 'action_add_file'])->name('template.file.add.action');
+    Route::get('/templates/{template_id}/file/{file_id}', [App\Http\Controllers\TemplateController::class, 'page_index'])->name('template.details_file');
+    Route::get('/templates/{template_id}/file/{file_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_file'])->name('template.file.update');
+    Route::post('/templates/{template_id}/file/{file_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_file'])->name('template.file.update.action');
+    Route::get('/templates/{template_id}/file/{file_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_file'])->name('template.file.delete.action');
+
+    Route::get('/templates/{template_id}/field/add', [App\Http\Controllers\TemplateController::class, 'page_add_field'])->name('template.field.add');
+    Route::post('/templates/{template_id}/field/add', [App\Http\Controllers\TemplateController::class, 'action_add_field'])->name('template.field.add.action');
+    Route::get('/templates/{template_id}/field/{field_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_field'])->name('template.field.update');
+    Route::post('/templates/{template_id}/field/{field_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_field'])->name('template.field.update.action');
+    Route::get('/templates/{template_id}/field/{field_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_field'])->name('template.field.delete.action');
+    Route::get('/templates/{template_id}/field/{field_id}/option/add', [App\Http\Controllers\TemplateController::class, 'page_add_option'])->name('template.field.option.add');
+    Route::post('/templates/{template_id}/field/{field_id}/option/add', [App\Http\Controllers\TemplateController::class, 'action_add_option'])->name('template.field.option.add.action');
+    Route::get('/templates/{template_id}/field/{field_id}/option/{option_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_option'])->name('template.field.option.update');
+    Route::post('/templates/{template_id}/field/{field_id}/option/{option_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_option'])->name('template.field.option.update.action');
+    Route::get('/templates/{template_id}/field/{field_id}/option/{option_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_option'])->name('template.field.option.delete.action');
 });

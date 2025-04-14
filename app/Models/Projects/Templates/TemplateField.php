@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string      $template_id
  * @property string      $type
  * @property bool        $required
+ * @property bool        $secret
  * @property string      $label
  * @property string      $key
  * @property string|null $value
@@ -61,6 +62,7 @@ class TemplateField extends Model
      */
     protected $casts = [
         'required' => 'boolean',
+        'secret'   => 'boolean',
     ];
 
     /**
