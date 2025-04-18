@@ -30,6 +30,10 @@ class Ns extends Model
     use SoftDeletes;
     use HasUuids;
 
+    public const TYPE_UTILITY = 'utility';
+
+    public const TYPE_INGRESS = 'ingress';
+
     /**
      * The table associated with the model.
      *
