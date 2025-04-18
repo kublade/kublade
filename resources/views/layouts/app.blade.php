@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ request()->get('project') ? route('project.index', ['project_id' => request()->get('project')->id]) : url('/') }}">
+                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">
                     <img src="/logo.svg" class="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -63,7 +63,7 @@
                             </li>
                             @if (!empty(request()->get('project')))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('project.index', ['project_id' => request()->get('project')->id]) }}">Overview</a>
+                                    <a class="nav-link" href="{{ route('project.details', ['project_id' => request()->get('project')->id]) }}">Dashboard</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
