@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/kublade/kublade/compare/v1.0.0...v1.1.0) (2025-04-18)
+
+
+### Features
+
+* project preservation ([1d73e0f](https://github.com/kublade/kublade/commit/1d73e0fb36b7e2d96dd97574e44ea198898a8382))
+
 ## 1.0.0 (2025-04-18)
 
 
