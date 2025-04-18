@@ -7,7 +7,6 @@ namespace App\Models\Projects\Templates;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,21 +19,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property string      $id
  * @property string      $template_id
- * @property string      $type
- * @property bool        $required
- * @property bool        $secret
- * @property string      $label
- * @property string      $key
- * @property string|null $value
- * @property float|null  $amount
- * @property float|null  $min
- * @property float|null  $max
- * @property float|null  $step
+ * @property string      $group
+ * @property string|null $claim
+ * @property int|null    $preferred_port
+ * @property bool        $random
  * @property Carbon      $created_at
  * @property Carbon      $updated_at
  * @property Carbon      $deleted_at
  */
-class TemplateField extends Model
+class TemplatePort extends Model
 {
     use SoftDeletes;
     use HasUuids;
@@ -44,7 +37,7 @@ class TemplateField extends Model
      *
      * @var string
      */
-    protected $table = 'template_fields';
+    protected $table = 'template_ports';
 
     /**
      * The attributes that aren't mass assignable.
@@ -61,8 +54,7 @@ class TemplateField extends Model
      * @var array
      */
     protected $casts = [
-        'required' => 'boolean',
-        'secret'   => 'boolean',
+        'random' => 'boolean',
     ];
 
     /**
@@ -73,15 +65,5 @@ class TemplateField extends Model
     public function template(): HasOne
     {
         return $this->hasOne(Template::class, 'id', 'template_id');
-    }
-
-    /**
-     * Relation to template field options.
-     *
-     * @return HasMany
-     */
-    public function options(): HasMany
-    {
-        return $this->hasMany(TemplateFieldOption::class, 'template_field_id', 'id');
     }
 }

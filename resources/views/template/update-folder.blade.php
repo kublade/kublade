@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-md-12">
-            <a href="{{ route('project.index') }}" class="btn btn-sm btn-secondary text-white">
+            <a href="{{ route('template.details', ['template_id' => $template->id]) }}" class="btn btn-sm btn-secondary text-white">
                 <i class="bi bi-arrow-left"></i>
             </a>
         </div>
@@ -12,17 +12,26 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Add project') }}</div>
+                <div class="card-header">{{ __('Update folder') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('project.add.action') }}">
+                    <form method="POST" action="{{ route('template.folder.update.action', ['template_id' => $template->id, 'folder_id' => $folder->id]) }}">
                         @csrf
+                        <input type="hidden" name="parent_id" value="{{ $folder?->parent_id }}">
+
+                        <div class="row mb-3">
+                            <label for="template_directory" class="col-md-4 col-form-label text-md-end">{{ __('Folder') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="template_directory" type="text" class="form-control" value="{{ $folder?->path ?? '/' }}" required readonly>
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $folder->name }}" required autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">

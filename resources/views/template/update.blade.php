@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-md-12">
-            <a href="{{ route('project.index') }}" class="btn btn-sm btn-secondary text-white">
+            <a href="{{ route('template.index') }}" class="btn btn-sm btn-secondary text-white">
                 <i class="bi bi-arrow-left"></i>
             </a>
         </div>
@@ -12,17 +12,17 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Add project') }}</div>
+                <div class="card-header">{{ __('Update template') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('project.add.action') }}">
+                    <form method="POST" action="{{ route('template.update.action', ['template_id' => request()->template_id]) }}">
                         @csrf
 
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $template->name }}" required autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">

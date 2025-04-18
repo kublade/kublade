@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-md-12">
-            <a href="{{ route('project.index') }}" class="btn btn-sm btn-secondary text-white">
+            <a href="{{ route('template.index') }}" class="btn btn-sm btn-secondary text-white">
                 <i class="bi bi-arrow-left"></i>
             </a>
         </div>
@@ -12,10 +12,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Add project') }}</div>
+                <div class="card-header">{{ __('Add template') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('project.add.action') }}">
+                    <form method="POST" action="{{ route('template.add.action') }}">
                         @csrf
 
                         <div class="row mb-3">

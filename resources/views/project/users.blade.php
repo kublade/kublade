@@ -2,8 +2,15 @@
 
 @section('content')
 <div class="container">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <a href="{{ route('project.details', ['project_id' => request()->project_id]) }}" class="btn btn-sm btn-secondary text-white">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+    </div>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Users') }}

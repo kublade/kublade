@@ -21,6 +21,17 @@ return new class () extends Migration {
             $table->softDeletes();
         });
 
+        Schema::create('template_ports', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('template_id')->references('id')->on('templates');
+            $table->string('group')->default('services');
+            $table->string('claim')->nullable();
+            $table->integer('preferred_port')->nullable();
+            $table->boolean('random')->default(true);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('template_fields', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('template_id')->references('id')->on('templates');
@@ -36,10 +47,10 @@ return new class () extends Migration {
                 'textarea',
             ]);
             $table->boolean('required')->default(true);
+            $table->boolean('secret')->default(false);
             $table->string('label');
             $table->string('key');
             $table->string('value')->nullable();
-            $table->double('amount')->nullable();
             $table->double('min')->nullable();
             $table->double('max')->nullable();
             $table->double('step')->nullable();
@@ -52,7 +63,6 @@ return new class () extends Migration {
             $table->foreignUuid('template_field_id')->references('id')->on('template_fields');
             $table->string('label');
             $table->string('value');
-            $table->double('amount')->nullable();
             $table->boolean('default')->default(false);
             $table->timestamps();
             $table->softDeletes();
