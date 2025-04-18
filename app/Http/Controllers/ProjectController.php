@@ -9,6 +9,7 @@ use App\Models\Projects\Projects\ProjectInvitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
@@ -24,10 +25,22 @@ class ProjectController extends Controller
     /**
      * Show the project dashboard.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function page_index()
+    public function page_index(Request $request)
     {
+        if (!$request->project_id) {
+            $has_project_id = Session::has('project_id');
+
+            if ($has_project_id) {
+                Session::forget('project_id');
+
+                return redirect()->route('project.index');
+            }
+        }
+
         return view('project.index');
     }
 

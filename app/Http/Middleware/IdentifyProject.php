@@ -8,6 +8,7 @@ use App\Models\Projects\Projects\Project;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 /**
  * Class IdentifyProject.
@@ -40,14 +41,27 @@ class IdentifyProject
             $request->attributes->add(['projects' => $projects]);
         }
 
-        if ($request->project_id) {
+        $url_project_id     = $request->project_id;
+        $session_project_id = Session::get('project_id');
+
+        if ($url_project_id || $session_project_id) {
             /* @var Project|null $tenant */
-            $project = (clone $projects)
-                ->where('id', '=', $request->project_id)
+            $project_by_url = (clone $projects)
+                ->where('id', '=', $url_project_id)
                 ->first();
 
-            if (! empty($project)) {
-                $request->attributes->add(['project' => $project]);
+            $project_by_session = (clone $projects)
+                ->where('id', '=', $session_project_id)
+                ->first();
+
+            if (! empty($project_by_url)) {
+                $request->attributes->add(['project' => $project_by_url]);
+
+                Session::put('project_id', $project_by_url->id);
+            } else {
+                if (! empty($project_by_session)) {
+                    $request->attributes->add(['project' => $project_by_session]);
+                }
             }
         }
 
