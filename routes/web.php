@@ -64,4 +64,11 @@ Route::middleware([
     Route::get('/templates/{template_id}/port/{port_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_port'])->name('template.port.update');
     Route::post('/templates/{template_id}/port/{port_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_port'])->name('template.port.update.action');
     Route::get('/templates/{template_id}/port/{port_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_port'])->name('template.port.delete.action');
+
+    Route::get('/projects/{project_id}/clusters', [App\Http\Controllers\ClusterController::class, 'page_index'])->name('cluster.index');
+    Route::get('/projects/{project_id}/clusters/add', [App\Http\Controllers\ClusterController::class, 'page_add'])->name('cluster.add');
+    Route::post('/projects/{project_id}/clusters/add', [App\Http\Controllers\ClusterController::class, 'action_add'])->name('cluster.add.action');
+    Route::get('/projects/{project_id}/clusters/{cluster_id}/update', [App\Http\Controllers\ClusterController::class, 'page_update'])->name('cluster.update');
+    Route::post('/projects/{project_id}/clusters/{cluster_id}/update', [App\Http\Controllers\ClusterController::class, 'action_update'])->name('cluster.update.action');
+    Route::get('/projects/{project_id}/clusters/{cluster_id}/delete', [App\Http\Controllers\ClusterController::class, 'action_delete'])->name('cluster.delete.action');
 });

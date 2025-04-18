@@ -108,4 +108,24 @@ class Cluster extends Model
     {
         return $this->hasMany(Ns::class, 'cluster_id', 'id');
     }
+
+    /**
+     * Get the utility namespace.
+     *
+     * @return Ns|null
+     */
+    public function getUtilityNamespaceAttribute(): ?Ns
+    {
+        return $this->namespaces()->where('type', '=', Ns::TYPE_UTILITY)->first();
+    }
+
+    /**
+     * Get the ingress namespace.
+     *
+     * @return Ns|null
+     */
+    public function getIngressNamespaceAttribute(): ?Ns
+    {
+        return $this->namespaces()->where('type', '=', Ns::TYPE_INGRESS)->first();
+    }
 }

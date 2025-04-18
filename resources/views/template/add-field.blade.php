@@ -156,7 +156,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
+                            <div class="row">
                                 <label for="step" class="col-md-4 col-form-label text-md-end">{{ __('Step') }}</label>
 
                                 <div class="col-md-6">

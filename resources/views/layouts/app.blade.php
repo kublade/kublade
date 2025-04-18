@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ url('/') }}">
+                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ request()->get('project') ? route('project.index', ['project_id' => request()->get('project')->id]) : url('/') }}">
                     <img src="/logo.svg" class="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -61,13 +61,12 @@
                                     </a>
                                 </div>
                             </li>
-                            @if (empty(request()->get('project')))
+                            @if (!empty(request()->get('project')))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
+                                    <a class="nav-link" href="{{ route('project.index', ['project_id' => request()->get('project')->id]) }}">Overview</a>
                                 </li>
-                            @else
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('Clusters') }}</a>
+                                    <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">{{ __('Deployments') }}</a>
@@ -83,7 +82,6 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -97,8 +95,11 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item me-4">
+                                <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
