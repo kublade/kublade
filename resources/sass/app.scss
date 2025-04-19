@@ -8,8 +8,20 @@
 // Bootstrap
 $primary: #000000;
 $secondary: #ff2b1c;
+$success:   #28a745;
+$info:      #17a2b8;
+$warning:   #ffc107;
+$danger:    #dc3545;
+$light:     #f8f9fa;
+$dark:      #343a40;
+$body-bg:    #ffffff;
+$body-color: #000000;
 
 @import 'bootstrap/scss/bootstrap';
+
+body {
+    background-color: #fff8f6;
+}
 
 .navbar {
     height: 5rem;
@@ -165,5 +177,16 @@ $secondary: #ff2b1c;
         td {
             border-bottom: 0;
         }
+    }
+}
+
+.card {
+    border: 0;
+    box-shadow: var(--bs-box-shadow-sm);
+
+    &-header {
+        background-color: var(--bs-white);
+        color: var(--bs-body);
+        border-bottom: 1px solid transparent;
     }
 }
