@@ -18,6 +18,8 @@
       height: auto;
       border: 1px solid #ccc;
       font-size: 14px;
+      border-radius: 0.5rem;
+      margin: 0 1rem;
     }
 </style>
 @endsection
