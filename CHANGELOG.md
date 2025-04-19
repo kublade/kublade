@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/kublade/kublade/compare/v1.1.0...v1.2.0) (2025-04-19)
+
+
+### Features
+
+* deployment management ([c165df3](https://github.com/kublade/kublade/commit/c165df3828bf0119529b29e27e27ad7f683e7c60))
+
 ## [1.1.0](https://github.com/kublade/kublade/compare/v1.0.0...v1.1.0) (2025-04-18)
 
 
