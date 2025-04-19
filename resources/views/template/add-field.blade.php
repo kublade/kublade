@@ -31,7 +31,7 @@
                             <label for="key" class="col-md-4 col-form-label text-md-end">{{ __('Type') }}</label>
 
                             <div class="col-md-6">
-                                <select id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type">
+                                <select id="type" class="form-control @error('type') is-invalid @enderror" name="type">
                                     <option value="input_text"{{ old('type') == 'input_text' ? ' selected' : '' }}>{{ __('Text') }}</option>
                                     <option value="input_number"{{ old('type') == 'input_number' ? ' selected' : '' }}>{{ __('Number') }}</option>
                                     <option value="input_range"{{ old('type') == 'input_range' ? ' selected' : '' }}>{{ __('Range') }}</option>
@@ -114,6 +114,34 @@
                                 <input id="secret" type="checkbox" class="form-check-input" name="secret" value="1" {{ old('secret') == '1' ? 'checked' : '' }}>
 
                                 @error('secret')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="set_on_create" class="col-md-4 col-form-label text-md-end">{{ __('Set on create') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="set_on_create" type="checkbox" class="form-check-input" name="set_on_create" value="1" {{ old('set_on_create') === null || old('set_on_create') == '1' ? 'checked' : '' }}>
+
+                                @error('set_on_create')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <label for="set_on_update" class="col-md-4 col-form-label text-md-end">{{ __('Set on update') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="set_on_update" type="checkbox" class="form-check-input" name="set_on_update" value="1" {{ old('set_on_update') === null || old('set_on_update') == '1' ? 'checked' : '' }}>
+
+                                @error('set_on_update')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

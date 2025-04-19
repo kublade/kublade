@@ -27,19 +27,21 @@
                     @else
                         <table class="table">
                             <thead>
-                                <tr>
+                                <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Project') }}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (request()->get('projects') as $project)
-                                    <tr>
+                                    <tr class="align-middle">
                                         <td class="w-100">{{ $project->name }}</td>
-                                        <td class="d-flex gap-2">
-                                            <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
-                                            <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                            <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
+                                                <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                                                <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -71,4 +71,12 @@ Route::middleware([
     Route::get('/projects/{project_id}/clusters/{cluster_id}/update', [App\Http\Controllers\ClusterController::class, 'page_update'])->name('cluster.update');
     Route::post('/projects/{project_id}/clusters/{cluster_id}/update', [App\Http\Controllers\ClusterController::class, 'action_update'])->name('cluster.update.action');
     Route::get('/projects/{project_id}/clusters/{cluster_id}/delete', [App\Http\Controllers\ClusterController::class, 'action_delete'])->name('cluster.delete.action');
+
+    Route::get('/projects/{project_id}/deployments', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.index');
+    Route::get('/projects/{project_id}/deployments/add', [App\Http\Controllers\DeploymentController::class, 'page_add'])->name('deployment.add');
+    Route::post('/projects/{project_id}/deployments/add', [App\Http\Controllers\DeploymentController::class, 'action_add'])->name('deployment.add.action');
+    Route::get('/projects/{project_id}/deployments/{deployment_id}/update', [App\Http\Controllers\DeploymentController::class, 'page_update'])->name('deployment.update');
+    Route::post('/projects/{project_id}/deployments/{deployment_id}/update', [App\Http\Controllers\DeploymentController::class, 'action_update'])->name('deployment.update.action');
+    Route::get('/projects/{project_id}/deployments/{deployment_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete'])->name('deployment.delete.action');
+    Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.details');
 });

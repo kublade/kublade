@@ -16,7 +16,6 @@ return new class () extends Migration {
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
-            $table->integer('reserved_ports')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -54,6 +53,8 @@ return new class () extends Migration {
             $table->double('min')->nullable();
             $table->double('max')->nullable();
             $table->double('step')->nullable();
+            $table->boolean('set_on_create')->default(true);
+            $table->boolean('set_on_update')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

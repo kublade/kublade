@@ -31,7 +31,7 @@
                             <label for="key" class="col-md-4 col-form-label text-md-end">{{ __('Type') }}</label>
 
                             <div class="col-md-6">
-                                <select id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type">
+                                <select id="type" class="form-control @error('type') is-invalid @enderror" name="type">
                                     <option value="input_text"{{ (old('type') ?? $field->type) == 'input_text' ? ' selected' : '' }}>{{ __('Text') }}</option>
                                     <option value="input_number"{{ (old('type') ?? $field->type) == 'input_number' ? ' selected' : '' }}>{{ __('Number') }}</option>
                                     <option value="input_range"{{ (old('type') ?? $field->type) == 'input_range' ? ' selected' : '' }}>{{ __('Range') }}</option>
@@ -121,6 +121,34 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3 align-items-center">
+                            <label for="set_on_create" class="col-md-4 col-form-label text-md-end">{{ __('Set on create') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="set_on_create" type="checkbox" class="form-check-input" name="set_on_create" value="1" {{ old('set_on_create') ?? $field->set_on_create ? 'checked' : '' }}>
+
+                                @error('set_on_create')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <label for="set_on_update" class="col-md-4 col-form-label text-md-end">{{ __('Set on update') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="set_on_update" type="checkbox" class="form-check-input" name="set_on_update" value="1" {{ old('set_on_update') ?? $field->set_on_update ? 'checked' : '' }}>
+
+                                @error('set_on_update')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="border rounded py-4 mb-3" id="options" @if ($field->type !== 'input_range' && $field->type !== 'input_number') style="display: none" @endif>
                             <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">
@@ -191,7 +219,7 @@
                 <div class="card-body">
                     <table class="table">
                         <thead>
-                            <tr>
+                            <tr class="align-middle">
                                 <th class="w-100" scope="col">{{ __('Label') }}</th>
                                 <th scope="col">{{ __('Value') }}</th>
                                 <th scope="col">{{ __('Default') }}</th>
@@ -200,13 +228,15 @@
                         </thead>
                         <tbody>
                             @foreach ($field->options as $option)
-                                <tr>
+                                <tr class="align-middle">
                                     <td>{{ $option->label }}</td>
                                     <td>{{ $option->value }}</td>
                                     <td>{{ $option->default ? __('Yes') : __('No') }}</td>
-                                    <td class="d-flex gap-2">
-                                        <a href="{{ route('template.field.option.update', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                        <a href="{{ route('template.field.option.delete.action', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('template.field.option.update', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                                            <a href="{{ route('template.field.option.delete.action', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

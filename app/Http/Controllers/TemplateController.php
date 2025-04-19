@@ -372,8 +372,6 @@ class TemplateController extends Controller
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
     }
 
-    // TODO: Add field methods
-
     /**
      * Show the template add field page.
      *
@@ -399,13 +397,15 @@ class TemplateController extends Controller
     public function action_add_field(string $template_id, Request $request)
     {
         Validator::make($request->toArray(), [
-            'template_id' => ['required', 'string'],
-            'type'        => ['required', 'string'],
-            'label'       => ['required', 'string'],
-            'key'         => ['required', 'string'],
-            'value'       => ['nullable', 'string'],
-            'required'    => ['nullable', 'boolean'],
-            'secret'      => ['nullable', 'boolean'],
+            'template_id'   => ['required', 'string'],
+            'type'          => ['required', 'string'],
+            'label'         => ['required', 'string'],
+            'key'           => ['required', 'string'],
+            'value'         => ['nullable', 'string'],
+            'required'      => ['nullable', 'boolean'],
+            'secret'        => ['nullable', 'boolean'],
+            'set_on_create' => ['nullable', 'boolean'],
+            'set_on_update' => ['nullable', 'boolean'],
         ])->validate();
 
         switch ($request->type) {
@@ -418,28 +418,32 @@ class TemplateController extends Controller
                 ])->validate();
 
                 TemplateField::create([
-                    'template_id' => $request->template_id,
-                    'type'        => $request->type,
-                    'label'       => $request->label,
-                    'key'         => $request->key,
-                    'value'       => $request->value,
-                    'min'         => $request->min,
-                    'max'         => $request->max,
-                    'step'        => $request->step,
-                    'required'    => ! empty($request->required),
-                    'secret'      => ! empty($request->secret),
+                    'template_id'   => $request->template_id,
+                    'type'          => $request->type,
+                    'label'         => $request->label,
+                    'key'           => $request->key,
+                    'value'         => $request->value,
+                    'min'           => $request->min,
+                    'max'           => $request->max,
+                    'step'          => $request->step,
+                    'required'      => ! empty($request->required),
+                    'secret'        => ! empty($request->secret),
+                    'set_on_create' => ! empty($request->set_on_create),
+                    'set_on_update' => ! empty($request->set_on_update),
                 ]);
 
                 break;
             default:
                 TemplateField::create([
-                    'template_id' => $request->template_id,
-                    'type'        => $request->type,
-                    'label'       => $request->label,
-                    'key'         => $request->key,
-                    'value'       => $request->value,
-                    'required'    => ! empty($request->required),
-                    'secret'      => ! empty($request->secret),
+                    'template_id'   => $request->template_id,
+                    'type'          => $request->type,
+                    'label'         => $request->label,
+                    'key'           => $request->key,
+                    'value'         => $request->value,
+                    'required'      => ! empty($request->required),
+                    'secret'        => ! empty($request->secret),
+                    'set_on_create' => ! empty($request->set_on_create),
+                    'set_on_update' => ! empty($request->set_on_update),
                 ]);
 
                 break;
@@ -459,13 +463,15 @@ class TemplateController extends Controller
     public function action_update_field(string $template_id, string $field_id, Request $request)
     {
         Validator::make($request->toArray(), [
-            'template_id' => ['required', 'string'],
-            'type'        => ['required', 'string'],
-            'label'       => ['required', 'string'],
-            'key'         => ['required', 'string'],
-            'value'       => ['nullable', 'string'],
-            'required'    => ['nullable', 'boolean'],
-            'secret'      => ['nullable', 'boolean'],
+            'template_id'   => ['required', 'string'],
+            'type'          => ['required', 'string'],
+            'label'         => ['required', 'string'],
+            'key'           => ['required', 'string'],
+            'value'         => ['nullable', 'string'],
+            'required'      => ['nullable', 'boolean'],
+            'secret'        => ['nullable', 'boolean'],
+            'set_on_create' => ['nullable', 'boolean'],
+            'set_on_update' => ['nullable', 'boolean'],
         ])->validate();
 
         $field = TemplateField::where('id', $field_id)
@@ -486,28 +492,32 @@ class TemplateController extends Controller
                 ])->validate();
 
                 $field->update([
-                    'template_id' => $request->template_id,
-                    'type'        => $request->type,
-                    'label'       => $request->label,
-                    'key'         => $request->key,
-                    'value'       => $request->value,
-                    'min'         => $request->min,
-                    'max'         => $request->max,
-                    'step'        => $request->step,
-                    'required'    => ! empty($request->required),
-                    'secret'      => ! empty($request->secret),
+                    'template_id'   => $request->template_id,
+                    'type'          => $request->type,
+                    'label'         => $request->label,
+                    'key'           => $request->key,
+                    'value'         => $request->value,
+                    'min'           => $request->min,
+                    'max'           => $request->max,
+                    'step'          => $request->step,
+                    'required'      => ! empty($request->required),
+                    'secret'        => ! empty($request->secret),
+                    'set_on_create' => ! empty($request->set_on_create),
+                    'set_on_update' => ! empty($request->set_on_update),
                 ]);
 
                 break;
             default:
                 $field->update([
-                    'template_id' => $request->template_id,
-                    'type'        => $request->type,
-                    'label'       => $request->label,
-                    'key'         => $request->key,
-                    'value'       => $request->value,
-                    'required'    => ! empty($request->required),
-                    'secret'      => ! empty($request->secret),
+                    'template_id'   => $request->template_id,
+                    'type'          => $request->type,
+                    'label'         => $request->label,
+                    'key'           => $request->key,
+                    'value'         => $request->value,
+                    'required'      => ! empty($request->required),
+                    'secret'        => ! empty($request->secret),
+                    'set_on_create' => ! empty($request->set_on_create),
+                    'set_on_update' => ! empty($request->set_on_update),
                 ]);
 
                 break;

@@ -61,8 +61,10 @@ class TemplateField extends Model
      * @var array
      */
     protected $casts = [
-        'required' => 'boolean',
-        'secret'   => 'boolean',
+        'required'      => 'boolean',
+        'secret'        => 'boolean',
+        'set_on_create' => 'boolean',
+        'set_on_update' => 'boolean',
     ];
 
     /**

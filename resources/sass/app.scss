@@ -100,3 +100,70 @@ $secondary: #f55247;
     flex-direction: column;
     gap: 0.5rem;
 }
+
+.range-container {
+    margin-bottom: 1rem;
+    margin-left: calc((100% / var(--ticks) / 2 - 0.5rem) * (-1));
+    margin-right: calc((100% / var(--ticks) / 2 - 0.5rem) * (-1));
+    position: relative;
+    width: calc(100% + calc((100% / var(--ticks) / 2 - 0.5rem) * 2));
+
+    .form-range {
+        flex: 1;
+        padding: 0 calc(100% / var(--ticks) / 2 - 0.5rem);
+        position: relative;
+        z-index: 2;
+    }
+
+    .ruler {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        right: 0;
+        font-size: 0.75rem;
+        color: #666;
+        pointer-events: none;
+        z-index: 1;
+        
+        .tick {
+            text-align: center;
+            flex: 1;
+            position: relative;
+
+            &::before {
+                content: "";
+                display: block;
+                height: 8px;
+                width: 1px;
+                background: #999;
+                margin: 0 auto 2px auto;
+            }
+
+            &::after {
+                content: attr(data-value);
+                display: block;
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
+
+.form-check-input {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.table {
+    tr {
+        border-bottom: 1px solid var(--bs-table-border-color);
+
+        td {
+            border-bottom: 0;
+        }
+    }
+}
