@@ -69,7 +69,7 @@
                                     <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('Deployments') }}</a>
+                                    <a class="nav-link" href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Deployments') }}</a>
                                 </li>
                                 @if (request()->get('project')->user_id === Auth::id())
                                     <li class="nav-item">

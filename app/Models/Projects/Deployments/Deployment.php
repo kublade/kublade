@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models\Projects\Deployments;
 
 use App\Models\Kubernetes\Resources\Ns;
+use App\Models\Projects\Projects\Project;
+use App\Models\Projects\Templates\Template;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +23,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property string $id
  * @property string $user_id
- * @property string $template
+ * @property string $project_id
+ * @property string $template_id
+ * @property string $name
  * @property string $uuid
  * @property bool   $paused
  * @property bool   $update
@@ -71,6 +75,26 @@ class Deployment extends Model
         'update_dispatched_at'   => 'datetime',
         'deletion_dispatched_at' => 'datetime',
     ];
+
+    /**
+     * Relation to project.
+     *
+     * @return HasOne
+     */
+    public function project(): HasOne
+    {
+        return $this->hasOne(Project::class, 'id', 'project_id');
+    }
+
+    /**
+     * Relation to template.
+     *
+     * @return HasOne
+     */
+    public function template(): HasOne
+    {
+        return $this->hasOne(Template::class, 'id', 'template_id');
+    }
 
     /**
      * Relation to deployment metrics.
@@ -200,5 +224,27 @@ class Deployment extends Model
     public function commits(): HasMany
     {
         return $this->hasMany(DeploymentCommit::class, 'deployment_id', 'id');
+    }
+
+    /**
+     * Get the status attribute.
+     *
+     * @return string
+     */
+    public function getStatusAttribute(): string
+    {
+        if ($this->delete) {
+            return '<span class="badge bg-danger text-body">' . __('Deleting') . '</span>';
+        }
+
+        if ($this->update) {
+            return '<span class="badge bg-warning text-body">' . __('Updating') . '</span>';
+        }
+
+        if ($this->deployed_at) {
+            return '<span class="badge bg-success text-body">' . __('Deployed') . '</span>';
+        }
+
+        return '<span class="badge bg-secondary text-body">' . __('Pending') . '</span>';
     }
 }

@@ -16,8 +16,9 @@ return new class () extends Migration {
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignUuid('project_id')->references('id')->on('projects');
-            $table->foreignUuid('namespace_id')->references('id')->on('namespaces');
+            $table->foreignUuid('namespace_id')->nullable()->references('id')->on('namespaces');
             $table->foreignUuid('template_id')->references('id')->on('templates');
+            $table->string('name');
             $table->string('uuid')->unique();
             $table->boolean('update')->default(false);
             $table->boolean('delete')->default(false);
