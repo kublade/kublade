@@ -34,6 +34,7 @@ return new class () extends Migration {
         Schema::create('template_fields', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('template_id')->references('id')->on('templates');
+            $table->boolean('advanced')->default(false);
             $table->enum('type', [
                 'input_text',
                 'input_number',

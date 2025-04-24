@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentData;
 use App\Models\Projects\Deployments\DeploymentSecretData;
@@ -52,6 +53,7 @@ class DeploymentController extends Controller
     public function page_add(string $project_id)
     {
         return view('deployment.add', [
+            'clusters'  => Cluster::all(),
             'templates' => Template::all(),
         ]);
     }
@@ -68,6 +70,7 @@ class DeploymentController extends Controller
     {
         Validator::make($request->toArray(), [
             'template_id' => ['required', 'string'],
+            'cluster_id'  => ['required', 'string'],
             'name'        => ['required', 'string'],
         ])->validate();
 
@@ -82,6 +85,10 @@ class DeploymentController extends Controller
             ) &&
             ! empty(
                 $template = Template::where('id', '=', $request->template_id)
+                    ->first()
+            ) &&
+            ! empty(
+                $cluster = Cluster::where('id', '=', $request->cluster_id)
                     ->first()
             )
         ) {
@@ -151,6 +158,7 @@ class DeploymentController extends Controller
                     'user_id'      => Auth::id(),
                     'project_id'   => $project->id,
                     'namespace_id' => null,
+                    'cluster_id'   => $cluster->id,
                     'template_id'  => $template->id,
                     'name'         => $request->name,
                     'uuid'         => Str::uuid(),
@@ -182,7 +190,7 @@ class DeploymentController extends Controller
                             $value = $requestFields->{$field->key};
                         }
                     } else {
-                        $value = $requestFields->{$field->key};
+                        $value = $requestFields->{$field->key} ?? '';
                     }
 
                     if ($field->secret) {
@@ -338,7 +346,7 @@ class DeploymentController extends Controller
                         $value = $requestFields->{$field->key};
                     }
                 } else {
-                    $value = $requestFields->{$field->key};
+                    $value = $requestFields->{$field->key} ?? '';
                 }
 
                 if ($field->secret) {
