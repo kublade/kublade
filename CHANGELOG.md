@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/kublade/kublade/compare/v1.2.0...v1.3.0) (2025-04-24)
+
+
+### Features
+
+* advanced fields ([a1e6deb](https://github.com/kublade/kublade/commit/a1e6deb457f34e1f33f6f22b0637598e7020ad4e))
+
 ## [1.2.0](https://github.com/kublade/kublade/compare/v1.1.0...v1.2.0) (2025-04-19)
 
 
