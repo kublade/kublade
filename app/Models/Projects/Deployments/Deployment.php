@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Projects\Deployments;
 
+use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Kubernetes\Resources\Ns;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
@@ -147,18 +148,23 @@ class Deployment extends Model
     }
 
     /**
-     * Relation to ftp deployment link.
+     * Relation to cluster.
      *
-     * @return HasMany
+     * @return HasOne
      */
-    public function ftpDeploymentLinks(): HasMany
+    public function cluster(): HasOne
     {
-        return $this->hasMany(DeploymentFtp::class, 'deployment_id', 'id');
+        return $this->hasOne(Cluster::class, 'id', 'cluster_id');
     }
 
     /**
-     * Relation to deployment links.
+     * Relation to ftp deployment link.
      *
+     * @return HasMany
+     *                 public function ftpDeploymentLinks(): HasMany
+     *                 {
+     *                 return $this->hasMany(DeploymentFtp::class, 'deployment_id', 'id');
+     *                 }
      * @return HasMany
      */
     public function deploymentFtpLinks(): HasMany
@@ -234,7 +240,7 @@ class Deployment extends Model
     public function getStatusAttribute(): string
     {
         if ($this->delete) {
-            return '<span class="badge bg-danger text-body">' . __('Deleting') . '</span>';
+            return '<span class="badge bg-danger">' . __('Deleting') . '</span>';
         }
 
         if ($this->update) {
@@ -242,9 +248,9 @@ class Deployment extends Model
         }
 
         if ($this->deployed_at) {
-            return '<span class="badge bg-success text-body">' . __('Deployed') . '</span>';
+            return '<span class="badge bg-success">' . __('Deployed') . '</span>';
         }
 
-        return '<span class="badge bg-secondary text-body">' . __('Pending') . '</span>';
+        return '<span class="badge bg-info">' . __('Pending') . '</span>';
     }
 }

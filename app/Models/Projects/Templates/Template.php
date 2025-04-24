@@ -119,4 +119,17 @@ class Template extends Model
             ...$subFiles,
         ]);
     }
+
+    /**
+     * Get the grouped fields.
+     *
+     * @return object
+     */
+    public function getGroupedFieldsAttribute(): object
+    {
+        return (object) [
+            'advanced' => $this->fields->where('advanced', true),
+            'default'  => $this->fields->where('advanced', false),
+        ];
+    }
 }

@@ -65,6 +65,7 @@ class TemplateField extends Model
         'secret'        => 'boolean',
         'set_on_create' => 'boolean',
         'set_on_update' => 'boolean',
+        'advanced'      => 'boolean',
     ];
 
     /**
