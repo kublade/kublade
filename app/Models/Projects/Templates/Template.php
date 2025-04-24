@@ -128,8 +128,32 @@ class Template extends Model
     public function getGroupedFieldsAttribute(): object
     {
         return (object) [
-            'advanced' => $this->fields->where('advanced', true),
-            'default'  => $this->fields->where('advanced', false),
+            'on_create' => (object) [
+                'advanced' => $this->fields
+                    ->where('advanced', true)
+                    ->where('set_on_create', true)
+                    ->where('type', '!=', 'input_hidden'),
+                'default' => $this->fields
+                    ->where('advanced', false)
+                    ->where('set_on_create', true)
+                    ->where('type', '!=', 'input_hidden'),
+                'hidden' => $this->fields
+                    ->where('set_on_create', true)
+                    ->where('type', '=', 'input_hidden'),
+            ],
+            'on_update' => (object) [
+                'advanced' => $this->fields
+                    ->where('advanced', true)
+                    ->where('set_on_update', true)
+                    ->where('type', '!=', 'input_hidden'),
+                'default' => $this->fields
+                    ->where('advanced', false)
+                    ->where('set_on_update', true)
+                    ->where('type', '!=', 'input_hidden'),
+                'hidden' => $this->fields
+                    ->where('set_on_update', true)
+                    ->where('type', '=', 'input_hidden'),
+            ],
         ];
     }
 }
