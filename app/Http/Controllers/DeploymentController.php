@@ -361,8 +361,8 @@ class DeploymentController extends Controller
             });
 
             $deployment->update([
-                'name'   => $request->name,
-                'update' => true,
+                'name' => $request->name,
+                ...($deployment->deployed_at ? ['update' => true] : []),
             ]);
 
             return redirect()->route('deployment.index', ['project_id' => $project_id, 'deployment_id' => $deployment->id])->with('success', __('Deployment updated.'));
