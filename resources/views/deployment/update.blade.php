@@ -232,7 +232,7 @@
                                                             @break
                                                         @case ('input_checkbox')
                                                             <div class="form-group d-flex gap-2 align-items-center" id="input_{{ $field->id }}">
-                                                                <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $value ?? $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
+                                                                <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
                                                                 <label for="{{ $field->key }}" class="col-form-label text-md-left p-0">{{ __($field->label) }} {{ $field->required ? '*' : '' }}</label>
                                                             </div>
                                                             @error($field->key)
