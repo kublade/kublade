@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1](https://github.com/kublade/kublade/compare/v1.4.0...v1.4.1) (2025-04-24)
+
+
+### Bug Fixes
+
+* disabled input background ([556d65f](https://github.com/kublade/kublade/commit/556d65f0aa47a3e0dfaa688ccda797f182fab4a0))
+
 ## [1.4.0](https://github.com/kublade/kublade/compare/v1.3.0...v1.4.0) (2025-04-24)
 
 
