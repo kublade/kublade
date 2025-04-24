@@ -190,3 +190,7 @@ body {
         border-bottom: 1px solid transparent;
     }
 }
+
+.form-control[readonly] {
+    background-color: var(--bs-light);
+}
