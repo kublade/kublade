@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2](https://github.com/kublade/kublade/compare/v1.4.1...v1.4.2) (2025-04-24)
+
+
+### Bug Fixes
+
+* form field grouping ([7504aed](https://github.com/kublade/kublade/commit/7504aed46eeb89e1d19294e411261768bf2812ff))
+
 ## [1.4.1](https://github.com/kublade/kublade/compare/v1.4.0...v1.4.1) (2025-04-24)
 
 
