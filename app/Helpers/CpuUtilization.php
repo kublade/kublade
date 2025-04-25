@@ -20,7 +20,7 @@ class CpuUtilization
      *
      * @return int
      */
-    public static function toCore($value)
+    public static function toCore(string $value): int
     {
         $baseUnit = substr($value, -1);
 

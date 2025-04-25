@@ -40,15 +40,15 @@ class ClusterConnection
      * Open the connection to the cluster.
      *
      * @param Cluster $cluster
-     *
-     * @return KubernetesCluster
      */
-    public static function open(Cluster $cluster): KubernetesCluster
+    public static function open(Cluster $cluster): void
     {
+        if (!$cluster->k8sCredentials) {
+            throw new KubeletException('Bad Request', 400);
+        }
+
         self::$cluster    = $cluster;
         self::$connection = KubernetesCluster::fromKubeConfigYaml($cluster->k8sCredentials->kubeconfig, 'default');
-
-        return self::$connection;
     }
 
     /**
@@ -81,10 +81,6 @@ class ClusterConnection
      */
     public static function proxyCall(string $path, string $filter = 'container_', array $interfaces = ['bond0', 'bond0.4007', 'eth0']): Collection
     {
-        if (!self::$cluster?->k8sCredentials) {
-            throw new KubeletException('Bad Request', 400);
-        }
-
         try {
             if ($token = self::$cluster->k8sCredentials->service_account_token) {
                 $response = Http::withHeaders([
