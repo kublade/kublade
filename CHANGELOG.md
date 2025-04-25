@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.2](https://github.com/kublade/kublade/compare/v1.5.1...v1.5.2) (2025-04-25)
+
+
+### Bug Fixes
+
+* k8s cluster connection opening ([cd6ea90](https://github.com/kublade/kublade/commit/cd6ea901fb531276a4eb51a7d555b9bc256a885c))
+
 ## [1.5.1](https://github.com/kublade/kublade/compare/v1.5.0...v1.5.1) (2025-04-25)
 
 
