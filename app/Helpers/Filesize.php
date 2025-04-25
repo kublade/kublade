@@ -19,9 +19,9 @@ class Filesize
      * @param string $value
      * @param string $unit
      *
-     * @return int
+     * @return int|float
      */
-    public static function toBytes(string $value, string $unit = 'B'): int
+    public static function toBytes(string $value, string $unit = 'B'): int|float
     {
         $devideBy = substr($unit, -1) === 'i' ? 1024 : 1000;
         $baseUnit = substr($unit, 0, 1);
@@ -86,9 +86,9 @@ class Filesize
      *
      * @param string $str
      *
-     * @return int
+     * @return int|float
      */
-    public static function bytesFromString(string $str): int
+    public static function bytesFromString(string $str): int|float
     {
         $format = substr($str, -2);
 
