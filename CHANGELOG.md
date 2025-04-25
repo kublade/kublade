@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.3](https://github.com/kublade/kublade/compare/v1.5.2...v1.5.3) (2025-04-25)
+
+
+### Bug Fixes
+
+* helper response types ([35cac4c](https://github.com/kublade/kublade/commit/35cac4ca23e674cab5ad0ae5ce6b3a7ed5a13870))
+
 ## [1.5.2](https://github.com/kublade/kublade/compare/v1.5.1...v1.5.2) (2025-04-25)
 
 
