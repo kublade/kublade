@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1](https://github.com/kublade/kublade/compare/v1.5.0...v1.5.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* kubernetes helpers multicluster support ([6135e25](https://github.com/kublade/kublade/commit/6135e2522f151a007fdb790da452ba1fdacab1f0))
+
 ## [1.5.0](https://github.com/kublade/kublade/compare/v1.4.2...v1.5.0) (2025-04-25)
 
 
