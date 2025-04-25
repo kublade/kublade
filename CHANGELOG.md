@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/kublade/kublade/compare/v1.4.2...v1.5.0) (2025-04-25)
+
+
+### Features
+
+* git and k8s helpers ([643dd7e](https://github.com/kublade/kublade/commit/643dd7e417be7a903da87ea1d1abcd98341c7d79))
+
 ## [1.4.2](https://github.com/kublade/kublade/compare/v1.4.1...v1.4.2) (2025-04-24)
 
 
