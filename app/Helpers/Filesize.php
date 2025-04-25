@@ -21,7 +21,7 @@ class Filesize
      *
      * @return int
      */
-    public static function toBytes($value, $unit = 'B')
+    public static function toBytes(string $value, string $unit = 'B'): int
     {
         $devideBy = substr($unit, -1) === 'i' ? 1024 : 1000;
         $baseUnit = substr($unit, 0, 1);
@@ -88,7 +88,7 @@ class Filesize
      *
      * @return int
      */
-    public static function bytesFromString($str)
+    public static function bytesFromString(string $str): int
     {
         $format = substr($str, -2);
 
