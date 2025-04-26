@@ -52,6 +52,7 @@ class ClusterController extends Controller
     {
         Validator::make($request->all(), [
             'name'                      => ['required', 'string', 'max:255'],
+            'node_prefix'               => ['required', 'string', 'max:255'],
             'git'                       => ['required', 'array'],
             'git.url'                   => ['required', 'string', 'max:255'],
             'git.branch'                => ['required', 'string', 'max:255'],
@@ -69,9 +70,10 @@ class ClusterController extends Controller
 
         if (
             $cluster = Cluster::create([
-                'project_id' => $request->project_id,
-                'user_id'    => Auth::user()->id,
-                'name'       => $request->name,
+                'project_id'  => $request->project_id,
+                'user_id'     => Auth::user()->id,
+                'name'        => $request->name,
+                'node_prefix' => $request->node_prefix,
             ])
         ) {
             GitCredential::create([
@@ -144,6 +146,7 @@ class ClusterController extends Controller
         ), [
             'cluster_id'                => ['required', 'string', 'max:255'],
             'name'                      => ['required', 'string', 'max:255'],
+            'node_prefix'               => ['required', 'string', 'max:255'],
             'git'                       => ['required', 'array'],
             'git.url'                   => ['required', 'string', 'max:255'],
             'git.branch'                => ['required', 'string', 'max:255'],
@@ -161,7 +164,8 @@ class ClusterController extends Controller
 
         if ($cluster = Cluster::where('id', $cluster_id)->first()) {
             $cluster->update([
-                'name' => $request->name,
+                'name'        => $request->name,
+                'node_prefix' => $request->node_prefix,
             ]);
 
             if ($cluster->gitCredentials) {

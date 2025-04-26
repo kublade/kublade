@@ -20,13 +20,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
- * @property string $id
- * @property string $user_id
- * @property string $project_id
- * @property string $name
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property Carbon $deleted_at
+ * @property string      $id
+ * @property string      $user_id
+ * @property string      $project_id
+ * @property string      $name
+ * @property string|null $node_prefix
+ * @property Carbon      $created_at
+ * @property Carbon      $updated_at
+ * @property Carbon      $deleted_at
  */
 class Cluster extends Model
 {
@@ -127,5 +128,25 @@ class Cluster extends Model
     public function getIngressNamespaceAttribute(): ?Ns
     {
         return $this->namespaces()->where('type', '=', Ns::TYPE_INGRESS)->first();
+    }
+
+    /**
+     * Get the ingress namespace.
+     *
+     * @return Ns|null
+     */
+    public function getLimitAttribute(): ?Resource
+    {
+        return $this->resources()->where('type', '=', Resource::TYPE_LIMIT)->first();
+    }
+
+    /**
+     * Get the alert resource.
+     *
+     * @return resource|null
+     */
+    public function getAlertAttribute(): ?Resource
+    {
+        return $this->resources()->where('type', '=', Resource::TYPE_ALERT)->first();
     }
 }

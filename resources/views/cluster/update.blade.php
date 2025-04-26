@@ -32,6 +32,20 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="node_prefix" class="col-md-4 col-form-label text-md-end">{{ __('Worker Node Prefix') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="node_prefix" type="text" class="form-control @error('node_prefix') is-invalid @enderror" name="node_prefix" value="{{ old('node_prefix') ?? $cluster->node_prefix }}">
+
+                                @error('node_prefix')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="border rounded py-4 mb-3" id="git-credentials">
                             <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">

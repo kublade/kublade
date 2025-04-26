@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignUuid('project_id')->references('id')->on('projects');
             $table->string('name');
+            $table->string('node_prefix')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
