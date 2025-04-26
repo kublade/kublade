@@ -32,20 +32,6 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="node_prefix" class="col-md-4 col-form-label text-md-end">{{ __('Worker Node Prefix') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="node_prefix" type="text" class="form-control @error('node_prefix') is-invalid @enderror" name="node_prefix" value="{{ old('node_prefix') ?? $cluster->node_prefix }}">
-
-                                @error('node_prefix')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
                         <div class="border rounded py-4 mb-3" id="git-credentials">
                             <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">
@@ -109,13 +95,27 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row mb-3">
                                 <label for="git_email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="git_email" type="email" class="form-control @error('git.email') is-invalid @enderror" name="git[email]" value="{{ old('git.email') ?? $cluster->gitCredentials?->email }}">
 
                                     @error('git.email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="git_base_path" class="col-md-4 col-form-label text-md-end">{{ __('Base Path') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="git_base_path" type="text" class="form-control @error('git.base_path') is-invalid @enderror" name="git[base_path]" value="{{ old('git.base_path') ?? $cluster->gitCredentials?->base_path ?? '/' }}">
+
+                                    @error('git.base_path')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -159,13 +159,27 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row mb-3">
                                 <label for="k8s_service_account_token" class="col-md-4 col-form-label text-md-end">{{ __('Service Account Token') }}</label>
 
                                 <div class="col-md-6">
                                     <textarea id="k8s_service_account_token" type="text" class="form-control @error('k8s.service_account_token') is-invalid @enderror" name="k8s[service_account_token]">{{ old('k8s.service_account_token') ?? $cluster->k8sCredentials?->service_account_token }}</textarea>
 
                                     @error('k8s.service_account_token')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="k8s_node_prefix" class="col-md-4 col-form-label text-md-end">{{ __('Worker Node Prefix') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="k8s_node_prefix" type="text" class="form-control @error('k8s.node_prefix') is-invalid @enderror" name="k8s[node_prefix]" value="{{ old('k8s.node_prefix') ?? $cluster->k8sCredentials?->node_prefix }}">
+
+                                    @error('k8s.node_prefix')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
