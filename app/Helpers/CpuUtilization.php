@@ -18,9 +18,9 @@ class CpuUtilization
      *
      * @param string $value
      *
-     * @return int|float
+     * @return float|int
      */
-    public static function toCore(string $value): int|float
+    public static function toCore(string $value): int | float
     {
         $baseUnit = substr($value, -1);
 
