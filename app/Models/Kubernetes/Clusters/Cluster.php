@@ -20,14 +20,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
- * @property string      $id
- * @property string      $user_id
- * @property string      $project_id
- * @property string      $name
- * @property string|null $node_prefix
- * @property Carbon      $created_at
- * @property Carbon      $updated_at
- * @property Carbon      $deleted_at
+ * @property string $id
+ * @property string $user_id
+ * @property string $project_id
+ * @property string $name
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
  */
 class Cluster extends Model
 {
@@ -148,5 +147,25 @@ class Cluster extends Model
     public function getAlertAttribute(): ?Resource
     {
         return $this->resources()->where('type', '=', Resource::TYPE_ALERT)->first();
+    }
+
+    /**
+     * Get the repository path attribute.
+     *
+     * @return string
+     */
+    public function getRepositoryPathAttribute(): string
+    {
+        return 'flux-repository/' . $this->id;
+    }
+
+    /**
+     * Get the repository deployment path attribute.
+     *
+     * @return string
+     */
+    public function getRepositoryDeploymentPathAttribute(): string
+    {
+        return 'flux-repository/' . $this->id . $this->gitCredentials->base_path;
     }
 }

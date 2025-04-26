@@ -80,3 +80,7 @@ Route::middleware([
     Route::get('/projects/{project_id}/deployments/{deployment_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete'])->name('deployment.delete.action');
     Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.details');
 });
+
+Route::get('/test', function () {
+    App\Helpers\Flux\FluxDeployment::generate(App\Models\Projects\Deployments\Deployment::query()->first(), [], [], true);
+});

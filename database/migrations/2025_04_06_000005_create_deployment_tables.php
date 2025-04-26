@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->foreignUuid('cluster_id')->references('id')->on('clusters');
             $table->string('name');
             $table->string('uuid')->unique();
+            $table->boolean('paused')->default(false);
             $table->boolean('update')->default(false);
             $table->boolean('delete')->default(false);
             $table->timestamp('deployed_at')->nullable();

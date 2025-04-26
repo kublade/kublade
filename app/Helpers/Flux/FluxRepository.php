@@ -4,57 +4,98 @@ declare(strict_types=1);
 
 namespace App\Helpers\Flux;
 
+use App\Exceptions\FluxException;
 use App\Helpers\Git\Git;
+use App\Helpers\Git\GitRepo;
+use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Projects\Deployments\Deployment;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class FluxRepository.
+ *
+ * This class is the helper for the Flux repository.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class FluxRepository
 {
-    public const DEPLOYMENT_REPOSITORY_PATH = 'flux-repository/';
+    /**
+     * The cluster.
+     *
+     * @var Cluster|null
+     */
+    public static $cluster;
 
-    public static $fluxRepository;
+    /**
+     * The repository.
+     *
+     * @var GitRepo|null
+     */
+    public static $repository;
 
-    public static function open()
+    /**
+     * Open the Flux repository.
+     *
+     * @param Cluster $cluster
+     */
+    public static function open(Cluster $cluster)
     {
-        $storagePath = Storage::disk('local')->path('');
+        if (!$cluster->gitCredentials) {
+            throw new FluxException('Bad Request', 400);
+        }
+
+        self::$cluster = $cluster;
+
+        $path        = 'flux-repository/' . $cluster->id;
+        $storagePath = Storage::disk('local')->path($path);
 
         try {
-            self::$fluxRepository = Git::open($storagePath . self::DEPLOYMENT_REPOSITORY_PATH);
+            self::$repository = Git::open($storagePath);
         } catch (Exception $exception) {
-            Storage::disk('local')->deleteDirectory(self::DEPLOYMENT_REPOSITORY_PATH);
+            Storage::disk('local')->deleteDirectory($path);
 
-            $fluxRepositoryRemote = config('flux.git.repository.remote');
-            self::$fluxRepository = Git::cloneRemote($storagePath . self::DEPLOYMENT_REPOSITORY_PATH, $fluxRepositoryRemote);
+            self::$repository = Git::cloneRemote($storagePath, $cluster->gitCredentials->url);
         }
 
-        self::$fluxRepository->run('config user.email "' . config('flux.git.user.email') . '"');
-        self::$fluxRepository->run('config user.name "' . config('flux.git.user.name') . '"');
-        self::$fluxRepository->pull('origin', config('flux.git.repository.branch'));
+        self::$repository->run('config user.email "' . $cluster->gitCredentials->email . '"');
+        self::$repository->run('config user.name "' . $cluster->gitCredentials->username . '"');
+        self::$repository->pull('origin', $cluster->gitCredentials->branch);
     }
 
-    public static function get()
+    /**
+     * Get the Flux repository.
+     *
+     * @return GitRepo
+     */
+    public static function get(): GitRepo
     {
-        return self::$fluxRepository;
+        return self::$repository;
     }
 
-    public static function push(string $uuid, string $type = 'creation')
+    /**
+     * Push the Flux repository.
+     *
+     * @param Deployment $deployment
+     * @param string     $type
+     */
+    public static function push(Deployment $deployment, string $type = 'creation')
     {
-        self::$fluxRepository->add('.');
-
-        $msg = 'autodeploy(' . $uuid . "): unknown action\n\nunknown action on application with uuid " . $uuid . "\n\npart of: no ticket";
+        $msg = 'autodeploy(' . $deployment->uuid . "): unknown action\n\nunknown action on application with uuid " . $deployment->uuid . "\n\npart of: no ticket";
 
         if ($type == 'deletion') {
-            $msg = 'autodeploy(' . $uuid . "): application deployment removed\n\nremoved deployed application with uuid " . $uuid . "\n\npart of: no ticket";
+            $msg = 'autodeploy(' . $deployment->uuid . "): application deployment removed\n\nremoved deployed application with uuid " . $deployment->uuid . "\n\npart of: no ticket";
         } elseif ($type == 'creation') {
-            $msg = 'autodeploy(' . $uuid . "): application deployment created\n\ndeployed new application with uuid " . $uuid . "\n\npart of: no ticket";
+            $msg = 'autodeploy(' . $deployment->uuid . "): application deployment created\n\ndeployed new application with uuid " . $deployment->uuid . "\n\npart of: no ticket";
         } elseif ($type == 'update') {
-            $msg = 'autodeploy(' . $uuid . "): application deployment updated\n\nre-deployed existing application with uuid " . $uuid . "\n\npart of: no ticket";
+            $msg = 'autodeploy(' . $deployment->uuid . "): application deployment updated\n\nre-deployed existing application with uuid " . $deployment->uuid . "\n\npart of: no ticket";
         }
 
-        self::$fluxRepository->commit($msg);
-        self::$fluxRepository->push('origin', config('flux.git.repository.branch'));
+        self::$repository->commit($msg);
+        self::$repository->push('origin', config('flux.git.repository.branch'));
 
-        $log = self::$fluxRepository->log();
+        $log = self::$repository->log();
 
         preg_match('/(?<=commit )(.*)/', $log, $commits);
 
@@ -64,8 +105,12 @@ class FluxRepository
         ];
     }
 
+    /**
+     * Close the Flux repository.
+     */
     public static function close()
     {
-        self::$fluxRepository = null;
+        self::$cluster    = null;
+        self::$repository = null;
     }
 }

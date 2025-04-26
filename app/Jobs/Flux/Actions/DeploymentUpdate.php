@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Flux\Actions;
 
-use App\Helpers\Flux\FluxTemplate;
+use App\Helpers\Flux\FluxDeployment;
 use App\Jobs\Base\Job;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentCommit;
@@ -65,12 +65,12 @@ class DeploymentUpdate extends Job implements ShouldBeUnique
             $secretData[$data->key] = Crypt::decryptString($data->value);
         });
 
-        if ($release = FluxTemplate::generate($deployment, $publicData, $secretData, true)) {
+        if ($release = FluxDeployment::generate($deployment, $publicData, $secretData, true)) {
             if (
                 $commit = DeploymentCommit::create([
                     'deployment_id' => $deployment->id,
-                    'hash'          => $release->commit->hash,
-                    'message'       => $release->commit->msg,
+                    'hash'          => $release->hash,
+                    'message'       => $release->msg,
                 ])
             ) {
                 collect($publicData)->each(function ($value, $key) use ($commit) {

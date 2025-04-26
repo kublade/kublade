@@ -161,11 +161,6 @@ class Deployment extends Model
      * Relation to ftp deployment link.
      *
      * @return HasMany
-     *                 public function ftpDeploymentLinks(): HasMany
-     *                 {
-     *                 return $this->hasMany(DeploymentFtp::class, 'deployment_id', 'id');
-     *                 }
-     * @return HasMany
      */
     public function deploymentFtpLinks(): HasMany
     {
@@ -252,5 +247,15 @@ class Deployment extends Model
         }
 
         return '<span class="badge bg-info">' . __('Pending') . '</span>';
+    }
+
+    /**
+     * Get the path attribute.
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return $this->cluster->repositoryDeploymentPath . $this->uuid;
     }
 }

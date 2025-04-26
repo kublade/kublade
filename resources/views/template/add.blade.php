@@ -32,6 +32,14 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="netpol" class="col-md-4 col-form-label text-md-end">{{ __('Enable network policy') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="netpol" type="checkbox" class="form-check-input @error('netpol') is-invalid @enderror" name="netpol" value="1" {{ old('netpol') ? 'checked' : '' }}>
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

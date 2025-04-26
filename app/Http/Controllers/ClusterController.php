@@ -48,6 +48,13 @@ class ClusterController extends Controller
         return view('cluster.add');
     }
 
+    /**
+     * Add a new cluster.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function action_add(Request $request)
     {
         Validator::make($request->all(), [
@@ -148,7 +155,6 @@ class ClusterController extends Controller
         ), [
             'cluster_id'                => ['required', 'string', 'max:255'],
             'name'                      => ['required', 'string', 'max:255'],
-            'node_prefix'               => ['required', 'string', 'max:255'],
             'git'                       => ['required', 'array'],
             'git.url'                   => ['required', 'string', 'max:255'],
             'git.branch'                => ['required', 'string', 'max:255'],

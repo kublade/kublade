@@ -61,13 +61,15 @@ class TemplateController extends Controller
     public function action_add(Request $request)
     {
         Validator::make($request->toArray(), [
-            'name' => ['required', 'string', 'max:255'],
+            'name'   => ['required', 'string', 'max:255'],
+            'netpol' => ['nullable', 'boolean'],
         ])->validate();
 
         if (
             $template = Template::create([
                 'user_id' => Auth::id(),
                 'name'    => $request->name,
+                'netpol'  => ! empty($request->netpol),
             ])
         ) {
             return redirect()->route('template.details', ['template_id' => $template->id])->with('success', __('Template added.'));
@@ -103,12 +105,14 @@ class TemplateController extends Controller
     public function action_update(string $template_id, Request $request)
     {
         Validator::make($request->toArray(), [
-            'name' => ['required', 'string', 'max:255'],
+            'name'   => ['required', 'string', 'max:255'],
+            'netpol' => ['nullable', 'boolean'],
         ])->validate();
 
         if ($template = Template::where('id', $template_id)->first()) {
             $template->update([
-                'name' => $request->name,
+                'name'   => $request->name,
+                'netpol' => ! empty($request->netpol),
             ]);
 
             return redirect()->route('template.index')->with('success', __('Template updated.'));

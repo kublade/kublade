@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\Flux\Actions;
 
 use App\Exceptions\FluxException;
-use App\Helpers\Flux\FluxTemplate;
+use App\Helpers\Flux\FluxDeployment;
 use App\Jobs\Base\Job;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentCommit;
@@ -67,7 +67,7 @@ class DeploymentCreation extends Job implements ShouldBeUnique
         });
 
         try {
-            $release = FluxTemplate::generate($deployment, $publicData, $secretData);
+            $release = FluxDeployment::generate($deployment, $publicData, $secretData, false);
         } catch (FluxException $exception) {
             $deployment->ports()->whereNotNull('claim')->delete();
 
@@ -78,8 +78,8 @@ class DeploymentCreation extends Job implements ShouldBeUnique
             if (
                 $commit = DeploymentCommit::create([
                     'deployment_id' => $deployment->id,
-                    'hash'          => $release->commit->hash,
-                    'message'       => $release->commit->msg,
+                    'hash'          => $release->hash,
+                    'message'       => $release->msg,
                 ])
             ) {
                 collect($publicData)->each(function ($value, $key) use ($commit) {
