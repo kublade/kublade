@@ -48,15 +48,77 @@ class FluxRepository
 
         self::$cluster = $cluster;
 
-        $path        = 'flux-repository/' . $cluster->id;
-        $storagePath = Storage::disk('local')->path($path);
+        $path          = 'flux-repository/' . $cluster->id;
+        $storagePath   = Storage::disk('local')->path($path);
+        $repositoryUrl = $cluster->gitCredentials->url;
+
+        if (
+            str_starts_with($cluster->gitCredentials->url, 'http://') ||
+            str_starts_with($cluster->gitCredentials->url, 'https://')
+        ) {
+            if (!str_contains($cluster->gitCredentials->url, '@')) {
+                $repositoryUrl = preg_replace("/^(https?:\/\/)/", '$1' . $cluster->gitCredentials->credentials . '@', $repositoryUrl);
+            }
+        } else {
+            $path = 'clusters/' . $cluster->id . '/git-credentials';
+
+            Storage::disk('local')->put($path, $cluster->gitCredentials->credentials);
+
+            $sshKeyPath = Storage::disk('local')->path($path);
+            $sshDir     = '~/.ssh';
+
+            if (!is_dir($sshDir)) {
+                mkdir($sshDir, 0700, true);
+            }
+
+            $sshConfig        = $sshDir . '/config';
+            $sshConfigExisted = true;
+
+            if (!file_exists($sshConfig)) {
+                file_put_contents($sshConfig, '');
+                $sshConfigExisted = false;
+            }
+
+            $sshConfigContent = file_get_contents($sshConfig);
+
+            preg_match('/@(.*?):/', $repositoryUrl, $matches);
+
+            if (count($matches) > 1) {
+                if (!str_contains($sshConfigContent, 'Host ' . $cluster->id)) {
+                    if ($sshConfigExisted) {
+                        $content = $sshConfigContent . <<<EOL
+
+Host $cluster->id
+    HostName $matches[1]
+    User git
+    IdentityFile $sshKeyPath
+EOL;
+                    } else {
+                        $content = <<<EOL
+Host $cluster->id
+    HostName $matches[1]
+    User git
+    IdentityFile $sshKeyPath
+EOL;
+                    }
+
+                    file_put_contents($sshConfig, $content);
+                }
+
+                $repositoryUrl = str_replace($matches[1], $cluster->id, $repositoryUrl);
+            }
+        }
+
+        if (!str_ends_with($repositoryUrl, '.git')) {
+            $repositoryUrl .= '.git';
+        }
 
         try {
             self::$repository = Git::open($storagePath);
         } catch (Exception $exception) {
             Storage::disk('local')->deleteDirectory($path);
 
-            self::$repository = Git::cloneRemote($storagePath, $cluster->gitCredentials->url);
+            self::$repository = Git::cloneRemote($storagePath, $repositoryUrl);
         }
 
         self::$repository->run('config user.email "' . $cluster->gitCredentials->email . '"');
