@@ -21,10 +21,6 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
  */
 class StatusMonitoring extends Job implements ShouldBeUnique
 {
-    public $tries = 1;
-
-    public $timeout = 3600;
-
     public static $onQueue = 'flux_status_monitoring';
 
     /**

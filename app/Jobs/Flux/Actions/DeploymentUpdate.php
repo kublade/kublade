@@ -25,10 +25,6 @@ use Illuminate\Support\Facades\Crypt;
  */
 class DeploymentUpdate extends Job implements ShouldBeUnique
 {
-    public $tries = 0;
-
-    public $timeout = 3600;
-
     public $deployment_id;
 
     public static $onQueue = 'flux_deployment';

@@ -51,10 +51,6 @@ use RenokiCo\PhpK8s\Kinds\K8sPod;
  */
 class StatusMonitoring extends Job implements ShouldBeUnique
 {
-    public $tries = 1;
-
-    public $timeout = 3600;
-
     public static $onQueue = 'cluster_status_monitoring';
 
     private string $cluster_id;

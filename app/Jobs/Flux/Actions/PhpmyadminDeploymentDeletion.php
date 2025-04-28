@@ -18,10 +18,6 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
  */
 class PhpmyadminDeploymentDeletion extends Job implements ShouldBeUnique
 {
-    public $tries = 1;
-
-    public $timeout = 3600;
-
     public $deployment_id;
 
     public static $onQueue = 'singletons';

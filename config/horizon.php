@@ -191,7 +191,7 @@ return [
             'maxJobs'      => 0,
             'memory'       => 128,
             'tries'        => 1,
-            'timeout'      => 0,
+            'timeout'      => 10800,
             'nice'         => 0,
         ],
         'supervisor-2' => [
@@ -203,7 +203,7 @@ return [
             'maxJobs'      => 0,
             'memory'       => 128,
             'tries'        => 1,
-            'timeout'      => 0,
+            'timeout'      => 3600,
             'nice'         => 0,
         ],
         'supervisor-3' => [
@@ -215,7 +215,7 @@ return [
             'maxJobs'      => 0,
             'memory'       => 256,
             'tries'        => 1,
-            'timeout'      => 0,
+            'timeout'      => 900,
             'nice'         => 0,
         ],
         'supervisor-4' => [
@@ -231,7 +231,7 @@ return [
             'maxJobs'      => 0,
             'memory'       => 256,
             'tries'        => 1,
-            'timeout'      => 0,
+            'timeout'      => 3600,
             'nice'         => 0,
         ],
     ],

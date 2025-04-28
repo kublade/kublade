@@ -18,10 +18,6 @@ use Carbon\Carbon;
  */
 class DeploymentDeletion extends Job
 {
-    public $tries = 1;
-
-    public $timeout = 3600;
-
     public static $onQueue = 'dispatchers';
 
     /**

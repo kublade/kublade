@@ -29,10 +29,6 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
  */
 class LimitMonitoring extends Job implements ShouldBeUnique
 {
-    public $tries = 1;
-
-    public $timeout = 3600;
-
     public static $onQueue = 'cluster_limit_monitoring';
 
     private string $cluster_id;
