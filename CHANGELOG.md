@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/kublade/kublade/compare/v1.5.3...v1.6.0) (2025-04-28)
+
+
+### Features
+
+* **cluster:** limit monitoring job ([466f1a7](https://github.com/kublade/kublade/commit/466f1a7574378a7b12b1cbd192a96c6c59344cf2))
+* **cluster:** status monitoring job ([2f7ec41](https://github.com/kublade/kublade/commit/2f7ec4189f88c181ecea4d504c5bccab4cfb7551))
+* dark mode ([fa92e34](https://github.com/kublade/kublade/commit/fa92e34b071123e900ab864882e61784e6a5090b))
+* **flux:** deployment crud jobs ([4c35f21](https://github.com/kublade/kublade/commit/4c35f21b47796275c0dc7a797c7740c06a9567c2))
+* **flux:** support templating from database ([05df1c1](https://github.com/kublade/kublade/commit/05df1c1b610ba4a8b071307fa2b36c7981db1047))
+* **git:** ssh support ([c4738e8](https://github.com/kublade/kublade/commit/c4738e8b11ca57291a87a1d11d1225b6ff308366))
+* **supervisord:** queue configuration ([4d810c2](https://github.com/kublade/kublade/commit/4d810c274bdb9208686bf94caf41adce21064ae2))
+
 ## [1.5.3](https://github.com/kublade/kublade/compare/v1.5.2...v1.5.3) (2025-04-25)
 
 
