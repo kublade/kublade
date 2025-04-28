@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"{{ request()->cookie('theme') === 'dark' ? ' data-bs-theme=dark' : '' }}>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-body shadow-sm">
             <div class="container">
                 <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">
                     <img src="/logo.svg" class="logo">
@@ -97,6 +97,15 @@
                         @else
                             <li class="nav-item me-4">
                                 <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
+                            </li>
+                            <li class="nav-item me-4">
+                                <a class="nav-link" href="{{ route('switch-color-mode') }}">
+                                    @if (request()->cookie('theme') === 'dark')
+                                        <i class="bi bi-sun-fill"></i>
+                                    @else
+                                        <i class="bi bi-moon-fill"></i>
+                                    @endif
+                                </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
