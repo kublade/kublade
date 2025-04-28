@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1](https://github.com/kublade/kublade/compare/v1.6.0...v1.6.1) (2025-04-28)
+
+
+### Bug Fixes
+
+* mode switch ([9e90821](https://github.com/kublade/kublade/commit/9e9082186b87ee4994c03758f4e556e539638c2c))
+
 ## [1.6.0](https://github.com/kublade/kublade/compare/v1.5.3...v1.6.0) (2025-04-28)
 
 
