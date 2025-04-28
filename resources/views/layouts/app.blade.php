@@ -83,17 +83,21 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                            <li class="nav-item me-4">
+                                <a class="nav-link" href="{{ route('switch-color-mode') }}">
+                                    @if (request()->cookie('theme') === 'dark')
+                                        <i class="bi bi-sun-fill"></i>
+                                    @else
+                                        <i class="bi bi-moon-fill"></i>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
                         @else
                             <li class="nav-item me-4">
                                 <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
