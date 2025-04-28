@@ -83,6 +83,19 @@ class TemplateFile extends Model
     }
 
     /**
+     * Get the full tree attribute.
+     *
+     * @return object
+     */
+    public function getFullTreeAttribute(): object
+    {
+        return (object) [
+            'type'   => 'file',
+            'object' => $this,
+        ];
+    }
+
+    /**
      * Get the path attribute.
      *
      * @return string

@@ -23,6 +23,7 @@ use Illuminate\Support\Collection;
  * @property string $id
  * @property string $user_id
  * @property string $name
+ * @property bool   $netpol
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -46,6 +47,15 @@ class Template extends Model
      */
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'netpol' => 'boolean',
     ];
 
     /**
@@ -112,6 +122,26 @@ class Template extends Model
         })->toArray() ?? [];
         $subFiles = $this->files?->transform(function ($file) {
             return $file->tree;
+        })->toArray() ?? [];
+
+        return collect([
+            ...$subFolders,
+            ...$subFiles,
+        ]);
+    }
+
+    /**
+     * Get the full tree of the template.
+     *
+     * @return Collection
+     */
+    public function getFullTreeAttribute(): Collection
+    {
+        $subFolders = $this->directories?->transform(function ($directory) {
+            return $directory->fullTree;
+        })->toArray() ?? [];
+        $subFiles = $this->files?->transform(function ($file) {
+            return $file->fullTree;
         })->toArray() ?? [];
 
         return collect([

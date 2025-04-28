@@ -128,4 +128,44 @@ class Cluster extends Model
     {
         return $this->namespaces()->where('type', '=', Ns::TYPE_INGRESS)->first();
     }
+
+    /**
+     * Get the ingress namespace.
+     *
+     * @return Ns|null
+     */
+    public function getLimitAttribute(): ?Resource
+    {
+        return $this->resources()->where('type', '=', Resource::TYPE_LIMIT)->first();
+    }
+
+    /**
+     * Get the alert resource.
+     *
+     * @return resource|null
+     */
+    public function getAlertAttribute(): ?Resource
+    {
+        return $this->resources()->where('type', '=', Resource::TYPE_ALERT)->first();
+    }
+
+    /**
+     * Get the repository path attribute.
+     *
+     * @return string
+     */
+    public function getRepositoryPathAttribute(): string
+    {
+        return 'flux-repository/' . $this->id;
+    }
+
+    /**
+     * Get the repository deployment path attribute.
+     *
+     * @return string
+     */
+    public function getRepositoryDeploymentPathAttribute(): string
+    {
+        return 'flux-repository/' . $this->id . $this->gitCredentials->base_path;
+    }
 }

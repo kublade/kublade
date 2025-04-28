@@ -34,6 +34,10 @@ class Resource extends Model
     use SoftDeletes;
     use HasUuids;
 
+    public const TYPE_LIMIT = 'limit';
+
+    public const TYPE_ALERT = 'alert';
+
     /**
      * The table associated with the model.
      *

@@ -27,6 +27,7 @@ return new class () extends Migration {
             $table->longText('kubeconfig');
             $table->string('api_url');
             $table->longText('service_account_token');
+            $table->string('node_prefix')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -39,6 +40,7 @@ return new class () extends Migration {
             $table->longText('credentials');
             $table->string('username');
             $table->string('email');
+            $table->string('base_path')->default('/');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -25,6 +25,7 @@ use Sagalbot\Encryptable\Encryptable;
  * @property string $credentials
  * @property string $username
  * @property string $email
+ * @property string $base_path
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at

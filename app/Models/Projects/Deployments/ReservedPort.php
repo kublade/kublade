@@ -69,8 +69,8 @@ class ReservedPort extends Model
      */
     public static function random($group = 'services', $disallowed = null)
     {
-        $fromPort = config('ports.' . $group . '.from');
-        $toPort   = config('ports.' . $group . '.to');
+        $fromPort = 49152;
+        $toPort   = 65535;
 
         if (!$disallowed) {
             $disallowed = self::disallowed($group);

@@ -48,6 +48,13 @@ class ClusterController extends Controller
         return view('cluster.add');
     }
 
+    /**
+     * Add a new cluster.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function action_add(Request $request)
     {
         Validator::make($request->all(), [
@@ -58,10 +65,12 @@ class ClusterController extends Controller
             'git.credentials'           => ['required', 'string'],
             'git.username'              => ['required', 'string', 'max:255'],
             'git.email'                 => ['required', 'email', 'max:255'],
+            'git.base_path'             => ['required', 'string', 'max:255'],
             'k8s'                       => ['required', 'array'],
             'k8s.api_url'               => ['required', 'string', 'max:255'],
             'k8s.kubeconfig'            => ['required', 'string'],
             'k8s.service_account_token' => ['required', 'string'],
+            'k8s.node_prefix'           => ['nullable', 'string', 'max:255'],
             'namespace'                 => ['required', 'array'],
             'namespace.utility'         => ['required', 'string', 'max:255'],
             'namespace.ingress'         => ['required', 'string', 'max:255'],
@@ -81,6 +90,7 @@ class ClusterController extends Controller
                 'credentials' => $request->git['credentials'],
                 'username'    => $request->git['username'],
                 'email'       => $request->git['email'],
+                'base_path'   => $request->git['base_path'],
             ]);
 
             K8sCredential::create([
@@ -88,6 +98,7 @@ class ClusterController extends Controller
                 'api_url'               => $request->k8s['api_url'],
                 'kubeconfig'            => $request->k8s['kubeconfig'],
                 'service_account_token' => $request->k8s['service_account_token'],
+                'node_prefix'           => $request->k8s['node_prefix'],
             ]);
 
             Ns::create([
@@ -150,10 +161,12 @@ class ClusterController extends Controller
             'git.credentials'           => ['required', 'string'],
             'git.username'              => ['required', 'string', 'max:255'],
             'git.email'                 => ['required', 'email', 'max:255'],
+            'git.base_path'             => ['required', 'string', 'max:255'],
             'k8s'                       => ['required', 'array'],
             'k8s.api_url'               => ['required', 'string', 'max:255'],
             'k8s.kubeconfig'            => ['required', 'string'],
             'k8s.service_account_token' => ['required', 'string'],
+            'k8s.node_prefix'           => ['nullable', 'string', 'max:255'],
             'namespace'                 => ['required', 'array'],
             'namespace.utility'         => ['required', 'string', 'max:255'],
             'namespace.ingress'         => ['required', 'string', 'max:255'],
@@ -171,6 +184,7 @@ class ClusterController extends Controller
                     'credentials' => $request->git['credentials'],
                     'username'    => $request->git['username'],
                     'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
                 ]);
             } else {
                 GitCredential::create([
@@ -180,6 +194,7 @@ class ClusterController extends Controller
                     'credentials' => $request->git['credentials'],
                     'username'    => $request->git['username'],
                     'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
                 ]);
             }
 
@@ -188,6 +203,7 @@ class ClusterController extends Controller
                     'api_url'               => $request->k8s['api_url'],
                     'kubeconfig'            => $request->k8s['kubeconfig'],
                     'service_account_token' => $request->k8s['service_account_token'],
+                    'node_prefix'           => $request->k8s['node_prefix'],
                 ]);
             } else {
                 K8sCredential::create([
@@ -195,6 +211,7 @@ class ClusterController extends Controller
                     'api_url'               => $request->k8s['api_url'],
                     'kubeconfig'            => $request->k8s['kubeconfig'],
                     'service_account_token' => $request->k8s['service_account_token'],
+                    'node_prefix'           => $request->k8s['node_prefix'],
                 ]);
             }
 

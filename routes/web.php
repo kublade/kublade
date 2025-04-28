@@ -80,3 +80,7 @@ Route::middleware([
     Route::get('/projects/{project_id}/deployments/{deployment_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete'])->name('deployment.delete.action');
     Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.details');
 });
+
+Route::get('/switch-color-mode', function () {
+    return redirect()->back()->withCookie(cookie()->make('theme', request()->cookie('theme') === 'dark' ? 'light' : 'dark', 525960));
+})->name('switch-color-mode');

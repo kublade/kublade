@@ -192,7 +192,7 @@ class GitRepo
             fclose($pipe);
         }
 
-        $status = trim(proc_close($resource));
+        $status = trim((string) proc_close($resource));
 
         return $status != 127;
     }
@@ -244,7 +244,7 @@ class GitRepo
             fclose($pipe);
         }
 
-        $status = trim(proc_close($resource));
+        $status = trim((string) proc_close($resource));
 
         if ($status) {
             throw new Exception($stderr . "\n" . $stdout);

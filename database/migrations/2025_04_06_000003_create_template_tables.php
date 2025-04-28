@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
+            $table->boolean('netpol')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

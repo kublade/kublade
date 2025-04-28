@@ -113,6 +113,30 @@ class TemplateDirectory extends Model
     }
 
     /**
+     * Get the full tree attribute.
+     *
+     * @return object
+     */
+    public function getFullTreeAttribute(): object
+    {
+        $subFolders = $this->folders->map(function ($child) {
+            return $child->fullTree;
+        })->toArray() ?? [];
+        $subFiles = $this->files->map(function ($file) {
+            return $file->fullTree;
+        })->toArray() ?? [];
+
+        return (object) [
+            'type'     => 'folder',
+            'object'   => $this,
+            'children' => collect([
+                ...$subFolders,
+                ...$subFiles,
+            ]),
+        ];
+    }
+
+    /**
      * Get the path attribute.
      *
      * @return string

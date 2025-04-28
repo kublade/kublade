@@ -23,6 +23,7 @@ use Sagalbot\Encryptable\Encryptable;
  * @property string $kubeconfig
  * @property string $api_url
  * @property string $service_account_token
+ * @property string $node_prefix
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at

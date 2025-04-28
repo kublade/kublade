@@ -5,22 +5,48 @@
 @import 'variables';
 @import 'bootstrap-icons/font/bootstrap-icons.min.css';
 
-// Bootstrap
-$primary: #000000;
-$secondary: #ff2b1c;
-$success:   #28a745;
-$info:      #17a2b8;
-$warning:   #ffc107;
-$danger:    #dc3545;
-$light:     #f8f9fa;
-$dark:      #343a40;
+// Step 1: Define your base Sass variables
+$primary:    #000000;
+$secondary:  #ff2b1c;
+$success:    #28a745;
+$info:       #17a2b8;
+$warning:    #ffc107;
+$danger:     #dc3545;
+$light:      #f8f9fa;
+$dark:       #343a40;
 $body-bg:    #ffffff;
 $body-color: #000000;
 
+:root {
+    --bs-body-accent: #fff8f6;
+}
+
+html {
+    &[data-bs-theme="dark"] {
+        --bs-body-accent: #1a1d21;
+    }
+}
+
+// Step 2: Import Bootstrap once with Sass variables
 @import 'bootstrap/scss/bootstrap';
 
+// Step 3: Use CSS variables for dark mode overrides
+@include color-mode(dark) {
+  :root {
+    --bs-primary: #ffffff;
+    --bs-success: #3ddc84;
+    --bs-info: #3bcfd8;
+    --bs-warning: #ffd666;
+    --bs-danger: #ff6b6b;
+    --bs-light: #2a2d31;
+    --bs-dark: #1a1d21;
+    --bs-body-bg: #1a1d21;
+    --bs-body-color: #f8f9fa;
+  }
+}
+
 body {
-    background-color: #fff8f6;
+    background-color: var(--bs-body-accent);
 }
 
 .navbar {
@@ -185,7 +211,7 @@ body {
     box-shadow: var(--bs-box-shadow-sm);
 
     &-header {
-        background-color: var(--bs-white);
+        background-color: var(--bs-body);
         color: var(--bs-body);
         border-bottom: 1px solid transparent;
     }
