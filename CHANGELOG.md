@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.2](https://github.com/kublade/kublade/compare/v1.8.1...v1.8.2) (2025-05-01)
+
+
+### Bug Fixes
+
+* cluster limit monitoring ([deff640](https://github.com/kublade/kublade/commit/deff64032401a5de7b32ec87246f47e0957b23ce))
+
 ## [1.8.1](https://github.com/kublade/kublade/compare/v1.8.0...v1.8.1) (2025-05-01)
 
 
