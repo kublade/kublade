@@ -7,7 +7,6 @@ namespace App\Jobs\Flux\Actions;
 use App\Helpers\Flux\FluxDeployment;
 use App\Jobs\Base\Job;
 use App\Models\Projects\Deployments\Deployment;
-use Exception;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 
@@ -42,7 +41,7 @@ class DeploymentDeletion extends Job implements ShouldBeUnique
         $deployment = Deployment::find($this->deployment_id);
 
         if (!$deployment) {
-            throw new Exception('Deployment not found');
+            return;
         }
 
         if ($release = FluxDeployment::delete($deployment->uuid, $deployment->template)) {

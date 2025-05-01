@@ -30,7 +30,13 @@
                             @foreach ($clusters as $cluster)
                                 <tr class="align-middle">
                                     <td class="w-100">{{ $cluster->name }}</td>
-                                    <td></td>
+                                    <td>
+                                        @if ($cluster->status === \App\Models\Kubernetes\Clusters\Status::STATUS_ONLINE)
+                                            <span class="badge bg-success">{{ __('Online') }}</span>
+                                        @else
+                                            <span class="badge bg-danger">{{ __('Offline') }}</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex gap-2">
                                             <a href="{{ route('cluster.update', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>

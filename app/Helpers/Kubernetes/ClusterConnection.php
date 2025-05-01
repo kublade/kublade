@@ -6,10 +6,10 @@ namespace App\Helpers\Kubernetes;
 
 use App\Exceptions\KubeletException;
 use App\Models\Kubernetes\Clusters\Cluster;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use RenokiCo\PhpK8s\KubernetesCluster;
+use Throwable;
 
 /**
  * Class ClusterConnection.
@@ -47,8 +47,12 @@ class ClusterConnection
             throw new KubeletException('Bad Request', 400);
         }
 
-        self::$cluster    = $cluster;
-        self::$connection = KubernetesCluster::fromKubeConfigYaml($cluster->k8sCredentials->kubeconfig, 'default');
+        try {
+            self::$cluster    = $cluster;
+            self::$connection = KubernetesCluster::fromKubeConfigYaml($cluster->k8sCredentials->kubeconfig, 'default');
+        } catch (Throwable $throwable) {
+            throw new KubeletException('Bad Request', 400);
+        }
     }
 
     /**
@@ -98,7 +102,7 @@ class ClusterConnection
                     ->get(self::$cluster->k8sCredentials->api_url . $path)
                     ->body();
             }
-        } catch (Exception $exception) {
+        } catch (Throwable $throwable) {
             throw new KubeletException('Server Error', 500);
         }
 
@@ -155,5 +159,50 @@ class ClusterConnection
                     empty($dataset['meta']['interface'])
                 );
             });
+    }
+
+    /**
+     * Check the connection to the cluster.
+     *
+     * @return bool
+     */
+    public static function check(): bool
+    {
+        $api = self::get();
+
+        if (!$api) {
+            return false;
+        }
+
+        // Check if api call works
+        try {
+            $api->serviceAccount()->all();
+        } catch (Throwable $throwable) {
+            return false;
+        }
+
+        // Check if proxy call works
+        try {
+            if ($token = self::$cluster->k8sCredentials->service_account_token) {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $token,
+                ])
+                    ->withOptions([
+                        'verify' => false,
+                    ])
+                    ->get(self::$cluster->k8sCredentials->api_url . '/healthz')
+                    ->body();
+            } else {
+                $response = Http::withOptions([
+                    'verify' => false,
+                ])
+                    ->get(self::$cluster->k8sCredentials->api_url . '/healthz')
+                    ->body();
+            }
+        } catch (Throwable $throwable) {
+            return false;
+        }
+
+        return $response === 'ok';
     }
 }

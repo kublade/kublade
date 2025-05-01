@@ -28,7 +28,7 @@ class StatusMonitoring extends Job implements ShouldBeUnique
      */
     public function handle()
     {
-        Deployment::whereNotNull('deployed_at')->each(function ($deployment) {
+        Deployment::whereNotNull('deployed_at')->each(function (Deployment $deployment) {
             $cpuUsage     = 0;
             $memoryUsage  = 0;
             $storageUsage = 0;

@@ -7,6 +7,7 @@ namespace App\Jobs\Cluster\Dispatchers;
 use App\Jobs\Base\Job;
 use App\Jobs\Cluster\Actions\LimitMonitoring as LimitMonitoringJob;
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Clusters\Status;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 /**
@@ -25,7 +26,11 @@ class LimitMonitoring extends Job implements ShouldBeUnique
      */
     public function handle()
     {
-        Cluster::query()->each(function ($cluster) {
+        Cluster::query()->each(function (Cluster $cluster) {
+            if ($cluster->status === Status::STATUS_OFFLINE) {
+                return;
+            }
+
             $this->dispatch((new LimitMonitoringJob([
                 'cluster_id' => $cluster->id,
             ]))->onQueue('dispatchers'));

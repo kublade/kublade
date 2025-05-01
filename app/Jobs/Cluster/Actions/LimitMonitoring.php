@@ -8,6 +8,7 @@ use App\Helpers\CpuUtilization;
 use App\Helpers\Filesize;
 use App\Jobs\Base\Job;
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Clusters\Status;
 use App\Models\Kubernetes\Metrics\ClusterMetric;
 use App\Models\Kubernetes\Metrics\ClusterMetricCapacity;
 use App\Models\Kubernetes\Metrics\ClusterMetricNode;
@@ -50,7 +51,10 @@ class LimitMonitoring extends Job implements ShouldBeUnique
     {
         $cluster = Cluster::find($this->cluster_id);
 
-        if (!$cluster) {
+        if (
+            !$cluster ||
+            $cluster->status === Status::STATUS_OFFLINE
+        ) {
             return;
         }
 

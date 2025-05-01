@@ -25,7 +25,7 @@ class StatusMonitoring extends Job implements ShouldBeUnique
      */
     public function handle()
     {
-        Cluster::query()->each(function ($cluster) {
+        Cluster::query()->each(function (Cluster $cluster) {
             $this->dispatch((new StatusMonitoringJob([
                 'cluster_id' => $cluster->id,
             ]))->onQueue('dispatchers'));
