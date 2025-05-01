@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1](https://github.com/kublade/kublade/compare/v1.7.0...v1.7.1) (2025-05-01)
+
+
+### Bug Fixes
+
+* remove non-existent job reference ([9e370ce](https://github.com/kublade/kublade/commit/9e370cef7084015cc88bccb864ddf9dd82ceef00))
+
 ## [1.7.0](https://github.com/kublade/kublade/compare/v1.6.1...v1.7.0) (2025-05-01)
 
 
