@@ -75,10 +75,10 @@ class Filesize
         }
 
         if ($power === 0) {
-            return $value;
+            return (float) $value;
         }
 
-        return $value * pow(1024, $power);
+        return (float) $value * pow(1024, $power);
     }
 
     /**
