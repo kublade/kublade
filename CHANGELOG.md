@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.1](https://github.com/kublade/kublade/compare/v1.8.0...v1.8.1) (2025-05-01)
+
+
+### Bug Fixes
+
+* helper return data conversions ([64d8db6](https://github.com/kublade/kublade/commit/64d8db6b409fd58e5ecde8e5ab077580af1b0ff7))
+
 ## [1.8.0](https://github.com/kublade/kublade/compare/v1.7.1...v1.8.0) (2025-05-01)
 
 
