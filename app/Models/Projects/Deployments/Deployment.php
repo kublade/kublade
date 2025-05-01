@@ -158,36 +158,6 @@ class Deployment extends Model
     }
 
     /**
-     * Relation to ftp deployment link.
-     *
-     * @return HasMany
-     */
-    public function deploymentFtpLinks(): HasMany
-    {
-        return $this->hasMany(DeploymentFtp::class, 'ftp_deployment_id', 'id');
-    }
-
-    /**
-     * Relation to phpmyadmin deployment link.
-     *
-     * @return HasMany
-     */
-    public function phpmyadminDeploymentLinks(): HasMany
-    {
-        return $this->hasMany(DeploymentPhpmyadmin::class, 'deployment_id', 'id');
-    }
-
-    /**
-     * Relation to deployment links.
-     *
-     * @return HasMany
-     */
-    public function deploymentPhpmyadminLinks(): HasMany
-    {
-        return $this->hasMany(DeploymentPhpmyadmin::class, 'phpmyadmin_deployment_id', 'id');
-    }
-
-    /**
      * Relation to reserved ports.
      *
      * @return HasMany
