@@ -25,7 +25,7 @@ class CpuUtilization
         $baseUnit = substr($value, -1);
 
         if (is_numeric($baseUnit)) {
-            return $value;
+            return (float) $value;
         }
 
         switch ($baseUnit) {
@@ -45,9 +45,9 @@ class CpuUtilization
         }
 
         if ($devideBy === 0) {
-            return $value;
+            return (float) $value;
         }
 
-        return substr($value, 0, -1) / $devideBy;
+        return (float) substr($value, 0, -1) / $devideBy;
     }
 }
