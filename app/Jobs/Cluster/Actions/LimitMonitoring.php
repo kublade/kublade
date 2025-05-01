@@ -72,10 +72,14 @@ class LimitMonitoring extends Job implements ShouldBeUnique
             'pods'    => 0,
         ];
 
+        $clusterMetric = ClusterMetric::create([
+            'cluster_id' => $cluster->id,
+        ]);
+
         $cluster->nodes()
             ->where('name', 'like', $cluster->node_prefix . '%')
             ->where('cluster_id', '=', $cluster->id)
-            ->each(function (Node $node) use (&$clusterCapacity, &$clusterNodeMetrics, &$clusterUsage) {
+            ->each(function (Node $node) use ($clusterMetric, &$clusterCapacity, &$clusterNodeMetrics, &$clusterUsage) {
                 $nodeCapacity = $node->allocatables()
                     ->orderByDesc('created_at')
                     ->first();
@@ -103,17 +107,21 @@ class LimitMonitoring extends Job implements ShouldBeUnique
                 ];
 
                 $clusterMetricNode = ClusterMetricNode::create([
-                    'node_id' => $node->id,
+                    'cluster_metric_id' => $clusterMetric->id,
+                    'node_id'           => $node->id,
                 ]);
+
                 $clusterMetricNodeCapacity = ClusterMetricNodeCapacity::create([
                     'cluster_metric_node_id' => $clusterMetricNode->id,
                     'cpu'                    => $nodeCapacity->cpu,
                     'memory'                 => $nodeCapacity->memory,
                 ]);
+
                 $clusterMetricNodeUsage = ClusterMetricNodeUsage::create([
                     'cluster_metric_node_id' => $clusterMetricNode->id,
                     ...$nodeMetric,
                 ]);
+
                 $clusterMetricNodeUtilization = ClusterMetricNodeUtilization::create([
                     'cluster_metric_node_id' => $clusterMetricNode->id,
                     ...$nodeUtilization,
@@ -139,8 +147,6 @@ class LimitMonitoring extends Job implements ShouldBeUnique
                     $clusterUsage['pods'] += $namespace->pods()->count();
                 });
             });
-
-        $clusterMetric = ClusterMetric::create([]);
 
         ClusterMetricCapacity::create([
             'cluster_metric_id' => $clusterMetric->id,
