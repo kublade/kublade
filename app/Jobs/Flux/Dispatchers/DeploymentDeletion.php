@@ -6,6 +6,7 @@ namespace App\Jobs\Flux\Dispatchers;
 
 use App\Jobs\Base\Job;
 use App\Jobs\Flux\Actions\DeploymentDeletion as DeploymentDeletionJob;
+use App\Models\Kubernetes\Clusters\Status;
 use App\Models\Projects\Deployments\Deployment;
 use Carbon\Carbon;
 
@@ -29,7 +30,11 @@ class DeploymentDeletion extends Job
             ->whereNotNull('creation_dispatched_at')
             ->whereNull('deletion_dispatched_at')
             ->where('delete', '=', true)
-            ->each(function ($deployment) {
+            ->each(function (Deployment $deployment) {
+                if ($deployment->cluster->status === Status::STATUS_OFFLINE) {
+                    return;
+                }
+
                 $this->dispatch((new DeploymentDeletionJob([
                     'deployment_id' => $deployment->id,
                 ]))->onQueue('flux_deployment'));

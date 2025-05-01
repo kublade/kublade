@@ -100,6 +100,16 @@ class Cluster extends Model
     }
 
     /**
+     * Relation to status.
+     *
+     * @return HasMany
+     */
+    public function statuses(): HasMany
+    {
+        return $this->hasMany(Status::class, 'cluster_id', 'id');
+    }
+
+    /**
      * Relation to namespaces.
      *
      * @return HasMany
@@ -167,5 +177,15 @@ class Cluster extends Model
     public function getRepositoryDeploymentPathAttribute(): string
     {
         return 'flux-repository/' . $this->id . $this->gitCredentials->base_path;
+    }
+
+    /**
+     * Get the status attribute.
+     *
+     * @return string
+     */
+    public function getStatusAttribute(): string
+    {
+        return $this->statuses()->orderByDesc('created_at')->first()?->status ?? Status::STATUS_OFFLINE;
     }
 }

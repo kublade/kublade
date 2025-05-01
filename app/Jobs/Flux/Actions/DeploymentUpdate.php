@@ -11,7 +11,6 @@ use App\Models\Projects\Deployments\DeploymentCommit;
 use App\Models\Projects\Deployments\DeploymentCommitData;
 use App\Models\Projects\Deployments\DeploymentCommitSecretData;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Crypt;
@@ -47,7 +46,7 @@ class DeploymentUpdate extends Job implements ShouldBeUnique
         $deployment = Deployment::find($this->deployment_id);
 
         if (!$deployment) {
-            throw new Exception('Deployment not found');
+            return;
         }
 
         $publicData = [];

@@ -9,6 +9,7 @@ use App\Helpers\Filesize;
 use App\Helpers\Kubernetes\ClusterConnection;
 use App\Jobs\Base\Job;
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Clusters\Status;
 use App\Models\Kubernetes\Resources\ContainerAdvisoryMetric;
 use App\Models\Kubernetes\Resources\Node;
 use App\Models\Kubernetes\Resources\NodeMetric;
@@ -77,6 +78,18 @@ class StatusMonitoring extends Job implements ShouldBeUnique
         }
 
         ClusterConnection::open($cluster);
+
+        $status = Status::create([
+            'cluster_id' => $cluster->id,
+            'status'     => ClusterConnection::check() ? Status::STATUS_ONLINE : Status::STATUS_OFFLINE,
+        ]);
+
+        if (
+            !$status ||
+            $status->status === Status::STATUS_OFFLINE
+        ) {
+            return;
+        }
 
         $api = ClusterConnection::get();
 
