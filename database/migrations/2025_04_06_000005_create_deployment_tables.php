@@ -82,14 +82,6 @@ return new class () extends Migration {
             $table->softDeletes();
         });
 
-        Schema::create('deployment_ftps', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('deployment_id')->references('id')->on('deployments');
-            $table->foreignUuid('ftp_deployment_id')->references('id')->on('deployments');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('deployment_commits', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('deployment_id')->references('id')->on('deployments');
@@ -119,14 +111,6 @@ return new class () extends Migration {
             $table->softDeletes();
         });
 
-        Schema::create('deployment_phpmyadmins', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('deployment_id')->references('id')->on('deployments');
-            $table->foreignUuid('phpmyadmin_deployment_id')->references('id')->on('deployments');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('reserved_ports', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('deployment_id')->references('id')->on('deployments');
@@ -144,11 +128,9 @@ return new class () extends Migration {
     public function down()
     {
         Schema::dropIfExists('reserved_ports');
-        Schema::dropIfExists('deployment_phpmyadmins');
         Schema::dropIfExists('deployment_commit_secret_data');
         Schema::dropIfExists('deployment_commit_data');
         Schema::dropIfExists('deployment_commits');
-        Schema::dropIfExists('deployment_ftps');
         Schema::dropIfExists('deployment_links');
         Schema::dropIfExists('deployment_limits');
         Schema::dropIfExists('deployment_metrics');

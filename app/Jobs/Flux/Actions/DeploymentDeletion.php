@@ -54,22 +54,6 @@ class DeploymentDeletion extends Job implements ShouldBeUnique
             $deployment->ports()->delete();
             $deployment->deploymentSecretData()->delete();
             $deployment->deploymentData()->delete();
-            $deployment->ftpDeploymentLinks()->each(function ($link) {
-                $link->ftpDeployment()
-                    ->where('delete', '=', false)
-                    ->update([
-                        'delete' => true,
-                    ]);
-                $link->delete();
-            });
-            $deployment->phpmyadminDeploymentLinks()->each(function ($link) {
-                $link->phpmyadminDeployment()
-                    ->where('delete', '=', false)
-                    ->update([
-                        'delete' => true,
-                    ]);
-                $link->delete();
-            });
             $deployment->metrics()->delete();
             $deployment->delete();
         }

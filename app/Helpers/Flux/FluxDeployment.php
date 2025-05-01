@@ -98,12 +98,8 @@ class FluxDeployment
                 });
             }
 
-            if (
-                $deployment->template !== 'ftp' &&
-                $deployment->template !== 'phpmyadmin'
-            ) {
-                // Generate netpol.yaml content
-                $networkPolicyContent = '---
+            // Generate netpol.yaml content
+            $networkPolicyContent = '---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -122,46 +118,21 @@ spec:
           kubernetes.io/metadata.name: ' . $deployment->cluster->utilityNamespace?->name . ($deployment->cluster->ingressNamespace?->name && $deployment->cluster->utilityNamespace?->name !== $deployment->cluster->ingressNamespace?->name ? '
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->cluster->ingressNamespace?->name : '') . '
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: ftp
-  namespace: ' . $deployment->uuid . '
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: sftp
-  ingress:
-  - {}
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: phpmyadmin
-  namespace: ' . $deployment->uuid . '
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: phpmyadmin
-  ingress:
-  - {}';
+          kubernetes.io/metadata.name: ' . $deployment->cluster->ingressNamespace?->name : '');
 
-                // Deploy netpol.yaml
-                $networkPolicyDeployed = Storage::disk('local')->put($deployment->path . '/netpol.yaml', $networkPolicyContent);
+            // Deploy netpol.yaml
+            $networkPolicyDeployed = Storage::disk('local')->put($deployment->path . '/netpol.yaml', $networkPolicyContent);
 
-                // Add netpol.yaml to customization file
-                $kustomizationContent  = preg_replace("/resources:\r\n/", "resources:\r\n- netpol.yaml\r\n", Storage::get($deployment->path . '/kustomization.yaml'));
-                $kustomizationContent  = preg_replace("/resources:\n/", "resources:\n- netpol.yaml\n", $kustomizationContent);
-                $networkPolicyAppended = Storage::disk('local')->put($deployment->path . '/kustomization.yaml', $kustomizationContent);
+            // Add netpol.yaml to customization file
+            $kustomizationContent  = preg_replace("/resources:\r\n/", "resources:\r\n- netpol.yaml\r\n", Storage::get($deployment->path . '/kustomization.yaml'));
+            $kustomizationContent  = preg_replace("/resources:\n/", "resources:\n- netpol.yaml\n", $kustomizationContent);
+            $networkPolicyAppended = Storage::disk('local')->put($deployment->path . '/kustomization.yaml', $kustomizationContent);
 
-                if (
-                    !$networkPolicyDeployed ||
-                    !$networkPolicyAppended
-                ) {
-                    throw new FluxException('Server Error', 500);
-                }
+            if (
+                !$networkPolicyDeployed ||
+                !$networkPolicyAppended
+            ) {
+                throw new FluxException('Server Error', 500);
             }
         }
 
