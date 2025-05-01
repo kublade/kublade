@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0](https://github.com/kublade/kublade/compare/v1.7.1...v1.8.0) (2025-05-01)
+
+
+### Features
+
+* cluster connection check ([a023fff](https://github.com/kublade/kublade/commit/a023fff15543b74ade80bf7ac5bf2486bb80404c))
+
 ## [1.7.1](https://github.com/kublade/kublade/compare/v1.7.0...v1.7.1) (2025-05-01)
 
 
