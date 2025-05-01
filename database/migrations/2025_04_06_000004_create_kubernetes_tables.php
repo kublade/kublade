@@ -348,7 +348,7 @@ return new class () extends Migration {
 
         Schema::create('cluster_metric_node_capacities', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
+            $table->foreignUuid('cluster_metric_node_id')->references('id')->on('cluster_metric_nodes');
             $table->double('cpu');
             $table->double('memory');
             $table->timestamps();
@@ -357,7 +357,7 @@ return new class () extends Migration {
 
         Schema::create('cluster_metric_node_usages', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
+            $table->foreignUuid('cluster_metric_node_id')->references('id')->on('cluster_metric_nodes');
             $table->double('cpu');
             $table->double('memory');
             $table->timestamps();
@@ -366,7 +366,7 @@ return new class () extends Migration {
 
         Schema::create('cluster_metric_node_utilizations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cluster_metric_id')->references('id')->on('cluster_metrics');
+            $table->foreignUuid('cluster_metric_node_id')->references('id')->on('cluster_metric_nodes');
             $table->double('cpu');
             $table->double('memory');
             $table->timestamps();

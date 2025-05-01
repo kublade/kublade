@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Kubernetes\Clusters;
 
+use App\Models\Kubernetes\Resources\Node;
+use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Projects\Project;
 use App\Models\User;
 use Carbon\Carbon;
@@ -117,6 +119,26 @@ class Cluster extends Model
     public function namespaces(): HasMany
     {
         return $this->hasMany(Ns::class, 'cluster_id', 'id');
+    }
+
+    /**
+     * Relation to nodes.
+     *
+     * @return HasMany
+     */
+    public function nodes(): HasMany
+    {
+        return $this->hasMany(Node::class, 'cluster_id', 'id');
+    }
+
+    /**
+     * Relation to deployments.
+     *
+     * @return HasMany
+     */
+    public function deployments(): HasMany
+    {
+        return $this->hasMany(Deployment::class, 'cluster_id', 'id');
     }
 
     /**

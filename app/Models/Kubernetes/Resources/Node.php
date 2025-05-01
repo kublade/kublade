@@ -23,6 +23,7 @@ use function str_contains;
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
+ * @property string $cluster_id
  * @property string $uuid
  * @property string $api_version
  * @property string $name
