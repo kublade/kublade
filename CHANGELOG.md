@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0](https://github.com/kublade/kublade/compare/v1.9.0...v1.10.0) (2025-05-03)
+
+
+### Features
+
+* deployment dashboard ([9be5199](https://github.com/kublade/kublade/commit/9be5199344230b1c938502b43175172064744837))
+
 ## [1.9.0](https://github.com/kublade/kublade/compare/v1.8.2...v1.9.0) (2025-05-03)
 
 
