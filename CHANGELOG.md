@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.2](https://github.com/kublade/kublade/compare/v1.13.1...v1.13.2) (2025-05-03)
+
+
+### Bug Fixes
+
+* duplicate data encryption ([a15b153](https://github.com/kublade/kublade/commit/a15b1534f3bbcbe83f63b083c3680c8f54e965ea))
+
 ## [1.13.1](https://github.com/kublade/kublade/compare/v1.13.0...v1.13.1) (2025-05-03)
 
 
