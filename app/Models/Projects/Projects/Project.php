@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Projects\Projects;
 
+use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Projects\Deployments\Deployment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -65,5 +67,25 @@ class Project extends Model
     public function invitations(): HasMany
     {
         return $this->hasMany(ProjectInvitation::class, 'project_id', 'id');
+    }
+
+    /**
+     * Relation to clusters.
+     *
+     * @return HasMany
+     */
+    public function clusters(): HasMany
+    {
+        return $this->hasMany(Cluster::class, 'project_id', 'id');
+    }
+
+    /**
+     * Relation to deployments.
+     *
+     * @return HasMany
+     */
+    public function deployments(): HasMany
+    {
+        return $this->hasMany(Deployment::class, 'project_id', 'id');
     }
 }
