@@ -35,7 +35,7 @@ class TemplateController extends Controller
     public function page_index(string $template_id = null, string $file_id = null)
     {
         return view('template.index', [
-            'templates' => Template::all(),
+            'templates' => Template::paginate(10),
             'template'  => $template_id ? Template::where('id', $template_id)->first() : null,
             'file'      => $file_id ? TemplateFile::where('id', $file_id)->first() : null,
         ]);
@@ -458,9 +458,12 @@ class TemplateController extends Controller
 
     public function page_update_field(string $template_id, string $field_id)
     {
+        $field = TemplateField::where('id', $field_id)->first();
+
         return view('template.update-field', [
             'template' => Template::where('id', $template_id)->first(),
-            'field'    => TemplateField::where('id', $field_id)->first(),
+            'field'    => $field,
+            'options'  => $field->options()->paginate(10),
         ]);
     }
 

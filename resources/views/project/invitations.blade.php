@@ -30,6 +30,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $invitations->links('pagination::bootstrap-5') }}
                     @endif
                 </div>
             </div>

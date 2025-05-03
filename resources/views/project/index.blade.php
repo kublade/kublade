@@ -26,8 +26,8 @@
                         <div class="row">
                             <div class="col-md">
                                 <div class="border rounded overflow-hidden">
-                                    <h5 class="bg-light ps-3 pe-2 py-2 border-bottom d-flex justify-content-between align-items-center gap-3">
-                                        <span class="fs-6">{{ __('Clusters') }}</span>
+                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                        <span class="fs-6 py-2">{{ __('Clusters') }}</span>
                                         <a href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
                                     <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->clusters()->count() }}</p>
@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-md">
                                 <div class="border rounded overflow-hidden">
-                                    <h5 class="bg-light ps-3 pe-2 py-2 border-bottom d-flex justify-content-between align-items-center gap-3">
-                                        <span class="fs-6">{{ __('Deployments') }}</span>
+                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                        <span class="fs-6 py-2">{{ __('Deployments') }}</span>
                                         <a href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
                                     <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->deployments()->count() }}</p>
@@ -44,8 +44,8 @@
                             </div>
                             <div class="col-md">
                                 <div class="border rounded overflow-hidden">
-                                    <h5 class="bg-light ps-3 pe-2 py-2 border-bottom d-flex justify-content-between align-items-center gap-3">
-                                        <span class="fs-6">{{ __('Users') }}</span>
+                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                        <span class="fs-6 py-2">{{ __('Users') }}</span>
                                         <a href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
                                     <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->invitations()->count() }}</p>
@@ -61,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (request()->get('projects') as $project)
+                                @foreach ($projects as $project)
                                     <tr class="align-middle">
                                         <td class="w-100">{{ $project->name }}</td>
                                         <td>
@@ -75,6 +75,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $projects->links('pagination::bootstrap-5') }}
                     @endif
                 </div>
             </div>
