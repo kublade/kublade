@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Sagalbot\Encryptable\Encryptable;
 
 /**
  * Class DeploymentCommitData.
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DeploymentCommitData extends Model
 {
+    use Encryptable;
     use SoftDeletes;
     use HasUuids;
 
@@ -44,6 +46,15 @@ class DeploymentCommitData extends Model
      */
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * The attributes that should be encrypted.
+     *
+     * @var array<string>
+     */
+    protected $encryptable = [
+        'value',
     ];
 
     /**
