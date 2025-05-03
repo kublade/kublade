@@ -57,9 +57,14 @@
                 @else
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Templates') }}
-                        <a href="{{ route('template.add') }}" class="btn btn-sm btn-primary">
-                            <i class="bi bi-plus"></i>
-                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('template.import') }}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-download"></i>
+                            </a>
+                            <a href="{{ route('template.add') }}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-plus"></i>
+                            </a>
+                        </div>
                     </div>
                 @endif
                 <div class="card-body{{ !empty($file) ? ' p-0 overflow-hidden rounded' : '' }}">

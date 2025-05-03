@@ -37,9 +37,9 @@ class HelmManifests
      * @param string $repoName
      * @param string $namespace
      *
-     * @return object
+     * @return array
      */
-    public static function generateManifests(string $repoUrl, string $chartName, string $repoName = 'my-helm-repo', string $namespace = 'default'): object
+    public static function generateManifests(string $repoUrl, string $chartName, string $repoName = 'helm-repo', string $namespace = 'default'): array
     {
         self::$repoUrl   = $repoUrl;
         self::$chartName = $chartName;
@@ -56,7 +56,7 @@ class HelmManifests
 
         $values = self::getChartValues($chartPath);
 
-        return (object) [
+        return [
             'helmrepository.yaml' => self::ensureYamlDocumentStart(self::generateHelmRepositoryYaml()),
             'helmrelease.yaml'    => self::ensureYamlDocumentStart(self::generateHelmReleaseYaml($values)),
             'kustomization.yaml'  => self::ensureYamlDocumentStart(self::generateKustomizationYaml()),
@@ -101,7 +101,7 @@ class HelmManifests
     {
         if (!isset($index['entries'][self::$chartName])) {
             $chartName = self::$chartName;
-            
+
             throw new Exception("Chart '$chartName' not found in repository.");
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Kubernetes\HelmManifests;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateDirectory;
@@ -11,6 +12,7 @@ use App\Models\Projects\Templates\TemplateField;
 use App\Models\Projects\Templates\TemplateFieldOption;
 use App\Models\Projects\Templates\TemplateFile;
 use App\Models\Projects\Templates\TemplatePort;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -827,6 +829,61 @@ class TemplateController extends Controller
             $port->delete();
 
             return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('Port deleted.'));
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
+
+    /**
+     * Show the template helm chart import page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function page_import()
+    {
+        return view('template.import');
+    }
+
+    /**
+     * Add a new template.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_import(Request $request)
+    {
+        Validator::make($request->toArray(), [
+            'name'      => ['required', 'string', 'max:255'],
+            'netpol'    => ['nullable', 'boolean'],
+            'url'       => ['required', 'string'],
+            'chart'     => ['required', 'string'],
+            'repo'      => ['string', 'nullable'],
+            'namespace' => ['string', 'nullable'],
+        ])->validate();
+
+        if (
+            $template = Template::create([
+                'user_id' => Auth::id(),
+                'name'    => $request->name,
+                'netpol'  => ! empty($request->netpol),
+            ])
+        ) {
+            try {
+                foreach (HelmManifests::generateManifests($request->url, $request->chart, $request->repo, $request->namespace) as $fileName => $fileContent) {
+                    TemplateFile::create([
+                        'template_id'           => $template->id,
+                        'template_directory_id' => null,
+                        'name'                  => $fileName,
+                        'mime_type'             => 'text/yaml',
+                        'content'               => $fileContent,
+                    ]);
+                }
+
+                return redirect()->route('template.details', ['template_id' => $template->id])->with('success', __('Template imported.'));
+            } catch (Exception $e) {
+                return redirect()->route('template.details', ['template_id' => $template->id])->with('warning', __('Ooops, something went wrong.'));
+            }
         }
 
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
