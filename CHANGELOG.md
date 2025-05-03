@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.1](https://github.com/kublade/kublade/compare/v1.13.0...v1.13.1) (2025-05-03)
+
+
+### Bug Fixes
+
+* deployment data encryption ([9f28ec1](https://github.com/kublade/kublade/commit/9f28ec1a1c27ee154dfc43e8419e5ceb4efc784a))
+
 ## [1.13.0](https://github.com/kublade/kublade/compare/v1.12.1...v1.13.0) (2025-05-03)
 
 
