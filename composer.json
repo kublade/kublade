@@ -1,13 +1,21 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "kublade/kublade",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "The easy and interactive Kubernetes deployment templating engine.",
     "keywords": [
         "laravel",
-        "framework"
+        "kubernetes",
+        "blade"
     ],
-    "license": "MIT",
+    "license": "AGPL-3.0-or-later",
+    "homepage": "https://kublade.org",
+    "support": {
+        "docs": "https://docs.kublade.org",
+        "email": "support@kublade.org",
+        "issues": "https://github.com/kublade/kublade/issues",
+        "source": "https://github.com/kublade/kublade"
+    },
     "require": {
         "php": "^8.2",
         "ext-yaml": "*",
