@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0](https://github.com/kublade/kublade/compare/v1.11.0...v1.12.0) (2025-05-03)
+
+
+### Features
+
+* chart import from helm repository form ([354b67d](https://github.com/kublade/kublade/commit/354b67d07dee7badcf716ae6972b869889f20306))
+* helm manifest generator ([dd5a752](https://github.com/kublade/kublade/commit/dd5a75250763f2a269a8758648292a552b2a6eeb))
+
 ## [1.11.0](https://github.com/kublade/kublade/compare/v1.10.0...v1.11.0) (2025-05-03)
 
 
