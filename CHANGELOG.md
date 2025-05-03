@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.1](https://github.com/kublade/kublade/compare/v1.12.0...v1.12.1) (2025-05-03)
+
+
+### Bug Fixes
+
+* field list empty notice ([442bdff](https://github.com/kublade/kublade/commit/442bdff40315dec88bde3f08dc78c145ad4e7590))
+
 ## [1.12.0](https://github.com/kublade/kublade/compare/v1.11.0...v1.12.0) (2025-05-03)
 
 
