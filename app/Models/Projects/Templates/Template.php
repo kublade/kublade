@@ -117,10 +117,10 @@ class Template extends Model
      */
     public function getTreeAttribute(): Collection
     {
-        $subFolders = $this->directories?->transform(function ($directory) {
+        $subFolders = $this->directories?->map(function (TemplateDirectory $directory) {
             return $directory->tree;
         })->toArray() ?? [];
-        $subFiles = $this->files?->transform(function ($file) {
+        $subFiles = $this->files?->map(function (TemplateFile $file) {
             return $file->tree;
         })->toArray() ?? [];
 
@@ -137,10 +137,10 @@ class Template extends Model
      */
     public function getFullTreeAttribute(): Collection
     {
-        $subFolders = $this->directories?->transform(function ($directory) {
+        $subFolders = $this->directories?->map(function (TemplateDirectory $directory) {
             return $directory->fullTree;
         })->toArray() ?? [];
-        $subFiles = $this->files?->transform(function ($file) {
+        $subFiles = $this->files?->map(function (TemplateFile $file) {
             return $file->fullTree;
         })->toArray() ?? [];
 

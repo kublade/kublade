@@ -31,6 +31,8 @@ Route::middleware([
     Route::get('/templates', [App\Http\Controllers\TemplateController::class, 'page_index'])->name('template.index');
     Route::get('/templates/add', [App\Http\Controllers\TemplateController::class, 'page_add'])->name('template.add');
     Route::post('/templates/add', [App\Http\Controllers\TemplateController::class, 'action_add'])->name('template.add.action');
+    Route::get('/templates/import', [App\Http\Controllers\TemplateController::class, 'page_import'])->name('template.import');
+    Route::post('/templates/import', [App\Http\Controllers\TemplateController::class, 'action_import'])->name('template.import.action');
     Route::get('/templates/{template_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update'])->name('template.update');
     Route::post('/templates/{template_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update'])->name('template.update.action');
     Route::get('/templates/{template_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete'])->name('template.delete.action');
