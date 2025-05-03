@@ -13,7 +13,6 @@ use App\Models\Projects\Deployments\DeploymentCommitSecretData;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Support\Facades\Crypt;
 
 /**
  * Class DeploymentUpdate.
@@ -72,7 +71,7 @@ class DeploymentUpdate extends Job implements ShouldBeUnique
                     DeploymentCommitData::create([
                         'deployment_commit_id' => $commit->id,
                         'key'                  => $key,
-                        'value'                => Crypt::encryptString($value),
+                        'value'                => $value,
                     ]);
                 });
 
@@ -80,7 +79,7 @@ class DeploymentUpdate extends Job implements ShouldBeUnique
                     DeploymentCommitSecretData::create([
                         'deployment_commit_id' => $commit->id,
                         'key'                  => $key,
-                        'value'                => Crypt::encryptString($value),
+                        'value'                => $value,
                     ]);
                 });
             }
