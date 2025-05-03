@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0](https://github.com/kublade/kublade/compare/v1.10.0...v1.11.0) (2025-05-03)
+
+
+### Features
+
+* auto-update deployments on template file modifications ([e3282ca](https://github.com/kublade/kublade/commit/e3282ca89f9bb1dec05f13ad7dfcfd707d83cd42))
+
 ## [1.10.0](https://github.com/kublade/kublade/compare/v1.9.0...v1.10.0) (2025-05-03)
 
 
