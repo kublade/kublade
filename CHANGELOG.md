@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0](https://github.com/kublade/kublade/compare/v1.8.2...v1.9.0) (2025-05-03)
+
+
+### Features
+
+* basic project dashboard ([58e652f](https://github.com/kublade/kublade/commit/58e652f75f78d9a795d2a7bc79f048c84216b762))
+
 ## [1.8.2](https://github.com/kublade/kublade/compare/v1.8.1...v1.8.2) (2025-05-01)
 
 
