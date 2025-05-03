@@ -1,7 +1,7 @@
 @if ($template->tree->isEmpty())
     <div class="alert alert-warning mb-0 d-flex align-items-center gap-3">
         <i class="bi bi-exclamation-triangle fs-5"></i>
-        {{ __('No ports defined') }}
+        {{ __('No files or folders') }}
     </div>
 @else
     <ul class="file-tree">

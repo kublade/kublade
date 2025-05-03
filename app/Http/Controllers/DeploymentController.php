@@ -11,6 +11,7 @@ use App\Models\Projects\Deployments\DeploymentSecretData;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateField;
+use App\Models\Projects\Templates\TemplateFile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,10 +117,17 @@ class DeploymentController extends Controller
             });
         }
 
+        $file = null;
+
+        if ($deployment && $request->tab === 'files' && $request->file_id) {
+            $file = TemplateFile::where('id', $request->file_id)->first();
+        }
+
         return view('deployment.index', [
             'deployments' => Deployment::paginate(10),
             'deployment'  => $deployment,
             'metrics'     => $datapoints,
+            'file'        => $file,
         ]);
     }
 

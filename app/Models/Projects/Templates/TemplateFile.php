@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models\Projects\Templates;
 
+use App\Models\Projects\Deployments\Deployment;
+use App\Models\Projects\Deployments\ReservedPort;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Blade;
 
 /**
  * Class TemplateFile.
@@ -103,5 +106,63 @@ class TemplateFile extends Model
     public function getPathAttribute(): string
     {
         return $this->directory ? $this->directory->path . '/' . $this->name : '/' . $this->name;
+    }
+
+    /**
+     * Interpret the file.
+     *
+     * @param Deployment $deployment
+     * @param array      $data
+     * @param array      $secretData
+     * @param array      $portClaims
+     * @param bool       $paused
+     *
+     * @return string
+     */
+    public function interpret(Deployment $deployment): string
+    {
+        $publicData = [];
+
+        $deployment->deploymentData->each(function ($data) use (&$publicData) {
+            $publicData[$data->key] = $data->value;
+        });
+
+        $secretData = [];
+
+        $deployment->deploymentSecretData->each(function ($data) use (&$secretData) {
+            $secretData[$data->key] = $data->value;
+        });
+
+        $reservedPorts = $deployment->ports()->whereNotNull('claim')->get();
+        $portClaims    = $deployment->template->ports()
+            ->whereNotNull('claim')
+            ->get()
+            ->mapWithKeys(function (TemplatePort $port) use ($deployment, $reservedPorts) {
+                $reservedPort = $reservedPorts->where('claim', '=', $port->claim)->first();
+
+                if (!$reservedPort) {
+                    $reservedPort = ReservedPort::create([
+                        'deployment_id' => $deployment->id,
+                        'group'         => $port->group,
+                        'claim'         => $port->claim,
+                        'port'          => ReservedPort::random($port->group),
+                    ]);
+                }
+
+                return [$reservedPort->claim => $reservedPort->port];
+            })
+            ->toArray();
+
+        return Blade::render($this->content, [
+            'data'   => $publicData,
+            'secret' => $secretData,
+            'limits' => [
+                'enabled' => $deployment->limit?->is_active ? 'true' : 'false',
+                'cpu'     => $deployment->limit?->cpu,
+                'memory'  => $deployment->limit?->memory,
+            ],
+            'portClaims' => $portClaims,
+            'paused'     => $deployment->paused,
+        ]);
     }
 }

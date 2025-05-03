@@ -54,11 +54,11 @@ class DeploymentCreation extends Job implements ShouldBeUnique
         $secretData = [];
 
         $deployment->deploymentData->each(function ($data) use (&$publicData) {
-            $publicData[$data->key] = Crypt::decryptString($data->value);
+            $publicData[$data->key] = $data->value;
         });
 
         $deployment->deploymentSecretData->each(function ($data) use (&$secretData) {
-            $secretData[$data->key] = Crypt::decryptString($data->value);
+            $secretData[$data->key] = $data->value;
         });
 
         try {
