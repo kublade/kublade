@@ -41,7 +41,15 @@ class ProjectController extends Controller
             }
         }
 
-        return view('project.index');
+        return view('project.index', [
+            'projects' => Project::where(function ($query) {
+                $query->where('user_id', '=', Auth::id())
+                    ->orWhereHas('invitations', function ($query) {
+                        $query->where('user_id', '=', Auth::id())
+                            ->where('invitation_accepted', '=', true);
+                    });
+            })->paginate(10),
+        ]);
     }
 
     /**
@@ -148,7 +156,7 @@ class ProjectController extends Controller
     public function page_invitations()
     {
         return view('project.invitations', [
-            'invitations' => ProjectInvitation::where('user_id', '=', Auth::id())->get(),
+            'invitations' => ProjectInvitation::where('user_id', '=', Auth::id())->paginate(10),
         ]);
     }
 
@@ -273,7 +281,7 @@ class ProjectController extends Controller
     public function page_users(string $project_id)
     {
         return view('project.users', [
-            'invitations' => ProjectInvitation::where('project_id', '=', $project_id)->get(),
+            'invitations' => ProjectInvitation::where('project_id', '=', $project_id)->paginate(10),
         ]);
     }
 }

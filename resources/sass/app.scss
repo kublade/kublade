@@ -220,3 +220,7 @@ body {
 .form-control[readonly] {
     background-color: var(--bs-light);
 }
+
+.tab-content > .tab-pane:not(.show) {
+    display: none !important;
+}

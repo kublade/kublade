@@ -241,7 +241,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($field->options as $option)
+                            @foreach ($options as $option)
                                 <tr class="align-middle">
                                     <td>{{ $option->label }}</td>
                                     <td>{{ $option->value }}</td>
@@ -256,6 +256,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $options->links('pagination::bootstrap-5') }}
                 </div>
             </div>
             @endif

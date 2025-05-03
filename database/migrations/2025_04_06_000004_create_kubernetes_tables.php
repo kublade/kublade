@@ -160,6 +160,7 @@ return new class () extends Migration {
         Schema::create('namespaces', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('cluster_id')->references('id')->on('clusters');
+            $table->foreignUuid('deployment_id')->references('id')->on('deployments');
             $table->string('uuid')->unique();
             $table->string('api_version');
             $table->string('name');

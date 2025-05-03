@@ -11,8 +11,10 @@ use App\Models\Projects\Deployments\DeploymentSecretData;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateField;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -37,10 +39,158 @@ class DeploymentController extends Controller
      */
     public function page_index(string $project_id, string $deployment_id = null)
     {
+        $request    = request();
+        $deployment = Deployment::find($deployment_id);
+        $datapoints = collect();
+
+        if ($deployment_id && $request->tab === 'metrics') {
+            $buildBaseQuery = function ($query, $from, $to) {
+                if ($from) {
+                    $query = $query->where('created_at', '>=', $from);
+                }
+
+                if ($to) {
+                    $query = $query->where('created_at', '<=', $to);
+                }
+
+                return $query;
+            };
+
+            $this->calculateTimeframes(
+                $request->from ?? Carbon::now()->subWeek()->startOfDay()->toISOString(),
+                $request->to ?? Carbon::now()->endOfDay()->toISOString(),
+                $request->aggregation ?? 'day'
+            )->each(function ($timeframe) use ($deployment, $buildBaseQuery, &$datapoints) {
+                $metric = $buildBaseQuery($deployment->metrics(), $timeframe->from, $timeframe->to)
+                    ->select(DB::raw('AVG(storage_bytes) storage_bytes, AVG(memory_bytes) memory_bytes, AVG(cpu_core_usage) cpu_core_usage'))
+                    ->first()
+                    ?->toArray() ?? [
+                        'storage_bytes'  => 0,
+                        'memory_bytes'   => 0,
+                        'cpu_core_usage' => 0,
+                    ];
+
+                $metric['storage_bytes']  = $metric['storage_bytes'] ? $metric['storage_bytes'] : 0;
+                $metric['memory_bytes']   = $metric['memory_bytes'] ? $metric['memory_bytes'] : 0;
+                $metric['cpu_core_usage'] = $metric['cpu_core_usage'] ? $metric['cpu_core_usage'] : 0;
+
+                $trafficBytesIn  = 0;
+                $trafficBytesOut = 0;
+
+                $deployment->namespaces->each(function ($namespace) use ($timeframe, $buildBaseQuery, &$trafficBytesIn, &$trafficBytesOut) {
+                    $sub = $buildBaseQuery($namespace->containerAdvisoryMetrics(), $timeframe->from, $timeframe->to)
+                        ->whereIn('key', [
+                            'container_network_receive_bytes_total',
+                            'container_network_transmit_bytes_total',
+                        ])
+                        ->select('key', 'pod_id', DB::raw('MAX(value) - MIN(value) AS diff'))
+                        ->groupBy('pod_id', 'key', 'interface');
+
+                    DB::table(DB::raw("({$sub->toSql()}) as sub"))
+                        ->mergeBindings($sub->getQuery()->getQuery())
+                        ->select('key', DB::raw('SUM(diff) AS total'))
+                        ->groupBy('key')
+                        ->orderBy('key', 'ASC')
+                        ->each(function ($result) use (&$trafficBytesIn, &$trafficBytesOut) {
+                            if ($result->key === 'container_network_receive_bytes_total') {
+                                $trafficBytesIn += (int) $result->total;
+                            } elseif ($result->key === 'container_network_transmit_bytes_total') {
+                                $trafficBytesOut += (int) $result->total;
+                            }
+                        });
+                });
+
+                $metric['traffic_bytes_in']  = $trafficBytesIn >= 0 ? $trafficBytesIn : $trafficBytesIn * (-1);
+                $metric['traffic_bytes_out'] = $trafficBytesOut >= 0 ? $trafficBytesOut : $trafficBytesOut * (-1);
+
+                $metric['cpu_core_percentage']   = $metric['cpu_core_usage'] * 100;
+                $metric['memory_gigabytes']      = $metric['memory_bytes'] / 1024 / 1024 / 1024;
+                $metric['storage_gigabytes']     = $metric['storage_bytes'] / 1024 / 1024 / 1024;
+                $metric['traffic_gigabytes_in']  = $metric['traffic_bytes_in'] / 1024 / 1024 / 1024;
+                $metric['traffic_gigabytes_out'] = $metric['traffic_bytes_out'] / 1024 / 1024 / 1024;
+
+                $datapoints->push([
+                    'timestamp' => $timeframe->to->toISOString(),
+                    'values'    => $metric,
+                ]);
+            });
+        }
+
         return view('deployment.index', [
-            'deployments' => Deployment::all(),
-            'deployment'  => $deployment_id ? Deployment::find($deployment_id) : null,
+            'deployments' => Deployment::paginate(10),
+            'deployment'  => $deployment,
+            'metrics'     => $datapoints,
         ]);
+    }
+
+    /**
+     * Calculate the timeframes.
+     *
+     * @deprecated
+     *
+     * TODO: Move to a helper function.
+     *
+     * @param string $from
+     * @param string $to
+     * @param string $aggregation
+     * @param array  $timeframes
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function calculateTimeframes($from, $to, $aggregation, $timeframes = null)
+    {
+        $carbonFrom = Carbon::parse($from);
+        $carbonTo   = Carbon::parse($to);
+
+        switch ($aggregation) {
+            case 'minute':
+                $nextTarget = (clone $carbonFrom)->addMinute();
+
+                break;
+            case 'hour':
+                $nextTarget = (clone $carbonFrom)->addHour();
+
+                break;
+            case 'day':
+                $nextTarget = (clone $carbonFrom)->addDay();
+
+                break;
+            case 'week':
+                $nextTarget = (clone $carbonFrom)->addWeek();
+
+                break;
+            case 'month':
+                $nextTarget = (clone $carbonFrom)->addMonth();
+
+                break;
+            case 'quarter':
+                $nextTarget = (clone $carbonFrom)->addQuarter();
+
+                break;
+            case 'year':
+                $nextTarget = (clone $carbonFrom)->addYear();
+
+                break;
+            case 'all':
+                $nextTarget = (clone $carbonTo);
+
+                break;
+        }
+
+        if (!$timeframes) {
+            $timeframes = collect();
+        }
+
+        $timeframes->push((object) [
+            'from' => $carbonFrom,
+            'to'   => $nextTarget->gte($carbonTo) ? $carbonTo : $nextTarget,
+        ]);
+
+        if ($nextTarget->lt($carbonTo)) {
+            return $this->calculateTimeframes($nextTarget->addSecond()->toISOString(), $to, $aggregation, $timeframes);
+        } else {
+            return $timeframes;
+        }
     }
 
     /**

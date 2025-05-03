@@ -220,6 +220,28 @@ class Deployment extends Model
     }
 
     /**
+     * Get the status attribute.
+     *
+     * @return string
+     */
+    public function getSimpleStatusAttribute(): string
+    {
+        if ($this->delete) {
+            return __('Deleting');
+        }
+
+        if ($this->update) {
+            return __('Updating');
+        }
+
+        if ($this->deployed_at) {
+            return __('Deployed');
+        }
+
+        return __('Pending');
+    }
+
+    /**
      * Get the path attribute.
      *
      * @return string
