@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateDirectory;
 use App\Models\Projects\Templates\TemplateField;
@@ -295,6 +296,15 @@ class TemplateController extends Controller
                 'content'               => '',
             ])
         ) {
+            Deployment::where('delete', '=', false)
+                ->whereNotNull('deployed_at')
+                ->whereHas('template', function ($query) use ($template_id) {
+                    $query->where('id', $template_id);
+                })
+                ->update([
+                    'update' => true,
+                ]);
+
             return redirect()->route('template.details_file', ['template_id' => $template_id, 'file_id' => $file->id])->with('success', __('File added.'));
         }
 
@@ -347,6 +357,15 @@ class TemplateController extends Controller
                 ...($request->content ? ['content' => $request->content] : []),
             ]);
 
+            Deployment::where('delete', '=', false)
+                ->whereNotNull('deployed_at')
+                ->whereHas('template', function ($query) use ($template_id) {
+                    $query->where('id', $template_id);
+                })
+                ->update([
+                    'update' => true,
+                ]);
+
             return redirect()->route('template.details_file', ['template_id' => $template_id, 'file_id' => $file->id])->with('success', __('File updated.'));
         }
 
@@ -369,6 +388,15 @@ class TemplateController extends Controller
                 ->first()
         ) {
             $file->delete();
+
+            Deployment::where('delete', '=', false)
+                ->whereNotNull('deployed_at')
+                ->whereHas('template', function ($query) use ($template_id) {
+                    $query->where('id', $template_id);
+                })
+                ->update([
+                    'update' => true,
+                ]);
 
             return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('File deleted.'));
         }
