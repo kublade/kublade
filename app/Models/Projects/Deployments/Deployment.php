@@ -250,4 +250,24 @@ class Deployment extends Model
     {
         return $this->cluster->repositoryDeploymentPath . $this->uuid;
     }
+
+    /**
+     * Get the statistics attribute.
+     *
+     * @return array
+     */
+    public function getStatisticsAttribute(): array | null
+    {
+        $deploymentMetric = $this->metrics()->orderByDesc('created_at')->first();
+
+        if (! $deploymentMetric) {
+            return null;
+        }
+
+        return [
+            'cpu'     => $deploymentMetric->cpu_core_usage * 100,
+            'memory'  => $deploymentMetric->memory_bytes / 1024 / 1024,
+            'storage' => $deploymentMetric->storage_bytes / 1024 / 1024,
+        ];
+    }
 }

@@ -30,7 +30,7 @@
                                         <span class="fs-6 py-2">{{ __('Clusters') }}</span>
                                         <a href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
-                                    <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->clusters()->count() }}</p>
+                                    <p class="fs-3 mb-0 p-3 lh-1">{{ request()->get('project')->clusters()->count() }}</p>
                                 </div>
                             </div>
                             <div class="col-md">
@@ -39,7 +39,7 @@
                                         <span class="fs-6 py-2">{{ __('Deployments') }}</span>
                                         <a href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
-                                    <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->deployments()->count() }}</p>
+                                    <p class="fs-3 mb-0 p-3 lh-1">{{ request()->get('project')->deployments()->count() }}</p>
                                 </div>
                             </div>
                             <div class="col-md">
@@ -48,7 +48,7 @@
                                         <span class="fs-6 py-2">{{ __('Users') }}</span>
                                         <a href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
                                     </h5>
-                                    <p class="h1 mb-0 p-3 lh-1">{{ request()->get('project')->invitations()->count() }}</p>
+                                    <p class="fs-3 mb-0 p-3 lh-1">{{ request()->get('project')->invitations()->count() }}</p>
                                 </div>
                             </div>
                         </div>

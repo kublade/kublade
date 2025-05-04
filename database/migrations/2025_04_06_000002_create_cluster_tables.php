@@ -52,7 +52,6 @@ return new class () extends Migration {
             $table->double('cpu')->nullable();
             $table->double('memory')->nullable();
             $table->double('storage')->nullable();
-            $table->double('gpu')->nullable();
             $table->double('pods')->nullable();
             $table->timestamps();
             $table->softDeletes();

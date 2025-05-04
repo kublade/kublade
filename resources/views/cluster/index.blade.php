@@ -23,6 +23,7 @@
                             <tr class="align-middle">
                                 <th class="w-100" scope="col">{{ __('Cluster') }}</th>
                                 <th scope="col">{{ __('Status') }}</th>
+                                <th scope="col">{{ __('Statistics') }}</th>
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
@@ -38,12 +39,187 @@
                                         @endif
                                     </td>
                                     <td>
+                                        @if ($cluster->statistics)
+                                            <div class="d-flex gap-2">
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        @if ($cluster->statistics['metrics']['alerts']['critical']['cpu'])
+                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @elseif ($cluster->statistics['metrics']['alerts']['warning']['cpu'])
+                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @else
+                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @endif
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ number_format($cluster->statistics['metrics']['utilization']['cpu'], 2) }}%</span><br>
+                                                            <span class="small lh-1 text-nowrap">{{ number_format($cluster->statistics['metrics']['usage']['cpu'], 2) }}% / {{ number_format($cluster->statistics['metrics']['capacity']['cpu'], 0) }}%</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        @if ($cluster->statistics['metrics']['alerts']['critical']['memory'])
+                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @elseif ($cluster->statistics['metrics']['alerts']['warning']['memory'])
+                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @else
+                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @endif
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ number_format($cluster->statistics['metrics']['utilization']['memory'], 2) }}%</span><br>
+                                                            <span class="small lh-1 text-nowrap">{{ number_format($cluster->statistics['metrics']['usage']['memory'], 2) }}GiB / {{ number_format($cluster->statistics['metrics']['capacity']['memory'], 0) }}GiB</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Storage') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        @if ($cluster->statistics['metrics']['alerts']['critical']['storage'])
+                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @elseif ($cluster->statistics['metrics']['alerts']['warning']['storage'])
+                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @else
+                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @endif
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ number_format($cluster->statistics['metrics']['utilization']['storage'], 2) }}%</span><br>
+                                                            <span class="small lh-1 text-nowrap">{{ number_format($cluster->statistics['metrics']['usage']['storage'], 2) }}GiB / {{ number_format($cluster->statistics['metrics']['capacity']['storage'], 0) }}GiB</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Pods') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        @if ($cluster->statistics['metrics']['alerts']['critical']['pods'])
+                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @elseif ($cluster->statistics['metrics']['alerts']['warning']['pods'])
+                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @else
+                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        @endif
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ number_format($cluster->statistics['metrics']['utilization']['pods'], 2) }}%</span><br>
+                                                            <span class="small lh-1 text-nowrap">{{ number_format($cluster->statistics['metrics']['usage']['pods'], 0) }} / {{ number_format($cluster->statistics['metrics']['capacity']['pods'], 0) }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="d-flex gap-2">
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ __('N/A') }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                    <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ __('N/A') }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Storage') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ __('N/A') }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                    <span class="small fw-bold">{{ __('Pods') }}</span>
+                                                    <div class="border rounded d-flex gap-3 align-items-center">
+                                                        <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                        <span class="me-3">
+                                                            <span class="lh-1">{{ __('N/A') }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <div class="d-flex gap-2">
                                             <a href="{{ route('cluster.update', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
                                             <a href="{{ route('cluster.delete.action', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
+                                @if ($cluster->statistics)
+                                    <tr>
+                                        <td class="bg-light border-start border-end" colspan="4">
+                                            <a href="#" class="d-inline-block" data-bs-toggle="collapse" data-bs-target="#clusterStatistics{{ $cluster->id }}">
+                                                {{ __('Show nodes') }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0 border-start border-end" colspan="4">
+                                            <div class="collapse" id="clusterStatistics{{ $cluster->id }}">
+                                                <table class="table mt-0 mb-0">
+                                                    <thead>
+                                                        <tr class="align-middle">
+                                                            <th class="w-100">{{ __('Node') }}</th>
+                                                            <th>{{ __('Statistics') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($cluster->statistics['nodes'] as $node)
+                                                            <tr class="align-middle{{ $loop->last ? ' border-0' : '' }}">
+                                                                <td class="w-100">{{ $node['name'] }}</td>
+                                                                <td>
+                                                                    <div class="d-flex gap-2">
+                                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                                            <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                                @if ($node['metrics']['alerts']['critical']['cpu'])
+                                                                                    <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @elseif ($node['metrics']['alerts']['warning']['cpu'])
+                                                                                    <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @else
+                                                                                    <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @endif
+                                                                                <span class="me-3">
+                                                                                    <span class="lh-1">{{ number_format($node['metrics']['utilization']['cpu'], 2) }}%</span><br>
+                                                                                    <span class="small lh-1 text-nowrap">{{ number_format($node['metrics']['usage']['cpu'], 2) }}% / {{ number_format($node['metrics']['capacity']['cpu'], 0) }}%</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                                            <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                                @if ($node['metrics']['alerts']['critical']['memory'])
+                                                                                    <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @elseif ($node['metrics']['alerts']['warning']['memory'])
+                                                                                    <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @else
+                                                                                    <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                                @endif
+                                                                                <span class="me-3">
+                                                                                    <span class="lh-1">{{ number_format($node['metrics']['utilization']['memory'], 2) }}%</span><br>
+                                                                                    <span class="small lh-1 text-nowrap">{{ number_format($node['metrics']['usage']['memory'], 2) }}GiB / {{ number_format($node['metrics']['capacity']['memory'], 0) }}GiB</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
