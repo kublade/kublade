@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.0](https://github.com/kublade/kublade/compare/v1.14.0...v1.15.0) (2025-05-04)
+
+
+### Features
+
+* deployment pod logs ([692dc7f](https://github.com/kublade/kublade/commit/692dc7f16f3d4aa9bcde54b5bc4cba1b2cde3d3f))
+
 ## [1.14.0](https://github.com/kublade/kublade/compare/v1.13.2...v1.14.0) (2025-05-04)
 
 
