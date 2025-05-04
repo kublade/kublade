@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.0](https://github.com/kublade/kublade/compare/v1.15.0...v1.16.0) (2025-05-04)
+
+
+### Features
+
+* network policy management ([494cbd7](https://github.com/kublade/kublade/commit/494cbd7576efbe1b1b3bbdb0121a7047e0c19c55))
+
 ## [1.15.0](https://github.com/kublade/kublade/compare/v1.14.0...v1.15.0) (2025-05-04)
 
 
