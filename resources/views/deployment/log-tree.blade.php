@@ -4,7 +4,7 @@
         {{ __('No logs') }}
     </div>
 @else
-    <ul class="file-tree">
+    <ul class="file-tree d-flex flex-column gap-2">
         @foreach ($deployment->logs as $log)
         <li class="d-flex justify-content-between align-items-start flex-row file-tree-li">
             <a href="{{ route('deployment.details', ['project_id' => $deployment->project_id, 'deployment_id' => $deployment->id, 'tab' => 'logs', 'log_id' => $log->id]) }}" class="d-flex align-items-center gap-2">
