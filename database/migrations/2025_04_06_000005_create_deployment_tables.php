@@ -69,7 +69,6 @@ return new class () extends Migration {
             $table->boolean('is_active')->default(false);
             $table->double('memory')->nullable();
             $table->double('cpu')->nullable();
-            $table->double('gpu')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Kubernetes\Clusters;
 
+use App\Models\Kubernetes\Metrics\ClusterMetric;
+use App\Models\Kubernetes\Metrics\ClusterMetricNode;
 use App\Models\Kubernetes\Resources\Node;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Projects\Project;
@@ -142,6 +144,16 @@ class Cluster extends Model
     }
 
     /**
+     * Relation to metrics.
+     *
+     * @return HasMany
+     */
+    public function metrics(): HasMany
+    {
+        return $this->hasMany(ClusterMetric::class, 'cluster_id', 'id');
+    }
+
+    /**
      * Get the utility namespace.
      *
      * @return Ns|null
@@ -209,5 +221,103 @@ class Cluster extends Model
     public function getStatusAttribute(): string
     {
         return $this->statuses()->orderByDesc('created_at')->first()?->status ?? Status::STATUS_OFFLINE;
+    }
+
+    /**
+     * Get the statistics attribute.
+     *
+     * @return array
+     */
+    public function getStatisticsAttribute(): array | null
+    {
+        $clusterMetric = $this->metrics()->orderByDesc('created_at')->first();
+        $warning       = $this->resources()->where('type', '=', Resource::TYPE_ALERT)->first();
+        $limit         = $this->resources()->where('type', '=', Resource::TYPE_LIMIT)->first();
+
+        if (! $clusterMetric) {
+            return null;
+        }
+
+        return [
+            'metrics' => [
+                'capacity' => [
+                    'cpu'     => $clusterMetric->capacity->cpu * 100,
+                    'storage' => $clusterMetric->capacity->storage / 1024 / 1024 / 1024,
+                    'memory'  => $clusterMetric->capacity->memory / 1024 / 1024 / 1024,
+                    'pods'    => $clusterMetric->capacity->pods,
+                ],
+                'usage' => [
+                    'cpu'     => $clusterMetric->usage->cpu * 100,
+                    'storage' => $clusterMetric->usage->storage / 1024 / 1024 / 1024,
+                    'memory'  => $clusterMetric->usage->memory / 1024 / 1024 / 1024,
+                    'pods'    => $clusterMetric->usage->pods,
+                ],
+                'utilization' => [
+                    'cpu'     => $clusterMetric->utilization->cpu,
+                    'storage' => $clusterMetric->utilization->storage,
+                    'memory'  => $clusterMetric->utilization->memory,
+                    'pods'    => $clusterMetric->utilization->pods,
+                ],
+                'alerts' => [
+                    'warning' => $warning ? [
+                        'cpu'     => $clusterMetric->utilization->cpu >= $warning->cpu,
+                        'storage' => $clusterMetric->utilization->storage >= $warning->storage,
+                        'memory'  => $clusterMetric->utilization->memory >= $warning->memory,
+                        'pods'    => $clusterMetric->utilization->pods >= $warning->pods,
+                    ] : [
+                        'cpu'     => false,
+                        'storage' => false,
+                        'memory'  => false,
+                        'pods'    => false,
+                    ],
+                    'critical' => $limit ? [
+                        'cpu'     => $clusterMetric->utilization->cpu >= $limit->cpu,
+                        'storage' => $clusterMetric->utilization->storage >= $limit->storage,
+                        'memory'  => $clusterMetric->utilization->memory >= $limit->memory,
+                        'pods'    => $clusterMetric->utilization->pods >= $limit->pods,
+                    ] : [
+                        'cpu'     => false,
+                        'storage' => false,
+                        'memory'  => false,
+                        'pods'    => false,
+                    ],
+                ],
+            ],
+            'nodes' => $clusterMetric->nodeMetrics->map(function (ClusterMetricNode $metric) use ($warning, $limit) {
+                return [
+                    'name'    => $metric->node->name,
+                    'metrics' => [
+                        'capacity' => [
+                            'cpu'    => $metric->capacity->cpu * 100,
+                            'memory' => $metric->capacity->memory / 1024 / 1024 / 1024,
+                        ],
+                        'usage' => [
+                            'cpu'    => $metric->usage->cpu * 100,
+                            'memory' => $metric->usage->memory / 1024 / 1024 / 1024,
+                        ],
+                        'utilization' => [
+                            'cpu'    => $metric->utilization->cpu,
+                            'memory' => $metric->utilization->memory,
+                        ],
+                        'alerts' => [
+                            'warning' => $warning ? [
+                                'cpu'    => $metric->utilization->cpu >= $warning->cpu,
+                                'memory' => $metric->utilization->memory >= $warning->memory,
+                            ] : [
+                                'cpu'    => false,
+                                'memory' => false,
+                            ],
+                            'critical' => $limit ? [
+                                'cpu'    => $metric->utilization->cpu >= $limit->cpu,
+                                'memory' => $metric->utilization->memory >= $limit->memory,
+                            ] : [
+                                'cpu'    => false,
+                                'memory' => false,
+                            ],
+                        ],
+                    ],
+                ];
+            })->toArray(),
+        ];
     }
 }

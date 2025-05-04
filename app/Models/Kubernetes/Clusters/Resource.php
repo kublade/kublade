@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property float  $cpu
  * @property float  $memory
  * @property float  $storage
- * @property float  $gpu
  * @property float  $pods
  * @property Carbon $created_at
  * @property Carbon $updated_at
