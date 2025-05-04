@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Kubernetes\Resources\PodLog;
 use App\Models\Projects\Deployments\Deployment;
+use App\Models\Projects\Deployments\DeploymentCommit;
 use App\Models\Projects\Deployments\DeploymentData;
 use App\Models\Projects\Deployments\DeploymentLink;
 use App\Models\Projects\Deployments\DeploymentSecretData;
@@ -664,6 +665,15 @@ class DeploymentController extends Controller
             ]);
         }
 
+        if (
+            ! empty($targetDeployment->deployed_at) &&
+            ! $targetDeployment->delete
+        ) {
+            $targetDeployment->update([
+                'update' => true,
+            ]);
+        }
+
         return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $targetDeployment->id, 'tab' => 'network-policies'])->with('success', __('Network policy created.'));
     }
 
@@ -716,5 +726,68 @@ class DeploymentController extends Controller
         $networkPolicy->delete();
 
         return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $deployment_id, 'tab' => 'network-policies'])->with('success', __('Network policy deleted.'));
+    }
+
+    /**
+     * Revert the commit.
+     *
+     * @param string $project_id
+     * @param string $deployment_id
+     * @param string $commit_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_revert_commit(string $project_id, string $deployment_id, string $commit_id)
+    {
+        Validator::make([
+            'deployment_id' => $deployment_id,
+            'commit_id'     => $commit_id,
+        ], [
+            'deployment_id' => ['required', 'string'],
+            'commit_id'     => ['required', 'string'],
+        ])->validate();
+
+        $commit = DeploymentCommit::whereHas('deployment', function ($query) {
+            $query->whereHas('project', function ($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('invitations', function ($query) {
+                        $query->where('user_id', Auth::id())
+                            ->where('invitation_accepted', true);
+                    });
+            });
+        })
+            ->where('id', '=', $commit_id)
+            ->first();
+
+        if (
+            empty($commit) ||
+            $commit->deployment->delete
+        ) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        $commit->diff->each(function ($diff) use ($commit) {
+            if ($diff['type'] === 'plain') {
+                $commit->deployment->deploymentData->where('key', $diff['key'])->each(function (DeploymentData $deploymentData) use ($diff) {
+                    $deploymentData->update([
+                        'value' => $diff['previous'],
+                    ]);
+                });
+            } else {
+                $commit->deployment->deploymentSecretData->where('key', $diff['key'])->each(function (DeploymentSecretData $secretData) use ($diff) {
+                    $secretData->update([
+                        'value' => $diff['previous'],
+                    ]);
+                });
+            }
+
+            if (!empty($commit->deployment->deployed_at)) {
+                $commit->deployment->update([
+                    'update' => true,
+                ]);
+            }
+        });
+
+        return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $deployment_id, 'tab' => 'versions'])->with('success', __('Commit reverted.'));
     }
 }

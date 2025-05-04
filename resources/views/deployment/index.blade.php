@@ -311,7 +311,65 @@
                                                     <span class="fs-6 py-2">{{ __('Versions') }}</span>
                                                 </h5>
                                                 <div class="p-3">
-
+                                                    @php	
+                                                        $commits = $deployment->commits()->paginate(10);
+                                                    @endphp
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{ __('Hash') }}</th>
+                                                                <th class="w-100">{{ __('Message') }}</th>
+                                                                <th>{{ __('Created At') }}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($commits as $commit)
+                                                                <tr class="align-middle">
+                                                                    <td>{{ $commit->hash }}</td>
+                                                                    <td class="w-100">{!! str_replace("\n", '<br>', $commit->message) !!}</td>
+                                                                    <td class="text-nowrap">{{ $commit->created_at->format('Y-m-d H:i:s') }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="bg-light border-start border-end" colspan="4">
+                                                                        <a href="#" class="d-inline-block" data-bs-toggle="collapse" data-bs-target="#commit{{ $commit->id }}">
+                                                                            {{ __('Show diff') }}
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="p-0 border-start border-end" colspan="4">
+                                                                        <div class="collapse" id="commit{{ $commit->id }}">
+                                                                            <div class="p-3">
+                                                                                @if ($commit->diff->count() > 0)
+                                                                                    @foreach ($commit->diff as $diff)
+                                                                                        <span class="small mb-2 fw-bold d-block">{{ $diff['label'] }}</span>
+                                                                                        <div class="input-group{{ !$loop->last ? ' mb-3' : '' }}">
+                                                                                            <input type="text" class="form-control border border-danger rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['current'] }}" readonly>
+                                                                                            <span class="input-group-text align-items-center border-0 bg-transparent">
+                                                                                                <i class="bi bi-arrow-right"></i>
+                                                                                            </span>
+                                                                                            <input type="text" class="form-control border border-success rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['previous'] }}" readonly>
+                                                                                        </div>
+                                                                                    @endforeach
+                                                                                    <div class="row mt-3">
+                                                                                        <div class="col-md">
+                                                                                            <a href="{{ route('deployment.commit.revert.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'commit_id' => $commit->id]) }}" class="btn btn-primary">{{ __('Revert') }}</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="alert alert-info mb-0 d-flex align-items-center gap-3">
+                                                                                        <i class="bi bi-info-circle fs-5"></i>
+                                                                                        {{ __('No changes') }}
+                                                                                    </div>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    {{ $deployment->commits()->paginate(10)->links('pagination::bootstrap-5') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -343,6 +401,7 @@
                             <thead>
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Deployment') }}</th>
+                                    <th scope="col">{{ __('Template') }}</th>
                                     <th scope="col">{{ __('Cluster') }}</th>
                                     <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Statistics') }}</th>
@@ -352,10 +411,8 @@
                             <tbody>
                                 @foreach ($deployments as $deployment)
                                     <tr class="align-middle">
-                                        <td class="w-100">
-                                            {{ $deployment->name ?? __('N/A') }}
-                                            <span class="small d-block">{{ $deployment->template->name }}</span>
-                                        </td>
+                                        <td class="w-100">{{ $deployment->name ?? __('N/A') }}</td>
+                                        <td>{{ $deployment->template->name }}</td>
                                         <td>{{ $deployment->cluster->name }}</td>
                                         <td>{!! $deployment->status !!}</td>
                                         <td>

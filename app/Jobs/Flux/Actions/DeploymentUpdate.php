@@ -67,19 +67,21 @@ class DeploymentUpdate extends Job implements ShouldBeUnique
                     'message'       => $release->msg,
                 ])
             ) {
-                collect($publicData)->each(function ($value, $key) use ($commit) {
+                collect($publicData)->each(function ($value, $key) use ($commit, $deployment) {
                     DeploymentCommitData::create([
                         'deployment_commit_id' => $commit->id,
+                        'deployment_data_id'   => $deployment->deploymentData->where('key', $key)->first()->id,
                         'key'                  => $key,
                         'value'                => $value,
                     ]);
                 });
 
-                collect($secretData)->each(function ($value, $key) use ($commit) {
+                collect($secretData)->each(function ($value, $key) use ($commit, $deployment) {
                     DeploymentCommitSecretData::create([
-                        'deployment_commit_id' => $commit->id,
-                        'key'                  => $key,
-                        'value'                => $value,
+                        'deployment_commit_id'      => $commit->id,
+                        'deployment_secret_data_id' => $deployment->deploymentSecretData->where('key', $key)->first()->id,
+                        'key'                       => $key,
+                        'value'                     => $value,
                     ]);
                 });
             }

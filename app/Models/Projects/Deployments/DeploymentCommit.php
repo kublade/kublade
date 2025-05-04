@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * Class DeploymentCommit.
@@ -75,5 +76,49 @@ class DeploymentCommit extends Model
     public function commitSecretData(): HasMany
     {
         return $this->hasMany(DeploymentCommitSecretData::class, 'deployment_commit_id', 'id');
+    }
+
+    /**
+     * Get the diff attribute.
+     *
+     * @return Collection
+     */
+    public function getDiffAttribute(): Collection
+    {
+        return $this->commitData->map(function (DeploymentCommitData $item) {
+            $current  = $this->deployment->deploymentData->where('key', $item->key)->first();
+            $previous = $this->commitData->where('key', $item->key)->first()?->value;
+
+            if ($current?->value == $previous) {
+                return null;
+            }
+
+            return [
+                'type'     => 'plain',
+                'label'    => $current?->field->label,
+                'current'  => $current?->value,
+                'previous' => $previous,
+                'key'      => $item->key,
+            ];
+        })->filter(function ($item) {
+            return $item !== null;
+        })->merge(
+            $this->commitSecretData->map(function (DeploymentCommitSecretData $item) {
+                $current  = $this->deployment->deploymentSecretData->where('key', $item->key)->first();
+                $previous = $this->commitSecretData->where('key', $item->key)->first()?->value;
+
+                if ($current?->value == $previous) {
+                    return null;
+                }
+
+                return [
+                    'type'     => 'secret',
+                    'label'    => $current?->field->label,
+                    'current'  => $current?->value,
+                    'previous' => $previous,
+                    'key'      => $item->key,
+                ];
+            })
+        );
     }
 }
