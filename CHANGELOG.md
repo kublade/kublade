@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0](https://github.com/kublade/kublade/compare/v1.13.2...v1.14.0) (2025-05-04)
+
+
+### Features
+
+* cluster statistics ([290dc3d](https://github.com/kublade/kublade/commit/290dc3db7a8b7fec5684729c61bbbee0e581f24a))
+
 ## [1.13.2](https://github.com/kublade/kublade/compare/v1.13.1...v1.13.2) (2025-05-03)
 
 
