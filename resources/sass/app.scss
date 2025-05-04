@@ -224,3 +224,11 @@ body {
 .tab-content > .tab-pane:not(.show) {
     display: none !important;
 }
+
+.border-end {
+    &.border-end-md-0 {
+        @media (max-width: 767px) {
+            border-right: 0 !important;
+        }
+    }
+}

@@ -46,6 +46,15 @@ class PodLog extends Model
     ];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'logs',
+    ];
+
+    /**
      * Relation to pod.
      *
      * @return HasOne

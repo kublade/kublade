@@ -5,22 +5,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
 <style>
   .cm-blade-variable {
-      color: #e06c75;
-      font-weight: bold;
-    }
+    color: #e06c75;
+    font-weight: bold;
+  }
 
-    .cm-blade-directive {
-      color: #61afef;
-      font-style: italic;
-    }
+  .cm-blade-directive {
+    color: #61afef;
+    font-style: italic;
+  }
 
-    .CodeMirror {
-      height: auto;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      border-radius: 0.5rem;
-      margin: 1.5rem 0;
-    }
+  .CodeMirror {
+    height: auto;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+  }
 </style>
 @endsection
 
