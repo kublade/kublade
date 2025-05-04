@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Resources\PodLog;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentData;
 use App\Models\Projects\Deployments\DeploymentSecretData;
@@ -123,11 +124,20 @@ class DeploymentController extends Controller
             $file = TemplateFile::where('id', $request->file_id)->first();
         }
 
+        $log = null;
+
+        if ($deployment && $request->tab === 'logs' && $request->log_id) {
+            $log = PodLog::where('id', $request->log_id)
+                ->first()
+                ->makeVisible('logs');
+        }
+
         return view('deployment.index', [
             'deployments' => Deployment::paginate(10),
             'deployment'  => $deployment,
             'metrics'     => $datapoints,
             'file'        => $file,
+            'log'         => $log,
         ]);
     }
 

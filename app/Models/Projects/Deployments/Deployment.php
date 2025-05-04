@@ -6,6 +6,7 @@ namespace App\Models\Projects\Deployments;
 
 use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Kubernetes\Resources\Ns;
+use App\Models\Kubernetes\Resources\PodLog;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * Class Deployment.
@@ -269,5 +271,21 @@ class Deployment extends Model
             'memory'  => $deploymentMetric->memory_bytes / 1024 / 1024,
             'storage' => $deploymentMetric->storage_bytes / 1024 / 1024,
         ];
+    }
+
+    /**
+     * Get the logs attribute.
+     *
+     * @return Collection
+     */
+    public function getLogsAttribute(): Collection
+    {
+        return PodLog::whereHas('pod', function ($query) {
+            $query->whereHas('namespace', function ($query) {
+                $query->where('deployment_id', $this->id);
+            });
+        })
+            ->select('id', 'pod_id', 'created_at', 'updated_at', 'deleted_at')
+            ->get() ?? collect();
     }
 }

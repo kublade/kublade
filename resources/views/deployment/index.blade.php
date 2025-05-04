@@ -111,8 +111,16 @@
                                             <a class="nav-link{{ request()->get('tab') === 'metrics' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'metrics']) }}">{{ __('Metrics') }}</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
+                                            <a class="nav-link{{ request()->get('tab') === 'logs' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'logs']) }}">{{ __('Logs') }}</a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
                                             <a class="nav-link{{ request()->get('tab') === 'files' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'files']) }}">{{ __('Files') }}</a>
                                         </li>
+                                        <!--
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link{{ request()->get('tab') === 'versions' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'versions']) }}">{{ __('Versions') }}</a>
+                                        </li>
+                                        -->
                                     </ul>
                                 </div>
                             </div>
@@ -253,15 +261,34 @@
                                                 <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                     <span class="fs-6 py-2">{{ __('Files') }}</span>
                                                 </h5>
-                                                <div class="d-flex">
+                                                <div class="d-flex flex-column flex-md-row">
                                                     <div class="col-md-4 d-flex">
-                                                        <div class="p-3 border-end h-100 w-100">
+                                                        <div class="p-3 border-end h-100 w-100 border-end-md-0">
                                                             @include('deployment.file-tree', ['deployment' => $deployment, 'template' => $deployment->template])
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 px-4">
                                                         @if (!empty($file))
                                                             @include('deployment.editor', ['content' => $file->interpret($deployment)])
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane{{ request()->get('tab') === 'logs' ? ' show active' : '' }}" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                                            <div class="border rounded overflow-hidden">
+                                                <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                                    <span class="fs-6 py-2">{{ __('Logs') }}</span>
+                                                </h5>
+                                                <div class="d-flex flex-column flex-md-row">
+                                                    <div class="col-md-4 d-flex">
+                                                        <div class="p-3 border-end h-100 w-100 border-end-md-0">
+                                                            @include('deployment.log-tree', ['deployment' => $deployment])
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 px-4">
+                                                        @if (!empty($log))
+                                                            @include('deployment.log-viewer', ['log' => $log])
                                                         @endif
                                                     </div>
                                                 </div>
