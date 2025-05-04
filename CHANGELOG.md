@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.0](https://github.com/kublade/kublade/compare/v1.16.1...v1.17.0) (2025-05-04)
+
+
+### Features
+
+* deployment version history ([1527d42](https://github.com/kublade/kublade/commit/1527d4260f073bad4d9b75b6e5c29ab5f07d2914))
+
 ## [1.16.1](https://github.com/kublade/kublade/compare/v1.16.0...v1.16.1) (2025-05-04)
 
 
