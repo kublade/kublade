@@ -116,11 +116,9 @@
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link{{ request()->get('tab') === 'files' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'files']) }}">{{ __('Files') }}</a>
                                         </li>
-                                        <!--
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link{{ request()->get('tab') === 'versions' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'versions']) }}">{{ __('Versions') }}</a>
+                                            <a class="nav-link{{ request()->get('tab') === 'versions' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'versions']) }}">{{ __('History') }}</a>
                                         </li>
-                                        -->
                                         @if ($deployment->template->netpol)
                                             <li class="nav-item" role="presentation">
                                                 <a class="nav-link{{ request()->get('tab') === 'network-policies' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'network-policies']) }}">{{ __('Network Policies') }}</a>

@@ -196,7 +196,8 @@ class Deployment extends Model
      */
     public function commits(): HasMany
     {
-        return $this->hasMany(DeploymentCommit::class, 'deployment_id', 'id');
+        return $this->hasMany(DeploymentCommit::class, 'deployment_id', 'id')
+            ->orderByDesc('created_at');
     }
 
     /**
