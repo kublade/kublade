@@ -82,6 +82,7 @@ Route::middleware([
     Route::get('/projects/{project_id}/deployments/{deployment_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete'])->name('deployment.delete.action');
     Route::post('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}/put', [App\Http\Controllers\DeploymentController::class, 'action_put_network_policy'])->name('deployment.netpol.put.action');
     Route::get('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete_network_policy'])->name('deployment.netpol.delete.action');
+    Route::get('/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}/revert', [App\Http\Controllers\DeploymentController::class, 'action_revert_commit'])->name('deployment.commit.revert.action');
     Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.details');
 });
 
