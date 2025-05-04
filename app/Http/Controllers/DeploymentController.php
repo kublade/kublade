@@ -542,13 +542,17 @@ class DeploymentController extends Controller
                 }
 
                 if ($field->secret) {
-                    $deployment->deploymentSecretData()->where('template_field_id', '=', $field->id)->update([
-                        'value' => $value,
-                    ]);
+                    $deployment->deploymentSecretData->where('template_field_id', '=', $field->id)->each(function (DeploymentSecretData $deploymentSecretData) use ($value) {
+                        $deploymentSecretData->update([
+                            'value' => $value,
+                        ]);
+                    });
                 } else {
-                    $deployment->deploymentData()->where('template_field_id', '=', $field->id)->update([
-                        'value' => $value,
-                    ]);
+                    $deployment->deploymentData->where('template_field_id', '=', $field->id)->each(function (DeploymentData $deploymentData) use ($value) {
+                        $deploymentData->update([
+                            'value' => $value,
+                        ]);
+                    });
                 }
             });
 
