@@ -8,6 +8,7 @@ use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Kubernetes\Resources\PodLog;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentData;
+use App\Models\Projects\Deployments\DeploymentLink;
 use App\Models\Projects\Deployments\DeploymentSecretData;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
@@ -42,7 +43,16 @@ class DeploymentController extends Controller
     public function page_index(string $project_id, string $deployment_id = null)
     {
         $request    = request();
-        $deployment = Deployment::find($deployment_id);
+        $deployment = Deployment::whereHas('project', function ($query) {
+            $query->where('user_id', Auth::id())
+                ->orWhereHas('invitations', function ($query) {
+                    $query->where('user_id', Auth::id())
+                        ->where('invitation_accepted', true);
+                });
+        })
+            ->where('id', '=', $deployment_id)
+            ->first();
+
         $datapoints = collect();
 
         if ($deployment_id && $request->tab === 'metrics') {
@@ -132,12 +142,26 @@ class DeploymentController extends Controller
                 ->makeVisible('logs');
         }
 
+        $networkPolicy = null;
+
+        if ($deployment && $request->tab === 'network-policies' && $request->network_policy_id && $request->network_policy_id !== 'new') {
+            $networkPolicy = DeploymentLink::where('id', $request->network_policy_id)->first();
+        }
+
         return view('deployment.index', [
-            'deployments' => Deployment::paginate(10),
-            'deployment'  => $deployment,
-            'metrics'     => $datapoints,
-            'file'        => $file,
-            'log'         => $log,
+            'deployments' => Deployment::whereHas('project', function ($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('invitations', function ($query) {
+                        $query->where('user_id', Auth::id())
+                            ->where('invitation_accepted', true);
+                    });
+            })
+                ->paginate(10),
+            'deployment'    => $deployment,
+            'metrics'       => $datapoints,
+            'file'          => $file,
+            'log'           => $log,
+            'networkPolicy' => $networkPolicy,
         ]);
     }
 
@@ -572,5 +596,121 @@ class DeploymentController extends Controller
         }
 
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
+
+    public function action_put_network_policy(string $project_id, string $deployment_id, Request $request)
+    {
+        Validator::make($request->toArray(), [
+            'source_deployment_id' => ['required', 'string'],
+            'target_deployment_id' => ['required', 'string'],
+            'id'                   => ['nullable', 'string'],
+        ])->validate();
+
+        if (
+            DeploymentLink::where('source_deployment_id', '=', $request->source_deployment_id)
+                ->where('target_deployment_id', '=', $request->target_deployment_id)
+                ->exists()
+        ) {
+            return redirect()->back()->with('warning', __('Network policy already exists.'));
+        }
+
+        $sourceDeployment = Deployment::whereHas('project', function ($query) {
+            $query->where('user_id', Auth::id())
+                ->orWhereHas('invitations', function ($query) {
+                    $query->where('user_id', Auth::id())
+                        ->where('invitation_accepted', true);
+                });
+        })
+            ->where('id', '=', $request->source_deployment_id)
+            ->first();
+
+        if (empty($sourceDeployment)) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        $targetDeployment = Deployment::whereHas('project', function ($query) {
+            $query->where('user_id', Auth::id())
+                ->orWhereHas('invitations', function ($query) {
+                    $query->where('user_id', Auth::id())
+                        ->where('invitation_accepted', true);
+                });
+        })
+            ->where('id', '=', $request->target_deployment_id)
+            ->first();
+
+        if (empty($targetDeployment) || $sourceDeployment->id === $targetDeployment->id) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        if ($request->id) {
+            $networkPolicy = DeploymentLink::where('id', '=', $request->id)->first();
+
+            if (empty($networkPolicy)) {
+                return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+            }
+
+            $networkPolicy->update([
+                'source_deployment_id' => $sourceDeployment->id,
+                'target_deployment_id' => $targetDeployment->id,
+            ]);
+        } else {
+            DeploymentLink::create([
+                'source_deployment_id' => $sourceDeployment->id,
+                'target_deployment_id' => $targetDeployment->id,
+            ]);
+        }
+
+        return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $targetDeployment->id, 'tab' => 'network-policies'])->with('success', __('Network policy created.'));
+    }
+
+    /**
+     * Delete the network policy.
+     *
+     * @param string $project_id
+     * @param string $deployment_id
+     * @param string $network_policy_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_delete_network_policy(string $project_id, string $deployment_id, string $network_policy_id)
+    {
+        Validator::make([
+            'deployment_id'     => $deployment_id,
+            'network_policy_id' => $network_policy_id,
+        ], [
+            'deployment_id'     => ['required', 'string'],
+            'network_policy_id' => ['required', 'string'],
+        ])->validate();
+
+        $networkPolicy = DeploymentLink::where('id', '=', $network_policy_id)
+            ->where(function ($query) {
+                $query->whereHas('source', function ($query) {
+                    $query->whereHas('project', function ($query) {
+                        $query->where('user_id', Auth::id())
+                            ->orWhereHas('invitations', function ($query) {
+                                $query->where('user_id', Auth::id())
+                                    ->where('invitation_accepted', true);
+                            });
+                    });
+                })
+                ->orWhereHas('target', function ($query) {
+                    $query->whereHas('project', function ($query) {
+                        $query->where('user_id', Auth::id())
+                            ->orWhereHas('invitations', function ($query) {
+                                $query->where('user_id', Auth::id())
+                                    ->where('invitation_accepted', true);
+                            });
+                    });
+                });
+            })
+            ->first();
+
+        if (empty($networkPolicy)) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        $networkPolicy->delete();
+
+        return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $deployment_id, 'tab' => 'network-policies'])->with('success', __('Network policy deleted.'));
     }
 }

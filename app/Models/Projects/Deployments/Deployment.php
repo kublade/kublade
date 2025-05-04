@@ -288,4 +288,14 @@ class Deployment extends Model
             ->select('id', 'pod_id', 'created_at', 'updated_at', 'deleted_at')
             ->get() ?? collect();
     }
+
+    /**
+     * Get the network policies attribute.
+     *
+     * @return Collection
+     */
+    public function getNetworkPoliciesAttribute(): Collection
+    {
+        return $this->ingressAsSource->merge($this->ingressAsTarget);
+    }
 }

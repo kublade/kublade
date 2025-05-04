@@ -121,6 +121,11 @@
                                             <a class="nav-link{{ request()->get('tab') === 'versions' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'versions']) }}">{{ __('Versions') }}</a>
                                         </li>
                                         -->
+                                        @if ($deployment->template->netpol)
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link{{ request()->get('tab') === 'network-policies' ? ' active' : '' }}" href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'tab' => 'network-policies']) }}">{{ __('Network Policies') }}</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -144,6 +149,14 @@
                                                             <a href="{{ route('template.details', ['project_id' => request()->get('project')->id, 'template_id' => $deployment->template->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-eye"></i></a>
                                                         </h5>
                                                         <p class="mb-0 p-3 lh-1">{{ $deployment->template->name }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="border rounded overflow-hidden">
+                                                        <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                                            <span class="fs-6 py-2">{{ __('Cluster') }}</span>
+                                                        </h5>
+                                                        <p class="mb-0 p-3 lh-1">{{ $deployment->cluster->name }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,6 +307,35 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="tab-pane{{ request()->get('tab') === 'versions' ? ' show active' : '' }}" id="versions" role="tabpanel" aria-labelledby="versions-tab">
+                                            <div class="border rounded overflow-hidden">
+                                                <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                                    <span class="fs-6 py-2">{{ __('Versions') }}</span>
+                                                </h5>
+                                                <div class="p-3">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane{{ request()->get('tab') === 'network-policies' ? ' show active' : '' }}" id="network-policies" role="tabpanel" aria-labelledby="network-policies-tab">
+                                            <div class="border rounded overflow-hidden">
+                                                <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                                    <span class="fs-6 py-2">{{ __('Network Policies') }}</span>
+                                                </h5>
+                                                <div class="d-flex flex-column flex-md-row">
+                                                    <div class="col-md-4 d-flex">
+                                                        <div class="p-3 border-end h-100 w-100 border-end-md-0">
+                                                            @include('deployment.netpol-tree', ['deployment' => $deployment])
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 px-4">
+                                                        @if (!empty($networkPolicy) || request()->get('network_policy_id') === 'new')
+                                                            @include('deployment.netpol-editor', ['networkPolicy' => $networkPolicy])
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -303,6 +345,7 @@
                             <thead>
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Deployment') }}</th>
+                                    <th scope="col">{{ __('Cluster') }}</th>
                                     <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Statistics') }}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
@@ -315,6 +358,7 @@
                                             {{ $deployment->name ?? __('N/A') }}
                                             <span class="small d-block">{{ $deployment->template->name }}</span>
                                         </td>
+                                        <td>{{ $deployment->cluster->name }}</td>
                                         <td>{!! $deployment->status !!}</td>
                                         <td>
                                             @if ($deployment->statistics)
