@@ -23,6 +23,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class DeploymentController.
+ *
+ * This class is the controller for the deployment actions.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class DeploymentController extends Controller
 {
     /**

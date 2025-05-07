@@ -17,6 +17,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class TemplateController.
+ *
+ * This class is the controller for the template actions.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class TemplateController extends Controller
 {
     /**
