@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\API\Response;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,11 +37,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Validation failed',
-                'errors'  => $validator->errors(),
-            ], 400);
+            return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
         $user = User::create([
@@ -51,12 +48,10 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'User registered successfully',
-            'user'    => $user,
-            'token'   => $token,
-        ], 201);
+        return Response::generate(201, 'success', 'User registered successfully', [
+            'user'  => $user,
+            'token' => $token,
+        ]);
     }
 
     /**
@@ -74,27 +69,16 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Validation failed',
-                'errors'  => $validator->errors(),
-            ], 400);
+            return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
         $credentials = $request->only('email', 'password');
 
         if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+            return Response::generate(401, 'error', 'Unauthorized');
         }
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Login successful',
-            'token'   => $token,
-        ], 200);
+        return Response::generate(200, 'success', 'Login successful', ['token' => $token]);
     }
 
     /**
@@ -106,11 +90,7 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'User authenticated',
-            'user'    => Auth::user(),
-        ], 200);
+        return Response::generate(200, 'success', 'User authenticated', Auth::user());
     }
 
     /**
@@ -122,10 +102,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Successfully logged out',
-        ], 200);
+        return Response::generate(200, 'success', 'Successfully logged out');
     }
 
     /**
@@ -135,10 +112,6 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Token refreshed',
-            'token'   => Auth::refresh(),
-        ], 200);
+        return Response::generate(200, 'success', 'Token refreshed', ['token' => Auth::refresh()]);
     }
 }
