@@ -610,6 +610,15 @@ class DeploymentController extends Controller
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
     }
 
+    /**
+     * Create the network policy.
+     *
+     * @param string  $project_id
+     * @param string  $deployment_id
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function action_put_network_policy(string $project_id, string $deployment_id, Request $request)
     {
         Validator::make($request->toArray(), [

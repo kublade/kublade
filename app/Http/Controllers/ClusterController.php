@@ -251,4 +251,23 @@ class ClusterController extends Controller
 
         return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
     }
+
+    /**
+     * Delete the cluster.
+     *
+     * @param string $project_id
+     * @param string $cluster_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function action_delete(string $project_id, string $cluster_id)
+    {
+        if ($cluster = Cluster::where('id', $cluster_id)->first()) {
+            $cluster->delete();
+
+            return redirect()->route('cluster.index', ['project_id' => $project_id])->with('success', __('Cluster deleted successfully.'));
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
 }
