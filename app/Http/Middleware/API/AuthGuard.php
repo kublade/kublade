@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware\API;
 
+use App\Helpers\API\Response;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthGuard
 {
@@ -19,13 +20,10 @@ class AuthGuard
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): JsonResponse
     {
         if (!Auth::guard('api')->check()) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+            return Response::generate(401, 'error', 'Unauthorized');
         }
 
         Auth::shouldUse('api');
