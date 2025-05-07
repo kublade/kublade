@@ -493,6 +493,14 @@ class TemplateController extends Controller
         return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('Field added.'));
     }
 
+    /**
+     * Show the template update field page.
+     *
+     * @param string $template_id
+     * @param string $field_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function page_update_field(string $template_id, string $field_id)
     {
         $field = TemplateField::where('id', $field_id)->first();
@@ -504,6 +512,15 @@ class TemplateController extends Controller
         ]);
     }
 
+    /**
+     * Update the field.
+     *
+     * @param string  $template_id
+     * @param string  $field_id
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function action_update_field(string $template_id, string $field_id, Request $request)
     {
         Validator::make($request->toArray(), [
@@ -852,7 +869,7 @@ class TemplateController extends Controller
     }
 
     /**
-     * Add a new template.
+     * Import a new template.
      *
      * @param Request $request
      *
