@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.20.0](https://github.com/kublade/kublade/compare/v1.19.0...v1.20.0) (2025-05-07)
+
+
+### Features
+
+* rest api with jwt auth ([4365e4f](https://github.com/kublade/kublade/commit/4365e4fa5097af549f90c35f37f9179363f67171))
+
 ## [1.19.0](https://github.com/kublade/kublade/compare/v1.18.1...v1.19.0) (2025-05-04)
 
 
