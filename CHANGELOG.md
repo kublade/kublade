@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.21.0](https://github.com/kublade/kublade/compare/v1.20.0...v1.21.0) (2025-05-07)
+
+
+### Features
+
+* api method stubs ([19d139d](https://github.com/kublade/kublade/commit/19d139dae2df9ff1f49128b58c1383fb9a07fa90))
+
 ## [1.20.0](https://github.com/kublade/kublade/compare/v1.19.0...v1.20.0) (2025-05-07)
 
 
