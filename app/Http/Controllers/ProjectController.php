@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class ProjectController.
+ *
+ * This class is the controller for the project actions.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class ProjectController extends Controller
 {
     /**
