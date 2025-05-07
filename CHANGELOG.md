@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.0](https://github.com/kublade/kublade/compare/v1.21.0...v1.22.0) (2025-05-07)
+
+
+### Features
+
+* api response generator ([20d5aa1](https://github.com/kublade/kublade/commit/20d5aa1c420596053efba6f4fecf51a9682eb541))
+
 ## [1.21.0](https://github.com/kublade/kublade/compare/v1.20.0...v1.21.0) (2025-05-07)
 
 
