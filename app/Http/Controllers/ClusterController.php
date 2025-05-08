@@ -262,6 +262,12 @@ class ClusterController extends Controller
      */
     public function action_delete(string $project_id, string $cluster_id)
     {
+        Validator::make([
+            'cluster_id' => $cluster_id,
+        ], [
+            'cluster_id' => ['required', 'string', 'max:255'],
+        ])->validate();
+
         if ($cluster = Cluster::where('id', $cluster_id)->first()) {
             $cluster->delete();
 
