@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.23.0](https://github.com/kublade/kublade/compare/v1.22.0...v1.23.0) (2025-05-08)
+
+
+### Features
+
+* **api:** cluster management endpoints ([fbbd462](https://github.com/kublade/kublade/commit/fbbd46270cb68de95bacc93e25b7fd806661c57b))
+* **api:** deployment management endpoints ([8b4b8b3](https://github.com/kublade/kublade/commit/8b4b8b32e73bf33b9a17f098d002138cc6cedeb4))
+* **api:** project management endpoints ([d258e30](https://github.com/kublade/kublade/commit/d258e30e38bacd5a023fa61b37952472519c8ba5))
+
 ## [1.22.0](https://github.com/kublade/kublade/compare/v1.21.0...v1.22.0) (2025-05-07)
 
 
