@@ -83,13 +83,15 @@ class ClusterController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        if ($cluster = Cluster::where('id', $cluster_id)->first()) {
-            return Response::generate(200, 'success', 'Cluster retrieved successfully', [
-                'cluster' => $cluster->toArray(),
-            ]);
+        $cluster = Cluster::where('id', $cluster_id)->first();
+
+        if (!$cluster) {
+            return Response::generate(404, 'error', 'Cluster not found');
         }
 
-        return Response::generate(404, 'error', 'Cluster not found');
+        return Response::generate(200, 'success', 'Cluster retrieved successfully', [
+            'cluster' => $cluster->toArray(),
+        ]);
     }
 
     /**
