@@ -163,8 +163,7 @@ class DeploymentController extends Controller
                         $query->where('user_id', Auth::id())
                             ->where('invitation_accepted', true);
                     });
-            })
-                ->paginate(10),
+            })->paginate(10),
             'deployment'    => $deployment,
             'metrics'       => $datapoints,
             'file'          => $file,

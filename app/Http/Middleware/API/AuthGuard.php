@@ -28,6 +28,10 @@ class AuthGuard
 
         Auth::shouldUse('api');
 
-        return $next($request);
+        if ($next($request) instanceof JsonResponse) {
+            return $next($request);
+        }
+
+        return Response::generate(401, 'error', 'Server Error');
     }
 }

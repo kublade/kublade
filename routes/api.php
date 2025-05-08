@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Helpers\API\Response;
+use App\Http\Middleware\IdentifyProject;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -79,4 +81,8 @@ Route::middleware([
     Route::put('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_put_network_policy'])->name('api.deployment.netpol.put');
     Route::delete('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_delete_network_policy'])->name('api.deployment.netpol.delete');
     Route::patch('/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_revert_commit'])->name('api.deployment.commit.revert');
+});
+
+Route::fallback(function () {
+    return Response::generate(404, 'error', 'Not found');
 });
