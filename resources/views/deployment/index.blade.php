@@ -30,6 +30,19 @@
                                     <p class="fs-3 mb-0 p-3 lh-1">{!! $deployment->simpleStatus !!}</p>
                                 </div>
                             </div>
+                            <div class="col-md">
+                                <div class="border rounded overflow-hidden">
+                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                        <span class="fs-6 py-2">{{ __('Namespace') }}</span>
+                                    </h5>
+                                    <p class="fs-3 mb-0 p-3 lh-1 d-flex align-items-center gap-3">
+                                        <i class="bi bi-collection"></i>
+                                        <span class="lh-1 fs-5">{{ $deployment->uuid }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             @if ($deployment->statistics)
                                 <div class="col-md">
                                     <div class="border rounded overflow-hidden">
@@ -403,6 +416,7 @@
                                     <th class="w-100" scope="col">{{ __('Deployment') }}</th>
                                     <th scope="col">{{ __('Template') }}</th>
                                     <th scope="col">{{ __('Cluster') }}</th>
+                                    <th scope="col">{{ __('Namespace') }}</th>
                                     <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Statistics') }}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
@@ -414,6 +428,9 @@
                                         <td class="w-100">{{ $deployment->name ?? __('N/A') }}</td>
                                         <td>{{ $deployment->template->name }}</td>
                                         <td>{{ $deployment->cluster->name }}</td>
+                                        <td>
+                                            <span class="text-nowrap badge bg-light text-body">{{ $deployment->uuid }}</span>
+                                        </td>
                                         <td>{!! $deployment->status !!}</td>
                                         <td>
                                             @if ($deployment->statistics)
