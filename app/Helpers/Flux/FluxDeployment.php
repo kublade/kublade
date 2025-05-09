@@ -12,6 +12,7 @@ use App\Models\Projects\Templates\TemplatePort;
 use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class FluxDeployment.
@@ -79,54 +80,73 @@ class FluxDeployment
         });
 
         if ($deployment->template->netpol) {
-            $rules = collect();
+            $rules = $deployment->ingressAsTarget?->filter(function (DeploymentLink $link) {
+                return $link->source?->uuid;
+            }) ?? collect();
 
-            if ($deployment->ingressAsTarget) {
-                $rules = $deployment->ingressAsTarget->filter(function (DeploymentLink $link) {
-                    return $link->source?->uuid;
-                });
+            $networkPolicyDeployed = Storage::disk('local')->put($deployment->path . '/netpol.yaml', Yaml::dump([
+                'apiVersion' => 'networking.k8s.io/v1',
+                'kind'       => 'NetworkPolicy',
+                'metadata'   => [
+                    'name'      => 'ingress',
+                    'namespace' => $deployment->uuid,
+                ],
+                'spec' => [
+                    'podSelector' => [
+                        'matchLabels' => [
+                            'app' => '',
+                        ],
+                    ],
+                    'ingress' => [
+                        [
+                            'from' => [
+                                ...($rules->isNotEmpty() ? $rules->map(function (DeploymentLink $link) {
+                                    return [
+                                        'namespaceSelector' => [
+                                            'matchLabels' => [
+                                                'kubernetes.io/metadata.name' => $link->source?->uuid,
+                                            ],
+                                        ],
+                                    ];
+                                })->toArray() : []),
+                                [
+                                    'namespaceSelector' => [
+                                        'matchLabels' => [
+                                            'kubernetes.io/metadata.name' => $deployment->uuid,
+                                        ],
+                                    ],
+                                ],
+                                ...($deployment->cluster->utilityNamespace ? [
+                                    'namespaceSelector' => [
+                                        'matchLabels' => [
+                                            'kubernetes.io/metadata.name' => $deployment->cluster->utilityNamespace->name,
+                                        ],
+                                    ],
+                                ] : []),
+                                ...($deployment->cluster->ingressNamespace ? [
+                                    'namespaceSelector' => [
+                                        'matchLabels' => [
+                                            'kubernetes.io/metadata.name' => $deployment->cluster->ingressNamespace->name,
+                                        ],
+                                    ],
+                                ] : []),
+                            ],
+                        ],
+                    ],
+                ],
+            ], 10, 2));
+
+            $kustomizationPath = $deployment->path . '/kustomization.yaml';
+
+            if (Storage::disk('local')->exists($kustomizationPath)) {
+                $file = Yaml::parse(Storage::get($kustomizationPath));
+
+                $file['resources'][] = 'netpol.yaml';
+
+                $kustomizationContent = Yaml::dump($file, 10, 2);
+
+                $networkPolicyAppended = Storage::disk('local')->put($deployment->path . '/kustomization.yaml', $kustomizationContent);
             }
-
-            $ruleContent = '';
-
-            if ($rules?->isNotEmpty()) {
-                $rules->each(function (DeploymentLink $link) use (&$ruleContent) {
-                    $ruleContent .= '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $link->source?->uuid . '';
-                });
-            }
-
-            // Generate netpol.yaml content
-            $networkPolicyContent = '---
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: ingress
-  namespace: ' . $deployment->uuid . '
-spec:
-  podSelector:
-    matchLabels:
-  ingress:
-  - from:' . $ruleContent . '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->uuid . '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->cluster->utilityNamespace?->name . ($deployment->cluster->ingressNamespace?->name && $deployment->cluster->utilityNamespace?->name !== $deployment->cluster->ingressNamespace?->name ? '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->cluster->ingressNamespace?->name : '');
-
-            // Deploy netpol.yaml
-            $networkPolicyDeployed = Storage::disk('local')->put($deployment->path . '/netpol.yaml', $networkPolicyContent);
-
-            // Add netpol.yaml to customization file
-            $kustomizationContent  = preg_replace("/resources:\r\n/", "resources:\r\n- netpol.yaml\r\n", Storage::get($deployment->path . '/kustomization.yaml'));
-            $kustomizationContent  = preg_replace("/resources:\n/", "resources:\n- netpol.yaml\n", $kustomizationContent);
-            $networkPolicyAppended = Storage::disk('local')->put($deployment->path . '/kustomization.yaml', $kustomizationContent);
 
             if (
                 !$networkPolicyDeployed ||
