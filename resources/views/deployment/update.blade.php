@@ -50,110 +50,16 @@
                             </div>
                         </div>
 
-                        <div class="border rounded py-4 mb-3 fields" id="fields{{ $deployment->template->id }}">
-                            <div class="row{{ $deployment->template->groupedFields->on_update->default->count() > 0 ? ' mb-3' : '' }}">
-                                <div class="col-md-6 offset-md-4">
-                                    <h5 class="{{ $deployment->template->groupedFields->on_update->default->count() === 0 ? 'mb-0' : '' }}">{{ __('Configuration') }}</h5>
-                                </div>
-                            </div>
-                            
-                            @if ($deployment->template->groupedFields->on_update->default->count() > 0)
-                                @foreach ($deployment->template->groupedFields->on_update->default as $field)
-                                    @if ($field->secret)
-                                        @php
-                                            $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
-                                        @endphp
-                                    @else
-                                        @php
-                                            $value = $deployment->deploymentData->where('key', $field->key)->first()->value;
-                                        @endphp
-                                    @endif
-
-                                    <div class="row mb-3">
-                                        @if ($field->type !== 'input_checkbox')
-                                            <label class="col-md-4 col-form-label text-md-end" for="input_{{ $field->id }}">{{ __($field->label) }}{{ $field->required ? ' *' : '' }}</label>
-                                        @endif
-                                        <div class="col-md-6 d-flex align-items-center{{ $field->type === 'input_checkbox' ? ' offset-md-4' : '' }}">
-                                            @switch ($field->type)
-                                                @case ('input_text')
-                                                    <input type="text" class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? $field->value }}">
-                                                    @break
-                                                @case ('input_number')
-                                                    <input type="number" class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? $field->value }}" min="{{ $field->min }}" max="{{ $field->max }}" step="{{ $field->step }}">
-                                                    @break
-                                                @case ('input_range')
-                                                    <div class="range-container" id="range_{{ $field->id }}">
-                                                        <input type="range" class="form-range" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? (! empty($field->defaultOption) ? $field->defaultOption->value : $field->value) }}" min="{{ $field->min }}" max="{{ $field->max }}" step="{{ $field->step }}">
-                                                        <div class="ruler" id="input_{{ $field->id }}_ruler"></div>
-                                                    </div>
-                                                    @break
-                                                @case ('input_radio')
-                                                    <div id="input_{{ $field->id }}">
-                                                        @foreach ($field->options as $option)
-                                                            <div class="form-group d-flex gap-2 align-items-center">
-                                                                <input id="{{ $field->key }}{{ $option->id }}" type="radio" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $option->value }}" {{ $value === $option->value || $value === null && $option->default ? ' checked' : '' }}>
-                                                                <label for="{{ $field->key }}{{ $option->id }}" class="col-form-label text-md-left p-0">{{ __($option->label) }}</label>
-                                                            </div>
-                                                            @error($field->key)
-                                                            <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                            @enderror
-                                                        @endforeach
-                                                    </div>
-                                                    @break
-                                                @case ('input_radio_image')
-                                                    <div id="input_{{ $field->id }}">
-                                                        @foreach ($field->options as $option)
-                                                            <div class="form-group d-flex gap-2 align-items-center">
-                                                                <input id="{{ $field->key }}" type="radio" class="form-check-input mt-0 has-image @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $option->value }}" {{ $value === $option->value || $value === null && $option->default ? ' checked' : '' }}>
-                                                                <img src="{{ $option->label }}" class="radio-image">
-                                                            </div>
-                                                            @error($field->key)
-                                                            <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                            @enderror
-                                                        @endforeach
-                                                    </div>
-                                                    @break
-                                                @case ('input_checkbox')
-                                                    <div class="form-group d-flex gap-2 align-items-center" id="input_{{ $field->id }}">
-                                                        <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $value ?? $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
-                                                        <label for="{{ $field->key }}" class="col-form-label text-md-left p-0">{{ __($field->label) }} {{ $field->required ? '*' : '' }}</label>
-                                                    </div>
-                                                    @error($field->key)
-                                                    <span class="invalid-feedback d-block mb-3" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                    @break
-                                                @case ('select')
-                                                    <select class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]">
-                                                        @foreach ($field->options as $option)
-                                                            <option value="{{ $option->value }}"{{ $value === $option->value || $value === null && $option->default ? ' selected' : '' }}>{{ $option->label }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @break
-                                                @case ('textarea')
-                                                    <textarea class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}">{{ $value ?? $field->value }}</textarea>
-                                                    @break
-                                            @endswitch
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                            @if ($deployment->template->groupedFields->on_update->advanced->count() > 0)
-                                <div class="row mt-4">
+                        @if ($deployment->template->groupedFields->on_update->default->count() > 0 || $deployment->template->groupedFields->on_update->advanced->count() > 0)
+                            <div class="border rounded py-4 mb-3 fields" id="fields{{ $deployment->template->id }}">
+                                <div class="row{{ $deployment->template->groupedFields->on_update->default->count() > 0 ? ' mb-3' : '' }}">
                                     <div class="col-md-6 offset-md-4">
-                                        <a href="#" data-bs-toggle="collapse" data-bs-target="#advancedFields{{ $deployment->template->id }}">
-                                            {{ __('Show advanced fields') }}
-                                        </a>
+                                        <h5 class="{{ $deployment->template->groupedFields->on_update->default->count() === 0 ? 'mb-0' : '' }}">{{ __('Configuration') }}</h5>
                                     </div>
                                 </div>
-                                <div class="collapse" id="advancedFields{{ $deployment->template->id }}">
-                                    @foreach ($deployment->template->groupedFields->on_update->advanced as $field)
+                                
+                                @if ($deployment->template->groupedFields->on_update->default->count() > 0)
+                                    @foreach ($deployment->template->groupedFields->on_update->default as $field)
                                         @if ($field->secret)
                                             @php
                                                 $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
@@ -164,7 +70,7 @@
                                             @endphp
                                         @endif
 
-                                        <div class="row my-3">
+                                        <div class="row mb-3">
                                             @if ($field->type !== 'input_checkbox')
                                                 <label class="col-md-4 col-form-label text-md-end" for="input_{{ $field->id }}">{{ __($field->label) }}{{ $field->required ? ' *' : '' }}</label>
                                             @endif
@@ -214,7 +120,7 @@
                                                         @break
                                                     @case ('input_checkbox')
                                                         <div class="form-group d-flex gap-2 align-items-center" id="input_{{ $field->id }}">
-                                                            <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
+                                                            <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $value ?? $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
                                                             <label for="{{ $field->key }}" class="col-form-label text-md-left p-0">{{ __($field->label) }} {{ $field->required ? '*' : '' }}</label>
                                                         </div>
                                                         @error($field->key)
@@ -237,9 +143,105 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                </div>
-                            @endif
-                        </div>
+                                @endif
+
+                                @if ($deployment->template->groupedFields->on_update->advanced->count() > 0)
+                                    <div class="row mt-4">
+                                        <div class="col-md-6 offset-md-4">
+                                            <a href="#" data-bs-toggle="collapse" data-bs-target="#advancedFields{{ $deployment->template->id }}">
+                                                {{ __('Show advanced fields') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="advancedFields{{ $deployment->template->id }}">
+                                        @foreach ($deployment->template->groupedFields->on_update->advanced as $field)
+                                            @if ($field->secret)
+                                                @php
+                                                    $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
+                                                @endphp
+                                            @else
+                                                @php
+                                                    $value = $deployment->deploymentData->where('key', $field->key)->first()->value;
+                                                @endphp
+                                            @endif
+
+                                            <div class="row my-3">
+                                                @if ($field->type !== 'input_checkbox')
+                                                    <label class="col-md-4 col-form-label text-md-end" for="input_{{ $field->id }}">{{ __($field->label) }}{{ $field->required ? ' *' : '' }}</label>
+                                                @endif
+                                                <div class="col-md-6 d-flex align-items-center{{ $field->type === 'input_checkbox' ? ' offset-md-4' : '' }}">
+                                                    @switch ($field->type)
+                                                        @case ('input_text')
+                                                            <input type="text" class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? $field->value }}">
+                                                            @break
+                                                        @case ('input_number')
+                                                            <input type="number" class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? $field->value }}" min="{{ $field->min }}" max="{{ $field->max }}" step="{{ $field->step }}">
+                                                            @break
+                                                        @case ('input_range')
+                                                            <div class="range-container" id="range_{{ $field->id }}">
+                                                                <input type="range" class="form-range" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}" value="{{ $value ?? (! empty($field->defaultOption) ? $field->defaultOption->value : $field->value) }}" min="{{ $field->min }}" max="{{ $field->max }}" step="{{ $field->step }}">
+                                                                <div class="ruler" id="input_{{ $field->id }}_ruler"></div>
+                                                            </div>
+                                                            @break
+                                                        @case ('input_radio')
+                                                            <div id="input_{{ $field->id }}">
+                                                                @foreach ($field->options as $option)
+                                                                    <div class="form-group d-flex gap-2 align-items-center">
+                                                                        <input id="{{ $field->key }}{{ $option->id }}" type="radio" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $option->value }}" {{ $value === $option->value || $value === null && $option->default ? ' checked' : '' }}>
+                                                                        <label for="{{ $field->key }}{{ $option->id }}" class="col-form-label text-md-left p-0">{{ __($option->label) }}</label>
+                                                                    </div>
+                                                                    @error($field->key)
+                                                                    <span class="invalid-feedback d-block" role="alert">
+                                                                        <strong>{{ $message }}</strong>
+                                                                    </span>
+                                                                    @enderror
+                                                                @endforeach
+                                                            </div>
+                                                            @break
+                                                        @case ('input_radio_image')
+                                                            <div id="input_{{ $field->id }}">
+                                                                @foreach ($field->options as $option)
+                                                                    <div class="form-group d-flex gap-2 align-items-center">
+                                                                        <input id="{{ $field->key }}" type="radio" class="form-check-input mt-0 has-image @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $option->value }}" {{ $value === $option->value || $value === null && $option->default ? ' checked' : '' }}>
+                                                                        <img src="{{ $option->label }}" class="radio-image">
+                                                                    </div>
+                                                                    @error($field->key)
+                                                                    <span class="invalid-feedback d-block" role="alert">
+                                                                        <strong>{{ $message }}</strong>
+                                                                    </span>
+                                                                    @enderror
+                                                                @endforeach
+                                                            </div>
+                                                            @break
+                                                        @case ('input_checkbox')
+                                                            <div class="form-group d-flex gap-2 align-items-center" id="input_{{ $field->id }}">
+                                                                <input id="{{ $field->key }}" type="checkbox" class="form-check-input mt-0 @error($field->key) is-invalid @enderror" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $field->value }}"{{ $value === $field->value ? ' checked' : '' }}>
+                                                                <label for="{{ $field->key }}" class="col-form-label text-md-left p-0">{{ __($field->label) }} {{ $field->required ? '*' : '' }}</label>
+                                                            </div>
+                                                            @error($field->key)
+                                                            <span class="invalid-feedback d-block mb-3" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
+                                                            @break
+                                                        @case ('select')
+                                                            <select class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]">
+                                                                @foreach ($field->options as $option)
+                                                                    <option value="{{ $option->value }}"{{ $value === $option->value || $value === null && $option->default ? ' selected' : '' }}>{{ $option->label }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @break
+                                                        @case ('textarea')
+                                                            <textarea class="form-control" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" placeholder="{{ $field->value }}">{{ $value ?? $field->value }}</textarea>
+                                                            @break
+                                                    @endswitch
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
 
                         @foreach ($deployment->template->groupedFields->on_update->hidden as $field)
                             <input type="hidden" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $value ?? $field->value }}">
