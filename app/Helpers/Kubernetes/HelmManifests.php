@@ -57,9 +57,9 @@ class HelmManifests
         $values = self::getChartValues($chartPath);
 
         return [
-            'helmrepository.yaml' => self::ensureYamlDocumentStart(self::generateHelmRepositoryYaml()),
-            'helmrelease.yaml'    => self::ensureYamlDocumentStart(self::generateHelmReleaseYaml($values)),
-            'kustomization.yaml'  => self::ensureYamlDocumentStart(self::generateKustomizationYaml()),
+            'helmrepository.yaml' => YamlFormatter::format(self::generateHelmRepositoryYaml()),
+            'helmrelease.yaml'    => YamlFormatter::format(self::generateHelmReleaseYaml($values)),
+            'kustomization.yaml'  => YamlFormatter::format(self::generateKustomizationYaml()),
         ];
     }
 
@@ -229,33 +229,35 @@ class HelmManifests
     protected static function generateHelmRepositoryYaml(): string
     {
         if (self::isOciRepo()) {
-            return Yaml::dump([
+            return YamlFormatter::format(
+                Yaml::dump([
+                    'apiVersion' => 'source.toolkit.fluxcd.io/v1beta2',
+                    'kind'       => 'HelmRepository',
+                    'metadata'   => [
+                        'name' => self::$repoName,
+                    ],
+                    'spec' => [
+                        'type'     => 'oci',
+                        'url'      => self::$repoUrl,
+                        'interval' => '10m',
+                    ],
+                ], 10, 2)
+            );
+        }
+
+        return YamlFormatter::format(
+            Yaml::dump([
                 'apiVersion' => 'source.toolkit.fluxcd.io/v1beta2',
                 'kind'       => 'HelmRepository',
                 'metadata'   => [
-                    'name'      => self::$repoName,
-                    'namespace' => self::$namespace,
+                    'name' => self::$repoName,
                 ],
                 'spec' => [
-                    'type'     => 'oci',
                     'url'      => self::$repoUrl,
                     'interval' => '10m',
                 ],
-            ], 10, 2);
-        }
-
-        return Yaml::dump([
-            'apiVersion' => 'source.toolkit.fluxcd.io/v1beta2',
-            'kind'       => 'HelmRepository',
-            'metadata'   => [
-                'name'      => self::$repoName,
-                'namespace' => self::$namespace,
-            ],
-            'spec' => [
-                'url'      => self::$repoUrl,
-                'interval' => '10m',
-            ],
-        ], 10, 2);
+            ], 10, 2)
+        );
     }
 
     /**
@@ -271,8 +273,7 @@ class HelmManifests
             'apiVersion' => 'helm.toolkit.fluxcd.io/v2beta1',
             'kind'       => 'HelmRelease',
             'metadata'   => [
-                'name'      => self::$chartName,
-                'namespace' => self::$namespace,
+                'name' => self::$chartName,
             ],
             'spec' => [
                 'interval'    => '5m',
@@ -292,21 +293,7 @@ class HelmManifests
             ],
         ];
 
-        return Yaml::dump($base, 10, 2);
-    }
-
-    /**
-     * Ensure the yaml document starts with a document start.
-     *
-     * @param string $yaml
-     *
-     * @return string
-     */
-    protected static function ensureYamlDocumentStart(string $yaml): string
-    {
-        $yaml = ltrim($yaml);
-
-        return Str::startsWith($yaml, '---') ? $yaml : "---\n" . $yaml;
+        return YamlFormatter::format(Yaml::dump($base, 10, 2));
     }
 
     /**
@@ -316,13 +303,16 @@ class HelmManifests
      */
     protected static function generateKustomizationYaml(): string
     {
-        return Yaml::dump([
-            'apiVersion' => 'kustomize.config.k8s.io/v1beta1',
-            'kind'       => 'Kustomization',
-            'resources'  => [
-                'helmrepository.yaml',
-                'helmrelease.yaml',
-            ],
-        ], 4, 2);
+        return YamlFormatter::format(
+            Yaml::dump([
+                'apiVersion' => 'kustomize.config.k8s.io/v1beta1',
+                'kind'       => 'Kustomization',
+                'namespace'  => self::$namespace,
+                'resources'  => [
+                    'helmrepository.yaml',
+                    'helmrelease.yaml',
+                ],
+            ], 4, 2)
+        );
     }
 }

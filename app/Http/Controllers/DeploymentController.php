@@ -363,7 +363,7 @@ class DeploymentController extends Controller
                     'uuid'         => Str::uuid(),
                 ])
             ) {
-                $requestFields = (object) $request->data[$deployment->template->id];
+                $requestFields = (object) (array_key_exists($deployment->template->id, $request->data) ? $request->data[$deployment->template->id] : []);
 
                 $template->fields->each(function (TemplateField $field) use ($requestFields, $deployment) {
                     if (! $field->set_on_create) {
@@ -519,7 +519,7 @@ class DeploymentController extends Controller
 
             Validator::make($request->toArray(), $validationRules)->validate();
 
-            $requestFields = (object) $request->data[$deployment->template->id];
+            $requestFields = (object) (array_key_exists($deployment->template->id, $request->data) ? $request->data[$deployment->template->id] : []);
 
             $deployment->template->fields->each(function (TemplateField $field) use ($requestFields, $deployment) {
                 if (! $field->set_on_update) {

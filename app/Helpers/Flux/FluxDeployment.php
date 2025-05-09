@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers\Flux;
 
 use App\Exceptions\FluxException;
+use App\Helpers\Kubernetes\YamlFormatter;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentLink;
 use App\Models\Projects\Deployments\ReservedPort;
@@ -12,6 +13,7 @@ use App\Models\Projects\Templates\TemplatePort;
 use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class FluxDeployment.
@@ -79,61 +81,110 @@ class FluxDeployment
         });
 
         if ($deployment->template->netpol) {
-            $rules = collect();
+            $rules = $deployment->ingressAsTarget?->filter(function (DeploymentLink $link) {
+                return $link->source?->uuid;
+            }) ?? collect();
 
-            if ($deployment->ingressAsTarget) {
-                $rules = $deployment->ingressAsTarget->filter(function (DeploymentLink $link) {
-                    return $link->source?->uuid;
-                });
-            }
+            $networkPolicyDeployed = Storage::disk('local')->put(
+                $deployment->path . '/netpol.yaml',
+                YamlFormatter::format(
+                    Yaml::dump([
+                        'apiVersion' => 'networking.k8s.io/v1',
+                        'kind'       => 'NetworkPolicy',
+                        'metadata'   => [
+                            'name' => 'ingress',
+                        ],
+                        'spec' => [
+                            'podSelector' => [
+                                'matchLabels' => [
+                                    'app' => [],
+                                ],
+                            ],
+                            'ingress' => [
+                                [
+                                    'from' => array_values([
+                                        ...($rules->isNotEmpty() ? $rules->map(function (DeploymentLink $link) {
+                                            return [
+                                                'namespaceSelector' => [
+                                                    'matchLabels' => [
+                                                        'kubernetes.io/metadata.name' => $link->source?->uuid,
+                                                    ],
+                                                ],
+                                            ];
+                                        })->toArray() : []),
+                                        [
+                                            'namespaceSelector' => [
+                                                'matchLabels' => [
+                                                    'kubernetes.io/metadata.name' => $deployment->uuid,
+                                                ],
+                                            ],
+                                        ],
+                                        ...($deployment->cluster->utilityNamespace ? [
+                                            'namespaceSelector' => [
+                                                'matchLabels' => [
+                                                    'kubernetes.io/metadata.name' => $deployment->cluster->utilityNamespace->name,
+                                                ],
+                                            ],
+                                        ] : []),
+                                        ...($deployment->cluster->ingressNamespace && $deployment->cluster->ingressNamespace->name !== $deployment->cluster->utilityNamespace?->name ? [
+                                            'namespaceSelector' => [
+                                                'matchLabels' => [
+                                                    'kubernetes.io/metadata.name' => $deployment->cluster->ingressNamespace->name,
+                                                ],
+                                            ],
+                                        ] : []),
+                                    ]),
+                                ],
+                            ],
+                        ],
+                    ], 10, 2)
+                )
+            );
 
-            $ruleContent = '';
-
-            if ($rules?->isNotEmpty()) {
-                $rules->each(function (DeploymentLink $link) use (&$ruleContent) {
-                    $ruleContent .= '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $link->source?->uuid . '';
-                });
-            }
-
-            // Generate netpol.yaml content
-            $networkPolicyContent = '---
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: ingress
-  namespace: ' . $deployment->uuid . '
-spec:
-  podSelector:
-    matchLabels:
-  ingress:
-  - from:' . $ruleContent . '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->uuid . '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->cluster->utilityNamespace?->name . ($deployment->cluster->ingressNamespace?->name && $deployment->cluster->utilityNamespace?->name !== $deployment->cluster->ingressNamespace?->name ? '
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: ' . $deployment->cluster->ingressNamespace?->name : '');
-
-            // Deploy netpol.yaml
-            $networkPolicyDeployed = Storage::disk('local')->put($deployment->path . '/netpol.yaml', $networkPolicyContent);
-
-            // Add netpol.yaml to customization file
-            $kustomizationContent  = preg_replace("/resources:\r\n/", "resources:\r\n- netpol.yaml\r\n", Storage::get($deployment->path . '/kustomization.yaml'));
-            $kustomizationContent  = preg_replace("/resources:\n/", "resources:\n- netpol.yaml\n", $kustomizationContent);
-            $networkPolicyAppended = Storage::disk('local')->put($deployment->path . '/kustomization.yaml', $kustomizationContent);
-
-            if (
-                !$networkPolicyDeployed ||
-                !$networkPolicyAppended
-            ) {
+            if (!$networkPolicyDeployed) {
                 throw new FluxException('Server Error', 500);
             }
+        }
+
+        $kustomizationPath    = $deployment->path . '/kustomization.yaml';
+        $kustomizationContent = Storage::disk('local')->exists($kustomizationPath) ?
+            Yaml::parse(Storage::get($kustomizationPath)) :
+            [];
+        $kustomizationDeployed = Storage::disk('local')->put(
+            $deployment->path . '/kustomization.yaml',
+            YamlFormatter::format(
+                Yaml::dump([
+                    ...$kustomizationContent,
+                    'apiVersion' => 'kustomize.config.k8s.io/v1beta1',
+                    'kind'       => 'Kustomization',
+                    'namespace'  => $deployment->uuid,
+                    'resources'  => [
+                        ...(isset($kustomizationContent['resources']) ? $kustomizationContent['resources'] : []),
+                        ...(isset($kustomizationContent['resources']) && !in_array('netpol.yaml', $kustomizationContent['resources']) && $deployment->template->netpol ? ['netpol.yaml'] : []),
+                        ...(isset($kustomizationContent['resources']) && !in_array('namespace.yaml', $kustomizationContent['resources']) ? ['namespace.yaml'] : []),
+                    ],
+                ], 10, 2)
+            )
+        );
+
+        if (!$kustomizationDeployed) {
+            throw new FluxException('Server Error', 500);
+        }
+
+        $namespacePath    = $deployment->path . '/namespace.yaml';
+        $namespaceContent = YamlFormatter::format(
+            Yaml::dump([
+                'apiVersion' => 'v1',
+                'kind'       => 'Namespace',
+                'metadata'   => [
+                    'name' => $deployment->uuid,
+                ],
+            ], 10, 2)
+        );
+        $namespaceDeployed = Storage::disk('local')->put($namespacePath, $namespaceContent);
+
+        if (!$namespaceDeployed) {
+            throw new FluxException('Server Error', 500);
         }
 
         $commit = FluxRepository::push($deployment, $replaceExisting ? 'update' : 'creation');
@@ -207,19 +258,35 @@ spec:
         $path = $deployment->path . $item->object->path;
 
         try {
-            $templateContent = Blade::render($item->object->content, [
-                'data'   => $data,
-                'secret' => $secretData,
-                'limits' => [
-                    'enabled' => $deployment->limit?->is_active ? 'true' : 'false',
-                    'cpu'     => $deployment->limit?->cpu,
-                    'memory'  => $deployment->limit?->memory,
-                ],
-                'portClaims' => $portClaims,
-                'paused'     => $deployment->paused,
-            ], false);
+            $templateContent = Yaml::parse(
+                Blade::render(
+                    str_replace("\t", '  ', $item->object->content),
+                    [
+                        'data'   => $data,
+                        'secret' => $secretData,
+                        'limits' => [
+                            'enabled' => $deployment->limit?->is_active ? 'true' : 'false',
+                            'cpu'     => $deployment->limit?->cpu,
+                            'memory'  => $deployment->limit?->memory,
+                        ],
+                        'portClaims' => $portClaims,
+                        'paused'     => $deployment->paused,
+                    ],
+                    false
+                )
+            );
 
-            Storage::disk('local')->put($path, $templateContent);
+            if (isset($templateContent['metadata']['namespace'])) {
+                $templateContent['metadata']['namespace'] = $deployment->uuid;
+            }
+
+            if (!$templateContent) {
+                Storage::disk('local')->delete($path);
+
+                return;
+            }
+
+            Storage::disk('local')->put($path, YamlFormatter::format(Yaml::dump($templateContent, 10, 2)));
         } catch (Exception $e) {
             throw new FluxException('Server Error', 500);
         }
