@@ -177,29 +177,36 @@
                                                     <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-pencil-square"></i></a>
                                                 </h5>
                                                 <div class="p-3">
-                                                    @foreach ($deployment->template->groupedFields->all as $field)
-                                                        @if ($field->secret)
-                                                            @php
-                                                                $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
-                                                            @endphp
-                                                        @else
-                                                            @php
-                                                                $value = $deployment->deploymentData->where('key', $field->key)->first()->value;
-                                                            @endphp
-                                                        @endif
-                                                        <div class="row">
-                                                            <div class="col-md">
-                                                                <div class="input-group{{ !$loop->last ? ' mb-3' : '' }}">
-                                                                    <span class="input-group-text align-items-start" id="field{{ $field->id }}">{{ $field->label }}</span>
-                                                                    @if ($field->type === 'textarea')
-                                                                        <textarea class="form-control" aria-label="{{ $field->label }}" aria-describedby="field{{ $field->id }}" readonly>{{ $value }}</textarea>
-                                                                    @else
-                                                                        <input type="text" class="form-control" aria-label="{{ $field->label }}" aria-describedby="field{{ $field->id }}" value="{{ $value }}" readonly>
-                                                                    @endif
+                                                    @if ($deployment->template->groupedFields->on_update->default->count() > 0 || $deployment->template->groupedFields->on_update->advanced->count() > 0)
+                                                        @foreach ($deployment->template->groupedFields->all as $field)
+                                                            @if ($field->secret)
+                                                                @php
+                                                                    $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $value = $deployment->deploymentData->where('key', $field->key)->first()->value;
+                                                                @endphp
+                                                            @endif
+                                                            <div class="row">
+                                                                <div class="col-md">
+                                                                    <div class="input-group{{ !$loop->last ? ' mb-3' : '' }}">
+                                                                        <span class="input-group-text align-items-start" id="field{{ $field->id }}">{{ $field->label }}</span>
+                                                                        @if ($field->type === 'textarea')
+                                                                            <textarea class="form-control" aria-label="{{ $field->label }}" aria-describedby="field{{ $field->id }}" readonly>{{ $value }}</textarea>
+                                                                        @else
+                                                                            <input type="text" class="form-control" aria-label="{{ $field->label }}" aria-describedby="field{{ $field->id }}" value="{{ $value }}" readonly>
+                                                                        @endif
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="alert alert-info mb-0 d-flex align-items-center gap-3">
+                                                            <i class="bi bi-info-circle fs-5"></i>
+                                                            {{ __('No settings') }}
                                                         </div>
-                                                    @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
