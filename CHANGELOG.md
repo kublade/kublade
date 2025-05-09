@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.23.1](https://github.com/kublade/kublade/compare/v1.23.0...v1.23.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* handle empty settings sections ([#52](https://github.com/kublade/kublade/issues/52)) ([86bec2f](https://github.com/kublade/kublade/commit/86bec2fd4023a761531072604a98f603bedb3b5b))
+
 ## [1.23.0](https://github.com/kublade/kublade/compare/v1.22.0...v1.23.0) (2025-05-08)
 
 
