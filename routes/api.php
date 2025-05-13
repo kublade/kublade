@@ -20,67 +20,67 @@ Route::prefix('auth')->group(function () {
 Route::middleware([
     IdentifyProject::class,
 ])->group(function () {
-    Route::get('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_list'])->name('api.project.list');
-    Route::post('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_add'])->name('api.project.add');
-    Route::get('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_get'])->name('api.project.get');
-    Route::patch('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_update'])->name('api.project.update');
-    Route::delete('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_delete'])->name('api.project.delete');
+    Route::get('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_list'])->name('api.project.list')->middleware('api.permission.guard:projects.view');
+    Route::post('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_add'])->name('api.project.add')->middleware('api.permission.guard:projects.add');
+    Route::get('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_get'])->name('api.project.get')->middleware('api.permission.guard:projects.view');
+    Route::patch('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_update'])->name('api.project.update')->middleware('api.permission.guard:projects.update');
+    Route::delete('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_delete'])->name('api.project.delete')->middleware('api.permission.guard:projects.delete');
 
-    Route::get('/projects/{project_id}/invitations', [App\Http\Controllers\API\ProjectController::class, 'action_list_invitation'])->name('api.project.invitation.list');
-    Route::post('/projects/{project_id}/invitations/create', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_create'])->name('api.project.invitation.create.action');
-    Route::get('/projects/{project_id}/invitations/{project_invitation_id}', [App\Http\Controllers\API\ProjectController::class, 'action_get_invitation'])->name('api.project.invitation.get');
-    Route::get('/projects/{project_id}/invitations/{project_invitation_id}/delete', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_delete'])->name('api.project.invitation.delete');
-    Route::get('/projects/{project_id}/invitations/{project_invitation_id}/accept', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_accept'])->name('api.project.invitation.accept');
+    Route::get('/projects/{project_id}/invitations', [App\Http\Controllers\API\ProjectController::class, 'action_list_invitation'])->name('api.project.invitation.list')->middleware('api.permission.guard:projects.invitations.view');
+    Route::post('/projects/{project_id}/invitations/create', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_create'])->name('api.project.invitation.create.action')->middleware('api.permission.guard:projects.invitations.create');
+    Route::get('/projects/{project_id}/invitations/{project_invitation_id}', [App\Http\Controllers\API\ProjectController::class, 'action_get_invitation'])->name('api.project.invitation.get')->middleware('api.permission.guard:projects.invitations.view');
+    Route::get('/projects/{project_id}/invitations/{project_invitation_id}/delete', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_delete'])->name('api.project.invitation.delete')->middleware('api.permission.guard:projects.invitations.delete');
+    Route::get('/projects/{project_id}/invitations/{project_invitation_id}/accept', [App\Http\Controllers\API\ProjectController::class, 'action_invitation_accept'])->name('api.project.invitation.accept')->middleware('api.permission.guard:projects.invitations.accept');
 
-    Route::get('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_list'])->name('api.template.list');
-    Route::post('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_add'])->name('api.template.add');
-    Route::post('/templates/import', [App\Http\Controllers\API\TemplateController::class, 'action_import'])->name('api.template.import');
-    Route::get('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get'])->name('api.template.get');
-    Route::patch('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update'])->name('api.template.update');
-    Route::delete('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete'])->name('api.template.delete');
+    Route::get('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_list'])->name('api.template.list')->middleware('api.permission.guard:templates.view');
+    Route::post('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_add'])->name('api.template.add')->middleware('api.permission.guard:templates.add');
+    Route::post('/templates/import', [App\Http\Controllers\API\TemplateController::class, 'action_import'])->name('api.template.import')->middleware('api.permission.guard:templates.import');
+    Route::get('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get'])->name('api.template.get')->middleware('api.permission.guard:templates.view');
+    Route::patch('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update'])->name('api.template.update')->middleware('api.permission.guard:templates.update');
+    Route::delete('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete'])->name('api.template.delete')->middleware('api.permission.guard:templates.delete');
 
-    Route::get('/templates/{template_id}/folders', [App\Http\Controllers\API\TemplateController::class, 'action_list_folder'])->name('api.template.folder.list');
-    Route::post('/templates/{template_id}/folders', [App\Http\Controllers\API\TemplateController::class, 'action_add_folder'])->name('api.template.folder.add');
-    Route::get('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_folder'])->name('api.template.folder.get');
-    Route::patch('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_folder'])->name('api.template.folder.update');
-    Route::delete('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_folder'])->name('api.template.folder.delete');
+    Route::get('/templates/{template_id}/folders', [App\Http\Controllers\API\TemplateController::class, 'action_list_folder'])->name('api.template.folder.list')->middleware('api.permission.guard:templates.folders.view');
+    Route::post('/templates/{template_id}/folders', [App\Http\Controllers\API\TemplateController::class, 'action_add_folder'])->name('api.template.folder.add')->middleware('api.permission.guard:templates.folders.add');
+    Route::get('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_folder'])->name('api.template.folder.get')->middleware('api.permission.guard:templates.folders.view');
+    Route::patch('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_folder'])->name('api.template.folder.update')->middleware('api.permission.guard:templates.folders.update');
+    Route::delete('/templates/{template_id}/folders/{folder_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_folder'])->name('api.template.folder.delete')->middleware('api.permission.guard:templates.folders.delete');
 
-    Route::get('/templates/{template_id}/files', [App\Http\Controllers\API\TemplateController::class, 'action_list_file'])->name('api.template.file.list');
-    Route::post('/templates/{template_id}/files', [App\Http\Controllers\API\TemplateController::class, 'action_add_file'])->name('api.template.file.add');
-    Route::get('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_file'])->name('api.template.file.get');
-    Route::patch('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_file'])->name('api.template.file.update');
-    Route::delete('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_file'])->name('api.template.file.delete');
+    Route::get('/templates/{template_id}/files', [App\Http\Controllers\API\TemplateController::class, 'action_list_file'])->name('api.template.file.list')->middleware('api.permission.guard:templates.files.view');
+    Route::post('/templates/{template_id}/files', [App\Http\Controllers\API\TemplateController::class, 'action_add_file'])->name('api.template.file.add')->middleware('api.permission.guard:templates.files.add');
+    Route::get('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_file'])->name('api.template.file.get')->middleware('api.permission.guard:templates.files.view');
+    Route::patch('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_file'])->name('api.template.file.update')->middleware('api.permission.guard:templates.files.update');
+    Route::delete('/templates/{template_id}/files/{file_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_file'])->name('api.template.file.delete')->middleware('api.permission.guard:templates.files.delete');
 
-    Route::get('/templates/{template_id}/fields', [App\Http\Controllers\API\TemplateController::class, 'action_list_field'])->name('api.template.field.list');
-    Route::post('/templates/{template_id}/fields', [App\Http\Controllers\API\TemplateController::class, 'action_add_field'])->name('api.template.field.add');
-    Route::get('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_field'])->name('api.template.field.get');
-    Route::patch('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_field'])->name('api.template.field.update');
-    Route::delete('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_field'])->name('api.template.field.delete');
+    Route::get('/templates/{template_id}/fields', [App\Http\Controllers\API\TemplateController::class, 'action_list_field'])->name('api.template.field.list')->middleware('api.permission.guard:templates.fields.view');
+    Route::post('/templates/{template_id}/fields', [App\Http\Controllers\API\TemplateController::class, 'action_add_field'])->name('api.template.field.add')->middleware('api.permission.guard:templates.fields.add');
+    Route::get('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_field'])->name('api.template.field.get')->middleware('api.permission.guard:templates.fields.view');
+    Route::patch('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_field'])->name('api.template.field.update')->middleware('api.permission.guard:templates.fields.update');
+    Route::delete('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_field'])->name('api.template.field.delete')->middleware('api.permission.guard:templates.fields.delete');
 
-    Route::post('/templates/{template_id}/fields/{field_id}/options', [App\Http\Controllers\API\TemplateController::class, 'action_add_option'])->name('api.template.field.option.add');
-    Route::patch('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_option'])->name('api.template.field.option.update');
-    Route::delete('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_option'])->name('api.template.field.option.delete');
+    Route::post('/templates/{template_id}/fields/{field_id}/options', [App\Http\Controllers\API\TemplateController::class, 'action_add_option'])->name('api.template.field.option.add')->middleware('api.permission.guard:templates.fields.options.add');
+    Route::patch('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_option'])->name('api.template.field.option.update')->middleware('api.permission.guard:templates.fields.options.update');
+    Route::delete('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_option'])->name('api.template.field.option.delete')->middleware('api.permission.guard:templates.fields.options.delete');
 
-    Route::get('/templates/{template_id}/ports', [App\Http\Controllers\API\TemplateController::class, 'action_list_port'])->name('api.template.port.list');
-    Route::post('/templates/{template_id}/ports', [App\Http\Controllers\API\TemplateController::class, 'action_add_port'])->name('api.template.port.add');
-    Route::get('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_port'])->name('api.template.port.get');
-    Route::patch('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_port'])->name('api.template.port.update');
-    Route::delete('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_port'])->name('api.template.port.delete');
+    Route::get('/templates/{template_id}/ports', [App\Http\Controllers\API\TemplateController::class, 'action_list_port'])->name('api.template.port.list')->middleware('api.permission.guard:templates.ports.view');
+    Route::post('/templates/{template_id}/ports', [App\Http\Controllers\API\TemplateController::class, 'action_add_port'])->name('api.template.port.add')->middleware('api.permission.guard:templates.ports.add');
+    Route::get('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_port'])->name('api.template.port.get')->middleware('api.permission.guard:templates.ports.view');
+    Route::patch('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_port'])->name('api.template.port.update')->middleware('api.permission.guard:templates.ports.update');
+    Route::delete('/templates/{template_id}/ports/{port_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_port'])->name('api.template.port.delete')->middleware('api.permission.guard:templates.ports.delete');
 
-    Route::get('/projects/{project_id}/clusters', [App\Http\Controllers\API\ClusterController::class, 'action_list'])->name('api.cluster.list');
-    Route::post('/projects/{project_id}/clusters', [App\Http\Controllers\API\ClusterController::class, 'action_add'])->name('api.cluster.add');
-    Route::get('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_get'])->name('api.cluster.get');
-    Route::patch('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_update'])->name('api.cluster.update');
-    Route::delete('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_delete'])->name('api.cluster.delete');
+    Route::get('/projects/{project_id}/clusters', [App\Http\Controllers\API\ClusterController::class, 'action_list'])->name('api.cluster.list')->middleware('api.permission.guard:projects.clusters.view');
+    Route::post('/projects/{project_id}/clusters', [App\Http\Controllers\API\ClusterController::class, 'action_add'])->name('api.cluster.add')->middleware('api.permission.guard:projects.clusters.add');
+    Route::get('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_get'])->name('api.cluster.get')->middleware('api.permission.guard:projects.clusters.view');
+    Route::patch('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_update'])->name('api.cluster.update')->middleware('api.permission.guard:projects.clusters.update');
+    Route::delete('/projects/{project_id}/clusters/{cluster_id}', [App\Http\Controllers\API\ClusterController::class, 'action_delete'])->name('api.cluster.delete')->middleware('api.permission.guard:projects.clusters.delete');
 
-    Route::get('/projects/{project_id}/deployments', [App\Http\Controllers\API\DeploymentController::class, 'action_list'])->name('api.deployment.list');
-    Route::post('/projects/{project_id}/deployments', [App\Http\Controllers\API\DeploymentController::class, 'action_add'])->name('api.deployment.add');
-    Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_get'])->name('api.deployment.get');
-    Route::patch('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_update'])->name('api.deployment.update');
-    Route::delete('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_delete'])->name('api.deployment.delete');
-    Route::put('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_put_network_policy'])->name('api.deployment.netpol.put');
-    Route::delete('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_delete_network_policy'])->name('api.deployment.netpol.delete');
-    Route::patch('/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_revert_commit'])->name('api.deployment.commit.revert');
+    Route::get('/projects/{project_id}/deployments', [App\Http\Controllers\API\DeploymentController::class, 'action_list'])->name('api.deployment.list')->middleware('api.permission.guard:projects.deployments.view');
+    Route::post('/projects/{project_id}/deployments', [App\Http\Controllers\API\DeploymentController::class, 'action_add'])->name('api.deployment.add')->middleware('api.permission.guard:projects.deployments.add');
+    Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_get'])->name('api.deployment.get')->middleware('api.permission.guard:projects.deployments.view');
+    Route::patch('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_update'])->name('api.deployment.update')->middleware('api.permission.guard:projects.deployments.update');
+    Route::delete('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_delete'])->name('api.deployment.delete')->middleware('api.permission.guard:projects.deployments.delete');
+    Route::put('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_put_network_policy'])->name('api.deployment.netpol.put')->middleware('api.permission.guard:projects.deployments.netpol.update');
+    Route::delete('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_delete_network_policy'])->name('api.deployment.netpol.delete')->middleware('api.permission.guard:projects.deployments.netpol.delete');
+    Route::patch('/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}', [App\Http\Controllers\API\DeploymentController::class, 'action_revert_commit'])->name('api.deployment.commit.revert')->middleware('api.permission.guard:projects.deployments.commit.revert');
 });
 
 Route::fallback(function () {

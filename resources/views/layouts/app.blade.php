@@ -33,48 +33,58 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
-                            <li class="nav-item dropdown ms-4 me-4">
-                                <a id="navbarDropdown" class="btn btn-secondary text-white dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <i class="bi bi-boxes"></i>
-                                    @if (!empty(request()->get('project')))
-                                        {{ request()->get('project')->name }}
-                                    @else
-                                        {{ __('No project selected') }}
-                                    @endif
-                                </a>
+                            @can('projects.view')
+                                <li class="nav-item dropdown ms-4 me-4">
+                                    <a id="navbarDropdown" class="btn btn-secondary text-white dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        <i class="bi bi-boxes"></i>
+                                        @if (!empty(request()->get('project')))
+                                            {{ request()->get('project')->name }}
+                                        @else
+                                            {{ __('No project selected') }}
+                                        @endif
+                                    </a>
 
-                                <div class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('project.index') }}">
-                                        Overview
-                                    </a>
-                                    <hr class="dropdown-divider">
-                                    @if (request()->get('projects')->isNotEmpty())
-                                        @foreach (request()->get('projects') as $project)
-                                            <a class="dropdown-item" href="{{ route('project.details', ['project_id' => $project->id]) }}">
-                                                {{ $project->name }}
-                                            </a>
-                                        @endforeach
+                                    <div class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('project.index') }}">
+                                            Overview
+                                        </a>
                                         <hr class="dropdown-divider">
-                                    @endif
-                                    <a class="dropdown-item" href="{{ route('project.add') }}">
-                                        {{ __('Add project') }}
-                                    </a>
-                                </div>
-                            </li>
+                                        @if (request()->get('projects')->isNotEmpty())
+                                            @foreach (request()->get('projects') as $project)
+                                                <a class="dropdown-item" href="{{ route('project.details', ['project_id' => $project->id]) }}">
+                                                    {{ $project->name }}
+                                                </a>
+                                            @endforeach
+                                            <hr class="dropdown-divider">
+                                        @endif
+                                        <a class="dropdown-item" href="{{ route('project.add') }}">
+                                            {{ __('Add project') }}
+                                        </a>
+                                    </div>
+                                </li>
+                            @endcan
                             @if (!empty(request()->get('project')))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('project.details', ['project_id' => request()->get('project')->id]) }}">Dashboard</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Deployments') }}</a>
-                                </li>
-                                @if (request()->get('project')->user_id === Auth::id())
+                                @can('projects.view')
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}">{{ __('Users') }}</a>
+                                        <a class="nav-link" href="{{ route('project.details', ['project_id' => request()->get('project')->id]) }}">Dashboard</a>
                                     </li>
+                                @endcan
+                                @can('clusters.view')
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
+                                    </li>
+                                @endcan
+                                @can('deployments.view')
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Deployments') }}</a>
+                                    </li>
+                                @endcan
+                                @if (request()->get('project')->user_id === Auth::id())
+                                    @can('users.view')
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}">{{ __('Users') }}</a>
+                                        </li>
+                                    @endcan
                                 @endif
                             @endif
                         @endauth
@@ -83,15 +93,17 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @guest
-                            <li class="nav-item me-4">
-                                <a class="nav-link" href="{{ route('switch-color-mode') }}">
-                                    @if (request()->cookie('theme') === 'dark')
-                                        <i class="bi bi-sun-fill"></i>
-                                    @else
-                                        <i class="bi bi-moon-fill"></i>
-                                    @endif
-                                </a>
-                            </li>
+                            @can('dark-mode')
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="{{ route('switch-color-mode') }}">
+                                        @if (request()->cookie('theme') === 'dark')
+                                            <i class="bi bi-sun-fill"></i>
+                                        @else
+                                            <i class="bi bi-moon-fill"></i>
+                                        @endif
+                                    </a>
+                                </li>
+                            @endcan
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
@@ -99,28 +111,34 @@
                                 <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                             </li>
                         @else
-                            <li class="nav-item me-4">
-                                <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
-                            </li>
-                            <li class="nav-item me-4">
-                                <a class="nav-link" href="{{ route('switch-color-mode') }}">
-                                    @if (request()->cookie('theme') === 'dark')
-                                        <i class="bi bi-sun-fill"></i>
-                                    @else
-                                        <i class="bi bi-moon-fill"></i>
-                                    @endif
-                                </a>
-                            </li>
+                            @can('templates.view')
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
+                                </li>
+                            @endcan
+                            @can('dark-mode')
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="{{ route('switch-color-mode') }}">
+                                        @if (request()->cookie('theme') === 'dark')
+                                            <i class="bi bi-sun-fill"></i>
+                                        @else
+                                            <i class="bi bi-moon-fill"></i>
+                                        @endif
+                                    </a>
+                                </li>
+                            @endcan
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('project.invitations') }}">
-                                        {{ __('Invitations') }}
-                                    </a>
-                                    <hr class="dropdown-divider">
+                                    @can('projects.invitations.view')
+                                        <a class="dropdown-item" href="{{ route('project.invitations') }}">
+                                            {{ __('Invitations') }}
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                    @endcan
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
