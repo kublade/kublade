@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -18,6 +20,10 @@ class User extends Authenticatable implements JWTSubject
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
+    use HasPermissions;
+    use HasRoles {
+        HasRoles::hasPermissionTo as originalHasPermissionTo;
+    }
     use Notifiable;
 
     /**
@@ -109,5 +115,33 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Check if the user is the first registration.
+     *
+     * @return bool
+     */
+    public function isFirstRegistration(): bool
+    {
+        return $this->id === 1;
+    }
+
+    /**
+     * Check if the user has a permission.
+     * This also acts as an anti-lockout mechanism allowing the first user to have all permissions at all times.
+     *
+     * @param string      $permission
+     * @param string|null $guardName
+     *
+     * @return bool
+     */
+    public function hasPermissionTo($permission, $guardName = null): bool
+    {
+        if (User::first()->id === $this->id) {
+            return true;
+        }
+
+        return $this->originalHasPermissionTo($permission, $guardName);
     }
 }

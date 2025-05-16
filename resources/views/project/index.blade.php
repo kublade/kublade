@@ -153,15 +153,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="border rounded overflow-hidden">
-                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
-                                        <span class="fs-6 py-2">{{ __('Users') }}</span>
-                                        <a href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-arrow-right"></i></a>
-                                    </h5>
-                                    <p class="fs-3 mb-0 p-3 lh-1">{{ request()->get('project')->invitations()->count() }}</p>
-                                </div>
-                            </div>
                         </div>
                     @else
                         <table class="table">

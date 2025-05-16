@@ -29,6 +29,7 @@
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "sagalbot/encryptable": "^1.0",
+        "spatie/laravel-permission": "^6.17",
         "symfony/yaml": "^7.2",
         "tymon/jwt-auth": "^2.2"
     },

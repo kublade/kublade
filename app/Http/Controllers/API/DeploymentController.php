@@ -57,14 +57,7 @@ class DeploymentController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        $deployments = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->cursorPaginate(10);
+        $deployments = Deployment::cursorPaginate(10);
 
         return Response::generate(200, 'success', 'Deployments retrieved', [
             'deployments' => $deployments->items(),
@@ -97,15 +90,7 @@ class DeploymentController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        $deployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $deployment_id)
-            ->first();
+        $deployment = Deployment::where('id', '=', $deployment_id)->first();
 
         if (empty($deployment)) {
             return Response::generate(404, 'error', 'Deployment not found');
@@ -515,29 +500,13 @@ class DeploymentController extends Controller
             return Response::generate(400, 'error', 'Network policy already exists');
         }
 
-        $sourceDeployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $request->source_deployment_id)
-            ->first();
+        $sourceDeployment = Deployment::where('id', '=', $request->source_deployment_id)->first();
 
         if (empty($sourceDeployment)) {
             return Response::generate(404, 'error', 'Source deployment not found');
         }
 
-        $targetDeployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $request->target_deployment_id)
-            ->first();
+        $targetDeployment = Deployment::where('id', '=', $request->target_deployment_id)->first();
 
         if (empty($targetDeployment) || $sourceDeployment->id === $targetDeployment->id) {
             return Response::generate(404, 'error', 'Target deployment not found');
@@ -600,28 +569,7 @@ class DeploymentController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        $networkPolicy = DeploymentLink::where('id', '=', $network_policy_id)
-            ->where(function ($query) {
-                $query->whereHas('source', function ($query) {
-                    $query->whereHas('project', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->orWhereHas('invitations', function ($query) {
-                                $query->where('user_id', Auth::id())
-                                    ->where('invitation_accepted', true);
-                            });
-                    });
-                })
-                ->orWhereHas('target', function ($query) {
-                    $query->whereHas('project', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->orWhereHas('invitations', function ($query) {
-                                $query->where('user_id', Auth::id())
-                                    ->where('invitation_accepted', true);
-                            });
-                    });
-                });
-            })
-            ->first();
+        $networkPolicy = DeploymentLink::where('id', '=', $network_policy_id)->first();
 
         if (empty($networkPolicy)) {
             return Response::generate(404, 'error', 'Network policy not found');
@@ -659,17 +607,7 @@ class DeploymentController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        $commit = DeploymentCommit::whereHas('deployment', function ($query) {
-            $query->whereHas('project', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->orWhereHas('invitations', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->where('invitation_accepted', true);
-                    });
-            });
-        })
-            ->where('id', '=', $commit_id)
-            ->first();
+        $commit = DeploymentCommit::where('id', '=', $commit_id)->first();
 
         if (
             empty($commit) ||

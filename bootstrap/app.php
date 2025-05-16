@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Middleware\API\AuthGuard;
+use App\Http\Middleware\API\AuthGuard as ApiAuthGuard;
+use App\Http\Middleware\API\PermissionGuard as ApiPermissionGuard;
+use App\Http\Middleware\PermissionGuard as UiPermissionGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,7 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'api.guard' => AuthGuard::class,
+            'api.guard'            => ApiAuthGuard::class,
+            'api.permission.guard' => ApiPermissionGuard::class,
+            'ui.permission.guard'  => UiPermissionGuard::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
