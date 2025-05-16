@@ -104,12 +104,6 @@
                                     </a>
                                 </li>
                             @endcan
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>
                         @else
                             @can('templates.view')
                                 <li class="nav-item me-4">

@@ -9,7 +9,7 @@ Route::get('/', function () {
     return redirect('/projects');
 })->name('home');
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware([
     IdentifyProject::class,
