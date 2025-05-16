@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.25.0](https://github.com/kublade/kublade/compare/v1.24.0...v1.25.0) (2025-05-16)
+
+
+### Features
+
+* favicon ([ced2fbb](https://github.com/kublade/kublade/commit/ced2fbb427911d368932dec5b902e6ff505f8ce2))
+
 ## [1.24.0](https://github.com/kublade/kublade/compare/v1.23.1...v1.24.0) (2025-05-16)
 
 
