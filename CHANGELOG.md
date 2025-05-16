@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.24.0](https://github.com/kublade/kublade/compare/v1.23.1...v1.24.0) (2025-05-16)
+
+
+### Features
+
+* granular permission settings ([edc1786](https://github.com/kublade/kublade/commit/edc1786e4eee302a47201e6da78c8bdfeb7bbf28))
+* user management ([15040e7](https://github.com/kublade/kublade/commit/15040e7459c7e9c61768cb3fdef5a93d71d86380))
+
 ## [1.23.1](https://github.com/kublade/kublade/compare/v1.23.0...v1.23.1) (2025-05-09)
 
 
