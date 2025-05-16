@@ -20,6 +20,7 @@ use Illuminate\Routing\Route as LaravelRoute;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 
 /**
  * Class Filesize.
@@ -412,5 +413,22 @@ class PermissionSet
         $sortTree($tree);
 
         return $tree;
+    }
+
+    /**
+     * Sync the permissions.
+     */
+    public static function sync(): void
+    {
+        $permissions = self::all();
+
+        $permissions->each(function ($permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'web'],
+                ['name' => $permission, 'guard_name' => 'web']
+            );
+        });
+
+        Permission::whereNotIn('name', $permissions->pluck('permission'))->delete();
     }
 }

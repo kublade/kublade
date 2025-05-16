@@ -7,7 +7,6 @@ namespace App\Http\Middleware;
 use App\Models\Projects\Projects\Project;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 /**
@@ -29,13 +28,7 @@ class IdentifyProject
      */
     public function handle(Request $request, Closure $next)
     {
-        $projects = Project::where(function ($query) {
-            $query->where('user_id', '=', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', '=', Auth::id())
-                        ->where('invitation_accepted', '=', true);
-                });
-        })->get();
+        $projects = Project::all();
 
         if (! empty($projects)) {
             $request->attributes->add(['projects' => $projects]);

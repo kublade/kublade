@@ -30,12 +30,11 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
                             @can('projects.view')
                                 <li class="nav-item dropdown ms-4 me-4">
-                                    <a id="navbarDropdown" class="btn btn-secondary text-white dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="projectDropdown" class="btn btn-secondary text-white dropdown-toggle d-flex gap-2 align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         <i class="bi bi-boxes"></i>
                                         @if (!empty(request()->get('project')))
                                             {{ request()->get('project')->name }}
@@ -44,7 +43,7 @@
                                         @endif
                                     </a>
 
-                                    <div class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdown">
+                                    <div class="dropdown-menu dropdown-menu-start" aria-labelledby="projectDropdown">
                                         <a class="dropdown-item" href="{{ route('project.index') }}">
                                             Overview
                                         </a>
@@ -79,22 +78,14 @@
                                         <a class="nav-link" href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Deployments') }}</a>
                                     </li>
                                 @endcan
-                                @if (request()->get('project')->user_id === Auth::id())
-                                    @can('users.view')
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('project.users', ['project_id' => request()->get('project')->id]) }}">{{ __('Users') }}</a>
-                                        </li>
-                                    @endcan
-                                @endif
                             @endif
                         @endauth
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @can('dark-mode')
-                                <li class="nav-item me-4">
+                                <li class="nav-item ms-4">
                                     <a class="nav-link" href="{{ route('switch-color-mode') }}">
                                         @if (request()->cookie('theme') === 'dark')
                                             <i class="bi bi-sun-fill"></i>
@@ -106,12 +97,27 @@
                             @endcan
                         @else
                             @can('templates.view')
-                                <li class="nav-item me-4">
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('template.index') }}">{{ __('Templates') }}</a>
                                 </li>
                             @endcan
+                            @canany(['users.view', 'roles.view'])
+                                <li class="nav-item dropdown">
+                                    <a id="usersDropdown" class="nav-link dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ __('Users') }}
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="usersDropdown">
+                                        @can('users.view')
+                                            <a class="dropdown-item" href="{{ route('user.index') }}">{{ __('Users') }}</a>
+                                        @endcan
+                                        @can('roles.view')
+                                            <a class="dropdown-item" href="{{ route('role.index') }}">{{ __('Roles') }}</a>
+                                        @endcan
+                                    </div>
+                                </li>
+                            @endcan
                             @can('dark-mode')
-                                <li class="nav-item me-4">
+                                <li class="nav-item ms-4">
                                     <a class="nav-link" href="{{ route('switch-color-mode') }}">
                                         @if (request()->cookie('theme') === 'dark')
                                             <i class="bi bi-sun-fill"></i>
@@ -121,18 +127,12 @@
                                     </a>
                                 </li>
                             @endcan
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li class="nav-item dropdown ms-4">
+                                <a id="userDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    @can('projects.invitations.view')
-                                        <a class="dropdown-item" href="{{ route('project.invitations') }}">
-                                            {{ __('Invitations') }}
-                                        </a>
-                                        <hr class="dropdown-divider">
-                                    @endcan
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

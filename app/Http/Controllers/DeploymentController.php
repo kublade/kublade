@@ -51,16 +51,7 @@ class DeploymentController extends Controller
     public function page_index(string $project_id, string $deployment_id = null)
     {
         $request    = request();
-        $deployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $deployment_id)
-            ->first();
-
+        $deployment = Deployment::where('id', '=', $deployment_id)->first();
         $datapoints = collect();
 
         if ($deployment_id && $request->tab === 'metrics') {
@@ -157,13 +148,7 @@ class DeploymentController extends Controller
         }
 
         return view('deployment.index', [
-            'deployments' => Deployment::whereHas('project', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->orWhereHas('invitations', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->where('invitation_accepted', true);
-                    });
-            })->paginate(10),
+            'deployments'   => Deployment::paginate(10),
             'deployment'    => $deployment,
             'metrics'       => $datapoints,
             'file'          => $file,
@@ -634,29 +619,13 @@ class DeploymentController extends Controller
             return redirect()->back()->with('warning', __('Network policy already exists.'));
         }
 
-        $sourceDeployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $request->source_deployment_id)
-            ->first();
+        $sourceDeployment = Deployment::where('id', '=', $request->source_deployment_id)->first();
 
         if (empty($sourceDeployment)) {
             return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
         }
 
-        $targetDeployment = Deployment::whereHas('project', function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhereHas('invitations', function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->where('invitation_accepted', true);
-                });
-        })
-            ->where('id', '=', $request->target_deployment_id)
-            ->first();
+        $targetDeployment = Deployment::where('id', '=', $request->target_deployment_id)->first();
 
         if (empty($targetDeployment) || $sourceDeployment->id === $targetDeployment->id) {
             return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
@@ -711,28 +680,7 @@ class DeploymentController extends Controller
             'network_policy_id' => ['required', 'string'],
         ])->validate();
 
-        $networkPolicy = DeploymentLink::where('id', '=', $network_policy_id)
-            ->where(function ($query) {
-                $query->whereHas('source', function ($query) {
-                    $query->whereHas('project', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->orWhereHas('invitations', function ($query) {
-                                $query->where('user_id', Auth::id())
-                                    ->where('invitation_accepted', true);
-                            });
-                    });
-                })
-                ->orWhereHas('target', function ($query) {
-                    $query->whereHas('project', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->orWhereHas('invitations', function ($query) {
-                                $query->where('user_id', Auth::id())
-                                    ->where('invitation_accepted', true);
-                            });
-                    });
-                });
-            })
-            ->first();
+        $networkPolicy = DeploymentLink::where('id', '=', $network_policy_id)->first();
 
         if (empty($networkPolicy)) {
             return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
@@ -762,17 +710,7 @@ class DeploymentController extends Controller
             'commit_id'     => ['required', 'string'],
         ])->validate();
 
-        $commit = DeploymentCommit::whereHas('deployment', function ($query) {
-            $query->whereHas('project', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->orWhereHas('invitations', function ($query) {
-                        $query->where('user_id', Auth::id())
-                            ->where('invitation_accepted', true);
-                    });
-            });
-        })
-            ->where('id', '=', $commit_id)
-            ->first();
+        $commit = DeploymentCommit::where('id', '=', $commit_id)->first();
 
         if (
             empty($commit) ||

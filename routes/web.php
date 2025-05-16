@@ -15,17 +15,21 @@ Route::middleware([
     IdentifyProject::class,
 ])->group(function () {
     Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'page_index'])->name('project.index')->middleware('ui.permission.guard:projects.view');
+    /*
     Route::get('/projects/invitations', [App\Http\Controllers\ProjectController::class, 'page_invitations'])->name('project.invitations')->middleware('ui.permission.guard:projects.invitations.view');
+    */
     Route::get('/projects/add', [App\Http\Controllers\ProjectController::class, 'page_add'])->name('project.add')->middleware('ui.permission.guard:projects.add');
     Route::post('/projects/add', [App\Http\Controllers\ProjectController::class, 'action_add'])->name('project.add.action')->middleware('ui.permission.guard:projects.add');
     Route::get('/projects/{project_id}/update', [App\Http\Controllers\ProjectController::class, 'page_update'])->name('project.update')->middleware('ui.permission.guard:projects.update');
     Route::post('/projects/{project_id}/update', [App\Http\Controllers\ProjectController::class, 'action_update'])->name('project.update.action')->middleware('ui.permission.guard:projects.update');
     Route::get('/projects/{project_id}/delete', [App\Http\Controllers\ProjectController::class, 'action_delete'])->name('project.delete.action')->middleware('ui.permission.guard:projects.delete');
+    /*
     Route::get('/projects/{project_id}/users', [App\Http\Controllers\ProjectController::class, 'page_users'])->name('project.users')->middleware('ui.permission.guard:projects.users.view');
     Route::get('/projects/{project_id}/invitations/create', [App\Http\Controllers\ProjectController::class, 'page_invitation_create'])->name('project.invitation.create')->middleware('ui.permission.guard:projects.invitations.create');
     Route::post('/projects/{project_id}/invitations/create', [App\Http\Controllers\ProjectController::class, 'action_invitation_create'])->name('project.invitation.create.action')->middleware('ui.permission.guard:projects.invitations.create');
     Route::get('/projects/{project_id}/invitations/{project_invitation_id}/delete', [App\Http\Controllers\ProjectController::class, 'action_invitation_delete'])->name('project.invitation.delete.action')->middleware('ui.permission.guard:projects.invitations.delete');
     Route::get('/projects/{project_id}/invitations/{project_invitation_id}/accept', [App\Http\Controllers\ProjectController::class, 'action_invitation_accept'])->name('project.invitation.accept.action')->middleware('ui.permission.guard:projects.invitations.accept');
+    */
     Route::get('/projects/{project_id}', [App\Http\Controllers\ProjectController::class, 'page_index'])->name('project.details')->middleware('ui.permission.guard:projects.view');
 
     Route::get('/templates', [App\Http\Controllers\TemplateController::class, 'page_index'])->name('template.index')->middleware('ui.permission.guard:templates.view');
@@ -84,6 +88,20 @@ Route::middleware([
     Route::get('/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}/delete', [App\Http\Controllers\DeploymentController::class, 'action_delete_network_policy'])->name('deployment.network-policies.delete.action')->middleware('ui.permission.guard:projects.deployments.network-policies.delete');
     Route::get('/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}/revert', [App\Http\Controllers\DeploymentController::class, 'action_revert_commit'])->name('deployment.commit.revert.action')->middleware('ui.permission.guard:projects.deployments.commits.revert');
     Route::get('/projects/{project_id}/deployments/{deployment_id}', [App\Http\Controllers\DeploymentController::class, 'page_index'])->name('deployment.details')->middleware('ui.permission.guard:projects.deployments.view');
+
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'page_index'])->name('user.index')->middleware('ui.permission.guard:users.view');
+    Route::get('/users/add', [App\Http\Controllers\UserController::class, 'page_add'])->name('user.add')->middleware('ui.permission.guard:users.add');
+    Route::post('/users/add', [App\Http\Controllers\UserController::class, 'action_add'])->name('user.add.action')->middleware('ui.permission.guard:users.add');
+    Route::get('/users/{user_id}/update', [App\Http\Controllers\UserController::class, 'page_update'])->name('user.update')->middleware('ui.permission.guard:users.update');
+    Route::post('/users/{user_id}/update', [App\Http\Controllers\UserController::class, 'action_update'])->name('user.update.action')->middleware('ui.permission.guard:users.update');
+    Route::get('/users/{user_id}/delete', [App\Http\Controllers\UserController::class, 'action_delete'])->name('user.delete.action')->middleware('ui.permission.guard:users.delete');
+
+    Route::get('/roles', [App\Http\Controllers\RoleController::class, 'page_index'])->name('role.index')->middleware('ui.permission.guard:roles.view');
+    Route::get('/roles/add', [App\Http\Controllers\RoleController::class, 'page_add'])->name('role.add')->middleware('ui.permission.guard:roles.add');
+    Route::post('/roles/add', [App\Http\Controllers\RoleController::class, 'action_add'])->name('role.add.action')->middleware('ui.permission.guard:roles.add');
+    Route::get('/roles/{role_id}/update', [App\Http\Controllers\RoleController::class, 'page_update'])->name('role.update')->middleware('ui.permission.guard:roles.update');
+    Route::post('/roles/{role_id}/update', [App\Http\Controllers\RoleController::class, 'action_update'])->name('role.update.action')->middleware('ui.permission.guard:roles.update');
+    Route::get('/roles/{role_id}/delete', [App\Http\Controllers\RoleController::class, 'action_delete'])->name('role.delete.action')->middleware('ui.permission.guard:roles.delete');
 });
 
 Route::get('/switch-color-mode', function () {

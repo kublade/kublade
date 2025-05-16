@@ -60,16 +60,6 @@ class Project extends Model
     }
 
     /**
-     * Relation to invitations.
-     *
-     * @return HasMany
-     */
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(ProjectInvitation::class, 'project_id', 'id');
-    }
-
-    /**
      * Relation to clusters.
      *
      * @return HasMany
