@@ -32,6 +32,25 @@ use Spatie\Permission\Models\Permission;
 class PermissionSet
 {
     /**
+     * The object cache.
+     *
+     * @var array
+     */
+    protected static $objectCache = [
+        'projects'         => [],
+        'templates'        => [],
+        'folders'          => [],
+        'files'            => [],
+        'fields'           => [],
+        'options'          => [],
+        'ports'            => [],
+        'clusters'         => [],
+        'deployments'      => [],
+        'commits'          => [],
+        'network-policies' => [],
+    ];
+
+    /**
      * Get the permission set for the user.
      *
      * @param string  $permission
@@ -430,5 +449,138 @@ class PermissionSet
         });
 
         Permission::whereNotIn('name', $permissions->pluck('permission'))->delete();
+    }
+
+    /**
+     * Translate the permission.
+     *
+     * @param string $permission
+     *
+     * @return string
+     */
+    public static function translate(string $permission): string
+    {
+        if ($match = Str::match('/projects\.[0-9a-f-]{36}/i', $permission)) {
+            $projectId = Str::between($match, 'projects.', '.');
+            $object    = !isset(self::$objectCache['projects'][$projectId]) ? Project::firstWhere('id', $projectId) : self::$objectCache['projects'][$projectId];
+
+            if (!isset(self::$objectCache['projects'][$projectId])) {
+                self::$objectCache['projects'][$projectId] = $object;
+            }
+
+            $permission = Str::replaceFirst('projects.' . $projectId, 'projects.<span class="badge bg-secondary mx-1" title="' . $projectId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/templates\.[0-9a-f-]{36}/i', $permission)) {
+            $templateId = Str::between($match, 'templates.', '.');
+            $object     = !isset(self::$objectCache['templates'][$templateId]) ? Template::firstWhere('id', $templateId) : self::$objectCache['templates'][$templateId];
+
+            if (!isset(self::$objectCache['templates'][$templateId])) {
+                self::$objectCache['templates'][$templateId] = $object;
+            }
+
+            $permission = Str::replaceFirst('templates.' . $templateId, 'templates.<span class="badge bg-secondary mx-1" title="' . $templateId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/folders\.[0-9a-f-]{36}/i', $permission)) {
+            $folderId = Str::between($match, 'folders.', '.');
+            $object   = !isset(self::$objectCache['folders'][$folderId]) ? TemplateDirectory::firstWhere('id', $folderId) : self::$objectCache['folders'][$folderId];
+
+            if (!isset(self::$objectCache['folders'][$folderId])) {
+                self::$objectCache['folders'][$folderId] = $object;
+            }
+
+            $permission = Str::replaceFirst('folders.' . $folderId, 'folders.<span class="badge bg-secondary mx-1" title="' . $folderId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/files\.[0-9a-f-]{36}/i', $permission)) {
+            $fileId = Str::between($match, 'files.', '.');
+            $object = !isset(self::$objectCache['files'][$fileId]) ? TemplateFile::firstWhere('id', $fileId) : self::$objectCache['files'][$fileId];
+
+            if (!isset(self::$objectCache['files'][$fileId])) {
+                self::$objectCache['files'][$fileId] = $object;
+            }
+
+            $permission = Str::replaceFirst('files.' . $fileId, 'files.<span class="badge bg-secondary mx-1" title="' . $fileId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/fields\.[0-9a-f-]{36}/i', $permission)) {
+            $fieldId = Str::between($match, 'fields.', '.');
+            $object  = !isset(self::$objectCache['fields'][$fieldId]) ? TemplateField::firstWhere('id', $fieldId) : self::$objectCache['fields'][$fieldId];
+
+            if (!isset(self::$objectCache['fields'][$fieldId])) {
+                self::$objectCache['fields'][$fieldId] = $object;
+            }
+
+            $permission = Str::replaceFirst('fields.' . $fieldId, 'fields.<span class="badge bg-secondary mx-1" title="' . $fieldId . '">' . $object->label . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/options\.[0-9a-f-]{36}/i', $permission)) {
+            $optionId = Str::between($match, 'options.', '.');
+            $object   = !isset(self::$objectCache['options'][$optionId]) ? TemplateFieldOption::firstWhere('id', $optionId) : self::$objectCache['options'][$optionId];
+
+            if (!isset(self::$objectCache['options'][$optionId])) {
+                self::$objectCache['options'][$optionId] = $object;
+            }
+
+            $permission = Str::replaceFirst('options.' . $optionId, 'options.<span class="badge bg-secondary mx-1" title="' . $optionId . '">' . $object->label . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/ports\.[0-9a-f-]{36}/i', $permission)) {
+            $portId = Str::between($match, 'ports.', '.');
+            $object = !isset(self::$objectCache['ports'][$portId]) ? TemplatePort::firstWhere('id', $portId) : self::$objectCache['ports'][$portId];
+
+            if (!isset(self::$objectCache['ports'][$portId])) {
+                self::$objectCache['ports'][$portId] = $object;
+            }
+
+            $permission = Str::replaceFirst('ports.' . $portId, 'ports.<span class="badge bg-secondary mx-1" title="' . $portId . '">' . $object->claim . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/clusters\.[0-9a-f-]{36}/i', $permission)) {
+            $clusterId = Str::between($match, 'clusters.', '.');
+            $object    = !isset(self::$objectCache['clusters'][$clusterId]) ? Cluster::firstWhere('id', $clusterId) : self::$objectCache['clusters'][$clusterId];
+
+            if (!isset(self::$objectCache['clusters'][$clusterId])) {
+                self::$objectCache['clusters'][$clusterId] = $object;
+            }
+
+            $permission = Str::replaceFirst('clusters.' . $clusterId, 'clusters.<span class="badge bg-secondary mx-1" title="' . $clusterId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/deployments\.[0-9a-f-]{36}/i', $permission)) {
+            $deploymentId = Str::between($match, 'deployments.', '.');
+            $object       = !isset(self::$objectCache['deployments'][$deploymentId]) ? Deployment::firstWhere('id', $deploymentId) : self::$objectCache['deployments'][$deploymentId];
+
+            if (!isset(self::$objectCache['deployments'][$deploymentId])) {
+                self::$objectCache['deployments'][$deploymentId] = $object;
+            }
+
+            $permission = Str::replaceFirst('deployments.' . $deploymentId, 'deployments.<span class="badge bg-secondary mx-1" title="' . $deploymentId . '">' . $object->name . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/commits\.[0-9a-f-]{36}/i', $permission)) {
+            $commitId = Str::between($match, 'commits.', '.');
+            $object   = !isset(self::$objectCache['commits'][$commitId]) ? DeploymentCommit::firstWhere('id', $commitId) : self::$objectCache['commits'][$commitId];
+
+            if (!isset(self::$objectCache['commits'][$commitId])) {
+                self::$objectCache['commits'][$commitId] = $object;
+            }
+
+            $permission = Str::replaceFirst('commits.' . $commitId, 'commits.<span class="badge bg-secondary mx-1" title="' . $commitId . '">' . $object->hash . '</span>', $permission);
+        }
+
+        if ($match = Str::match('/network-policies\.[0-9a-f-]{36}/i', $permission)) {
+            $networkPolicyId = Str::between($match, 'network-policies.', '.');
+            $object          = !isset(self::$objectCache['network-policies'][$networkPolicyId]) ? DeploymentLink::firstWhere('id', $networkPolicyId) : self::$objectCache['network-policies'][$networkPolicyId];
+
+            if (!isset(self::$objectCache['network-policies'][$networkPolicyId])) {
+                self::$objectCache['network-policies'][$networkPolicyId] = $object;
+            }
+
+            $permission = Str::replaceFirst('network-policies.' . $networkPolicyId, 'network-policies.<span class="badge bg-secondary mx-1" title="' . $networkPolicyId . '">' . ($object->source?->name ?? __('N/A')) . ' <> ' . ($object->target?->name ?? __('N/A')) . '</span>', $permission);
+        }
+
+        return $permission;
     }
 }
