@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.26.0](https://github.com/kublade/kublade/compare/v1.25.0...v1.26.0) (2025-05-18)
+
+
+### Features
+
+* permission ist object references ([4266c44](https://github.com/kublade/kublade/commit/4266c44a9a5272a47d9daa5d51123f563f00d4ce))
+
 ## [1.25.0](https://github.com/kublade/kublade/compare/v1.24.0...v1.25.0) (2025-05-16)
 
 
