@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.0](https://github.com/kublade/kublade/compare/v1.26.1...v1.27.0) (2025-05-19)
+
+
+### Features
+
+* general dashboard ([991e39b](https://github.com/kublade/kublade/commit/991e39ba2f3a86dc56b615c9ce8aa9abda370865))
+
 ## [1.26.1](https://github.com/kublade/kublade/compare/v1.26.0...v1.26.1) (2025-05-19)
 
 
