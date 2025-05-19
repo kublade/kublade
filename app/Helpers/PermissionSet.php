@@ -187,6 +187,7 @@ class PermissionSet
                     $permissions->push([
                         'permission' => $permission,
                         'parameters' => $parameters,
+                        'values'     => [],
                     ]);
                 }
             });
@@ -194,12 +195,22 @@ class PermissionSet
 
         $projects = Project::all();
 
+        $projects->filter(function ($project) {
+            return !isset(self::$objectCache['projects'][$project->id]);
+        })->each(function ($project) {
+            self::$objectCache['projects'][$project->id] = $project;
+        });
+
         $permissions->each(function ($permission, $key) use ($projects, $permissions) {
             if (Str::contains($permission['permission'], 'projects.') && $permission['parameters']['project_id']) {
                 $projects->each(function ($project) use ($permission, $permissions) {
                     $permissions->push([
                         'permission' => Str::replaceFirst('projects.', 'projects.' . $project->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'project_id' => $project->id,
+                        ],
                     ]);
                 });
 
@@ -209,12 +220,22 @@ class PermissionSet
 
         $templates = Template::all();
 
+        $templates->filter(function ($template) {
+            return !isset(self::$objectCache['templates'][$template->id]);
+        })->each(function ($template) {
+            self::$objectCache['templates'][$template->id] = $template;
+        });
+
         $permissions->each(function ($permission, $key) use ($templates, $permissions) {
             if (Str::contains($permission['permission'], 'templates.') && $permission['parameters']['template_id']) {
                 $templates->each(function ($template) use ($permission, $permissions) {
                     $permissions->push([
                         'permission' => Str::replaceFirst('templates.', 'templates.' . $template->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'template_id' => $template->id,
+                        ],
                     ]);
                 });
 
@@ -224,12 +245,26 @@ class PermissionSet
 
         $folders = TemplateDirectory::all();
 
+        $folders->filter(function ($folder) {
+            return !isset(self::$objectCache['folders'][$folder->id]);
+        })->each(function ($folder) {
+            self::$objectCache['folders'][$folder->id] = $folder;
+        });
+
         $permissions->each(function ($permission, $key) use ($folders, $permissions) {
             if (Str::contains($permission['permission'], 'folders.') && $permission['parameters']['folder_id']) {
                 $folders->each(function ($folder) use ($permission, $permissions) {
+                    if ($folder->template_id !== $permission['values']['template_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('folders.', 'folders.' . $folder->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'folder_id' => $folder->id,
+                        ],
                     ]);
                 });
 
@@ -239,12 +274,26 @@ class PermissionSet
 
         $files = TemplateFile::all();
 
+        $files->filter(function ($file) {
+            return !isset(self::$objectCache['files'][$file->id]);
+        })->each(function ($file) {
+            self::$objectCache['files'][$file->id] = $file;
+        });
+
         $permissions->each(function ($permission, $key) use ($files, $permissions) {
             if (Str::contains($permission['permission'], 'files.') && $permission['parameters']['file_id']) {
                 $files->each(function ($file) use ($permission, $permissions) {
+                    if ($file->template_id !== $permission['values']['template_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('files.', 'files.' . $file->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'file_id' => $file->id,
+                        ],
                     ]);
                 });
 
@@ -254,12 +303,26 @@ class PermissionSet
 
         $fields = TemplateField::all();
 
+        $fields->filter(function ($field) {
+            return !isset(self::$objectCache['fields'][$field->id]);
+        })->each(function ($field) {
+            self::$objectCache['fields'][$field->id] = $field;
+        });
+
         $permissions->each(function ($permission, $key) use ($fields, $permissions) {
             if (Str::contains($permission['permission'], 'fields.') && $permission['parameters']['field_id']) {
                 $fields->each(function ($field) use ($permission, $permissions) {
+                    if ($field->template_id !== $permission['values']['template_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('fields.', 'fields.' . $field->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'field_id' => $field->id,
+                        ],
                     ]);
                 });
 
@@ -269,12 +332,26 @@ class PermissionSet
 
         $options = TemplateFieldOption::all();
 
+        $options->filter(function ($option) {
+            return !isset(self::$objectCache['options'][$option->id]);
+        })->each(function ($option) {
+            self::$objectCache['options'][$option->id] = $option;
+        });
+
         $permissions->each(function ($permission, $key) use ($options, $permissions) {
             if (Str::contains($permission['permission'], 'options.') && $permission['parameters']['option_id']) {
                 $options->each(function ($option) use ($permission, $permissions) {
+                    if ($option->template_field_id !== $permission['values']['field_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('options.', 'options.' . $option->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'option_id' => $option->id,
+                        ],
                     ]);
                 });
 
@@ -284,12 +361,26 @@ class PermissionSet
 
         $ports = TemplatePort::all();
 
+        $ports->filter(function ($port) {
+            return !isset(self::$objectCache['ports'][$port->id]);
+        })->each(function ($port) {
+            self::$objectCache['ports'][$port->id] = $port;
+        });
+
         $permissions->each(function ($permission, $key) use ($ports, $permissions) {
             if (Str::contains($permission['permission'], 'ports.') && $permission['parameters']['port_id']) {
                 $ports->each(function ($port) use ($permission, $permissions) {
+                    if ($port->template_id !== $permission['values']['template_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('ports.', 'ports.' . $port->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'port_id' => $port->id,
+                        ],
                     ]);
                 });
 
@@ -299,12 +390,26 @@ class PermissionSet
 
         $clusters = Cluster::all();
 
+        $clusters->filter(function ($cluster) {
+            return !isset(self::$objectCache['clusters'][$cluster->id]);
+        })->each(function ($cluster) {
+            self::$objectCache['clusters'][$cluster->id] = $cluster;
+        });
+
         $permissions->each(function ($permission, $key) use ($clusters, $permissions) {
             if (Str::contains($permission['permission'], 'clusters.') && $permission['parameters']['cluster_id']) {
                 $clusters->each(function ($cluster) use ($permission, $permissions) {
+                    if ($cluster->project_id !== $permission['values']['project_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('clusters.', 'clusters.' . $cluster->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'cluster_id' => $cluster->id,
+                        ],
                     ]);
                 });
 
@@ -314,12 +419,26 @@ class PermissionSet
 
         $deployments = Deployment::all();
 
+        $deployments->filter(function ($deployment) {
+            return !isset(self::$objectCache['deployments'][$deployment->id]);
+        })->each(function ($deployment) {
+            self::$objectCache['deployments'][$deployment->id] = $deployment;
+        });
+
         $permissions->each(function ($permission, $key) use ($deployments, $permissions) {
             if (Str::contains($permission['permission'], 'deployments.') && $permission['parameters']['deployment_id']) {
                 $deployments->each(function ($deployment) use ($permission, $permissions) {
+                    if ($deployment->project_id !== $permission['values']['project_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('deployments.', 'deployments.' . $deployment->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'deployment_id' => $deployment->id,
+                        ],
                     ]);
                 });
 
@@ -329,12 +448,26 @@ class PermissionSet
 
         $commits = DeploymentCommit::all();
 
+        $commits->filter(function ($commit) {
+            return !isset(self::$objectCache['commits'][$commit->id]);
+        })->each(function ($commit) {
+            self::$objectCache['commits'][$commit->id] = $commit;
+        });
+
         $permissions->each(function ($permission, $key) use ($commits, $permissions) {
             if (Str::contains($permission['permission'], 'commits.') && $permission['parameters']['commit_id']) {
                 $commits->each(function ($commit) use ($permission, $permissions) {
+                    if ($commit->deployment_id !== $permission['values']['deployment_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('commits.', 'commits.' . $commit->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'commit_id' => $commit->id,
+                        ],
                     ]);
                 });
 
@@ -344,12 +477,26 @@ class PermissionSet
 
         $networkPolicies = DeploymentLink::all();
 
+        $networkPolicies->filter(function ($networkPolicy) {
+            return !isset(self::$objectCache['network-policies'][$networkPolicy->id]);
+        })->each(function ($networkPolicy) {
+            self::$objectCache['network-policies'][$networkPolicy->id] = $networkPolicy;
+        });
+
         $permissions->each(function ($permission, $key) use ($networkPolicies, $permissions) {
             if (Str::contains($permission['permission'], 'network-policies.') && $permission['parameters']['network_policy_id']) {
                 $networkPolicies->each(function ($networkPolicy) use ($permission, $permissions) {
+                    if ($networkPolicy->source_deployment_id !== $permission['values']['deployment_id'] && $networkPolicy->target_deployment_id !== $permission['values']['deployment_id']) {
+                        return;
+                    }
+
                     $permissions->push([
                         'permission' => Str::replaceFirst('network-policies.', 'network-policies.' . $networkPolicy->id . '.', $permission['permission']),
                         'parameters' => $permission['parameters'],
+                        'values'     => [
+                            ...$permission['values'],
+                            'network_policy_id' => $networkPolicy->id,
+                        ],
                     ]);
                 });
 
