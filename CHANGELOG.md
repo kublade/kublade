@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.26.1](https://github.com/kublade/kublade/compare/v1.26.0...v1.26.1) (2025-05-19)
+
+
+### Bug Fixes
+
+* permission subentity filters ([28ca335](https://github.com/kublade/kublade/commit/28ca33516fc0f1858708161213de618f8726701a))
+
 ## [1.26.0](https://github.com/kublade/kublade/compare/v1.25.0...v1.26.0) (2025-05-18)
 
 
