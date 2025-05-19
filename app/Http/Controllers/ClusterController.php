@@ -40,7 +40,7 @@ class ClusterController extends Controller
     public function page_index(string $project_id, string $cluster_id = null)
     {
         return view('cluster.index', [
-            'clusters' => Cluster::paginate(10),
+            'clusters' => Cluster::where('project_id', '=', $project_id)->paginate(10),
             'cluster'  => $cluster_id ? Cluster::where('id', $cluster_id)->first() : null,
         ]);
     }

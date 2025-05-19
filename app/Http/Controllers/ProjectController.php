@@ -47,7 +47,8 @@ class ProjectController extends Controller
         }
 
         return view('project.index', [
-            'projects' => Project::paginate(10),
+            'projects'   => Project::paginate(10),
+            'statistics' => Project::allStatistics(),
         ]);
     }
 

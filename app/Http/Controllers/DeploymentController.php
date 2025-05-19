@@ -148,7 +148,7 @@ class DeploymentController extends Controller
         }
 
         return view('deployment.index', [
-            'deployments'   => Deployment::paginate(10),
+            'deployments'   => Deployment::where('project_id', '=', $project_id)->paginate(10),
             'deployment'    => $deployment,
             'metrics'       => $datapoints,
             'file'          => $file,

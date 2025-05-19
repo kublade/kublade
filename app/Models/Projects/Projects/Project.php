@@ -129,6 +129,57 @@ class Project extends Model
     }
 
     /**
+     * Get the all statistics attribute.
+     *
+     * @return array
+     */
+    public static function allStatistics(): array
+    {
+        $projects = Project::all();
+
+        $clusterStatistics = $projects->map(function (Project $project) {
+            return $project->clusterStatistics;
+        });
+
+        return [
+            'metrics' => [
+                'capacity' => [
+                    'cpu'     => (clone $clusterStatistics)->sum('metrics.capacity.cpu'),
+                    'storage' => (clone $clusterStatistics)->sum('metrics.capacity.storage'),
+                    'memory'  => (clone $clusterStatistics)->sum('metrics.capacity.memory'),
+                    'pods'    => (clone $clusterStatistics)->sum('metrics.capacity.pods'),
+                ],
+                'usage' => [
+                    'cpu'     => (clone $clusterStatistics)->sum('metrics.usage.cpu'),
+                    'storage' => (clone $clusterStatistics)->sum('metrics.usage.storage'),
+                    'memory'  => (clone $clusterStatistics)->sum('metrics.usage.memory'),
+                    'pods'    => (clone $clusterStatistics)->sum('metrics.usage.pods'),
+                ],
+                'utilization' => [
+                    'cpu'     => (clone $clusterStatistics)->sum('metrics.utilization.cpu'),
+                    'storage' => (clone $clusterStatistics)->sum('metrics.utilization.storage'),
+                    'memory'  => (clone $clusterStatistics)->sum('metrics.utilization.memory'),
+                    'pods'    => (clone $clusterStatistics)->sum('metrics.utilization.pods'),
+                ],
+            ],
+            'alerts' => [
+                'warning' => [
+                    'cpu'     => (clone $clusterStatistics)->contains('alerts.warning.cpu', true) || (clone $clusterStatistics)->contains(null),
+                    'storage' => (clone $clusterStatistics)->contains('alerts.warning.storage', true) || (clone $clusterStatistics)->contains(null),
+                    'memory'  => (clone $clusterStatistics)->contains('alerts.warning.memory', true) || (clone $clusterStatistics)->contains(null),
+                    'pods'    => (clone $clusterStatistics)->contains('alerts.warning.pods', true) || (clone $clusterStatistics)->contains(null),
+                ],
+                'critical' => [
+                    'cpu'     => (clone $clusterStatistics)->contains('alerts.critical.cpu', true) || (clone $clusterStatistics)->contains(null),
+                    'storage' => (clone $clusterStatistics)->contains('alerts.critical.storage', true) || (clone $clusterStatistics)->contains(null),
+                    'memory'  => (clone $clusterStatistics)->contains('alerts.critical.memory', true) || (clone $clusterStatistics)->contains(null),
+                    'pods'    => (clone $clusterStatistics)->contains('alerts.critical.pods', true) || (clone $clusterStatistics)->contains(null),
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Get the deployment statistics attribute.
      *
      * @return array
