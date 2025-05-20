@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.2](https://github.com/kublade/kublade/compare/v1.27.1...v1.27.2) (2025-05-20)
+
+
+### Bug Fixes
+
+* network policy routes and permissions ([23de84d](https://github.com/kublade/kublade/commit/23de84d81b6cd3a0269299b0cc67990e9f2861b1))
+
 ## [1.27.1](https://github.com/kublade/kublade/compare/v1.27.0...v1.27.1) (2025-05-20)
 
 
