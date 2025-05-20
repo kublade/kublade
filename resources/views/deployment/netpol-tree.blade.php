@@ -16,7 +16,7 @@
                 <i class="bi bi-shield-shaded"></i> {{ $networkPolicy->target->name }} <i class="bi bi-arrow-left fs-6"></i> {{ $networkPolicy->source->name }}
             </a>
             <div class="file-tree-li-actions">
-                <a href="{{ route('deployment.netpol.delete.action', ['project_id' => $deployment->project_id, 'deployment_id' => $deployment->id, 'network_policy_id' => $networkPolicy->id]) }}" class="btn btn-sm btn-danger p-1 lh-1">
+                <a href="{{ route('deployment.network-policies.delete.action', ['project_id' => $deployment->project_id, 'deployment_id' => $deployment->id, 'network_policy_id' => $networkPolicy->id]) }}" class="btn btn-sm btn-danger p-1 lh-1">
                     <i class="bi bi-trash file-tree-action"></i>
                 </a>
             </div>

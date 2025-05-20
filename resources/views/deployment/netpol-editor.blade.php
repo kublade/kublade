@@ -1,7 +1,7 @@
 <div class="py-3">
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('deployment.netpol.put.action', ['project_id' => $deployment->project_id, 'deployment_id' => $deployment->id, 'network_policy_id' => $networkPolicy?->id ?? 'new']) }}" method="POST">
+            <form action="{{ route('deployment.network-policies.put.action', ['project_id' => $deployment->project_id, 'deployment_id' => $deployment->id, 'network_policy_id' => $networkPolicy?->id ?? 'new']) }}" method="POST">
                 @csrf
 
                 @if (!empty($networkPolicy))
