@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.1](https://github.com/kublade/kublade/compare/v1.27.0...v1.27.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* darkmode colors ([6c6250d](https://github.com/kublade/kublade/commit/6c6250d35d88161603b9af67c941cdbe59caaae0))
+
 ## [1.27.0](https://github.com/kublade/kublade/compare/v1.26.1...v1.27.0) (2025-05-19)
 
 
