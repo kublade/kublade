@@ -45,6 +45,12 @@ html {
   }
 }
 
+html {
+    &[data-bs-theme="dark"] {
+        --bs-light-rgb: 42, 45, 49;
+    }
+}
+
 body {
     background-color: var(--bs-body-accent);
 }
