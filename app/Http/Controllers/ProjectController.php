@@ -20,14 +20,6 @@ use Illuminate\Support\Facades\Validator;
 class ProjectController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the project dashboard.
      *
      * @param Request $request

@@ -33,14 +33,6 @@ use Illuminate\Validation\Rule;
 class DeploymentController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the deployment index page.
      *
      * @param string $project_id

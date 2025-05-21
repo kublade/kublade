@@ -27,14 +27,6 @@ use Illuminate\Support\Facades\Validator;
 class TemplateController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the template dashboard.
      *
      * @param string $template_id

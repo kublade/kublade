@@ -31,14 +31,6 @@ use Illuminate\Validation\Rule;
 class DeploymentController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the deployments.
      *
      * @param string $project_id

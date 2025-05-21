@@ -17,14 +17,6 @@ use Illuminate\Http\Request;
 class TemplateController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the templates.
      *
      * @return \Illuminate\Contracts\Support\Renderable

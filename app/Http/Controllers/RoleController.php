@@ -19,14 +19,6 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the role index page.
      *
      * @return \Illuminate\View\View

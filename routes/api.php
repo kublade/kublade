@@ -18,6 +18,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware([
+    'api.guard',
     IdentifyProject::class,
 ])->group(function () {
     Route::get('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_list'])->name('api.project.list')->middleware('api.permission.guard:projects.view');
