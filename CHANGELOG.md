@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.28.2](https://github.com/kublade/kublade/compare/v1.28.1...v1.28.2) (2025-05-22)
+
+
+### Bug Fixes
+
+* documentation repository remote deployment ([5a9e70c](https://github.com/kublade/kublade/commit/5a9e70c44da4cfed8c989cee1b49d63938d7e49b))
+
 ## [1.28.1](https://github.com/kublade/kublade/compare/v1.28.0...v1.28.1) (2025-05-22)
 
 
