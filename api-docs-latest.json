@@ -1,0 +1,2107 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Kublade API Documentation",
+        "description": "Kublade Swagger API documentation",
+        "contact": {
+            "email": "hi@kublade.org"
+        },
+        "license": {
+            "name": "Apache-2.0",
+            "url": "https://kublade.org/docs/license/"
+        },
+        "version": "v1.28.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "description": "Register a new user.",
+                "operationId": "eb3623f9bcd09a1dacbefaac07aed1bb",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login a user",
+                "description": "Login a user.",
+                "operationId": "f77777235d676b651c9465807d8f9485",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get the authenticated user",
+                "description": "Get the authenticated user.",
+                "operationId": "57247eca7a7733a6b79ce17999f79422",
+                "responses": {
+                    "200": {
+                        "description": "User authenticated"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout a user",
+                "description": "Logout a user.",
+                "operationId": "c4b3c6f1776909e546a421283c044ac3",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh a token",
+                "description": "Refresh a token.",
+                "operationId": "a11d4212c7e49cbf5852d9bb2e3d5054",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/projects/{project_id}/clusters": {
+            "get": {
+                "tags": [
+                    "Clusters"
+                ],
+                "summary": "List clusters",
+                "description": "List clusters.",
+                "operationId": "74ebb768ba3492a195fac57a91424ef5",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Clusters retrieved successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clusters"
+                ],
+                "summary": "Add a new cluster",
+                "description": "Add a new cluster.",
+                "operationId": "ef5f4f48b081fdee8b704e6a3b9269f3",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Cluster created successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/projects/{project_id}/clusters/{cluster_id}": {
+            "get": {
+                "tags": [
+                    "Clusters"
+                ],
+                "summary": "Get a cluster",
+                "description": "Get a cluster.",
+                "operationId": "90a6bba9329e8f0267e30fc3313e0b3b",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/cluster_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cluster retrieved successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Clusters"
+                ],
+                "summary": "Delete a cluster",
+                "description": "Delete the cluster.",
+                "operationId": "6bdfcee765ad030ebd18646cdeea793f",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/cluster_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cluster deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Clusters"
+                ],
+                "summary": "Update a cluster",
+                "description": "Update the cluster.",
+                "operationId": "72525a93b7b7af5e50f1a109d209a47b",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/cluster_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cluster updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/deployments": {
+            "get": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "List deployments for a project",
+                "description": "List the deployments.",
+                "operationId": "18b25c37c6c77675b1e49f103ac628eb",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of deployments"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Add a new deployment",
+                "description": "Add the deployment.",
+                "operationId": "8d75602a975912488f1a61b64fe13a30",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deployment created"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/deployments/{deployment_id}": {
+            "get": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Get a deployment by ID",
+                "description": "Get the deployment.",
+                "operationId": "72252f33a26a435506370b7218eebec4",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deployment details"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Delete a deployment",
+                "description": "Delete the deployment.",
+                "operationId": "a779e5d880a00ad802a162515bf432d9",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deployment deleted"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Update a deployment",
+                "description": "Update the deployment.",
+                "operationId": "4e29f735767422bac66ea7b5d69e1958",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deployment updated"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/deployments/{deployment_id}/network-policy": {
+            "put": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Create a network policy",
+                "description": "Create the network policy.",
+                "operationId": "73a2f6746726ced5de99d99571c2d4a5",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/network_policy_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Network policy created"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}": {
+            "delete": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Delete a network policy",
+                "description": "Delete the network policy.",
+                "operationId": "dc963098564508c999bdb2089027b494",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/network_policy_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Network policy deleted"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}": {
+            "patch": {
+                "tags": [
+                    "Deployments"
+                ],
+                "summary": "Revert a commit",
+                "description": "Revert the commit.",
+                "operationId": "57d6978666c2af90d72ea433bdf01a79",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/deployment_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/commit_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Commit reverted"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List projects",
+                "description": "List the projects.",
+                "operationId": "823e98abb0b524dd7cbd363e79bbdaee",
+                "responses": {
+                    "200": {
+                        "description": "Projects retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Add a new project",
+                "description": "Add a new project.",
+                "operationId": "ff62eb032e20c46edc03cd53fcef1ef8",
+                "responses": {
+                    "201": {
+                        "description": "Project added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/projects/{project_id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get a project",
+                "description": "Get the project.",
+                "operationId": "08f6fb22514dc86195c68b91fb4d439c",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project retrieved successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete a project",
+                "description": "Delete the project.",
+                "operationId": "1ff9dc15babdc2e879a54b1871810ff6",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Update a project",
+                "description": "Update the project.",
+                "operationId": "d81b92b57b2e034500d232bf749aa936",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/project_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "List roles",
+                "description": "List the roles.",
+                "operationId": "902249e5371aec2f75d9c5dacf3438f5",
+                "responses": {
+                    "200": {
+                        "description": "Roles retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Add a new role",
+                "description": "Add a new role.",
+                "operationId": "2062888ba839d7b212d695b98a287fef",
+                "responses": {
+                    "200": {
+                        "description": "Role created successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/roles/{role_id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get a role",
+                "description": "Get the role.",
+                "operationId": "72799b70fb8263dfed56b1d747fe0ebc",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/role_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role retrieved successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Delete a role",
+                "description": "Delete the role.",
+                "operationId": "74a0fdc6391d1c4615875d590f301e39",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/role_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update a role",
+                "description": "Update the role.",
+                "operationId": "15642e488a8b1c0285a1499eafeb45de",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/role_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List templates",
+                "description": "List the templates.",
+                "operationId": "eeca86af267288f9b1c427d7e03a2d9d",
+                "responses": {
+                    "200": {
+                        "description": "Templates retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new template",
+                "description": "Add a new template.",
+                "operationId": "43320bd6f44efaf6b50b5ca6519302d7",
+                "responses": {
+                    "200": {
+                        "description": "Template added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get template",
+                "description": "Get the template.",
+                "operationId": "f5e23ce8795fcff8a9ce9996f6ff9059",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the template",
+                "description": "Delete the template.",
+                "operationId": "7707d714fc1267e703e62a8ab3956d7f",
+                "responses": {
+                    "200": {
+                        "description": "Template deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the template",
+                "description": "Update the template.",
+                "operationId": "94d83def3729f1c3b90eaae98f22fba7",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/import": {
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Import a new template",
+                "description": "Import a new template.",
+                "operationId": "55b9555076ac1054306f38f8f61de56f",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template imported successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/folders": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List the folders",
+                "description": "List the folders.",
+                "operationId": "84f1a9370af93c70674fbf64ad6d16fd",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folders retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new folder",
+                "description": "Add a new folder.",
+                "operationId": "2ff8d8091c5f4383aea0e97c1b019256",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folder added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/folders/{folder_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get the folder",
+                "description": "Get the folder.",
+                "operationId": "9e3447f3cc21aad853af17a22713cfe6",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/folder_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folder retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the folder",
+                "description": "Delete the folder.",
+                "operationId": "6dfa61f78824eac51366997cba2cad92",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/folder_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folder deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the folder",
+                "description": "Update the folder.",
+                "operationId": "d6a22cfc8ca2365373ad4297f192bc64",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/folder_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folder updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/files": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List the files",
+                "description": "List the files.",
+                "operationId": "35c264de7d322fb8af7f55785e8486a4",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Files retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new file",
+                "description": "Add a new file.",
+                "operationId": "fb2c49fe478f9f09f921794ec66ec546",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/files/{file_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get the file",
+                "description": "Get the file.",
+                "operationId": "9a8566eb18c2d7f4a2524b45873bb746",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/file_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the file",
+                "description": "Delete the file.",
+                "operationId": "c22c64ea61ba3924177cc2e8db18cb5a",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/file_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File deleted successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the file",
+                "description": "Update the file.",
+                "operationId": "41c4aa395c82743e26b9c345508bbaed",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/file_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/fields": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List the fields",
+                "description": "List the fields.",
+                "operationId": "b1e9d34828f1750b923a5d5527185ff0",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fields retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new field",
+                "description": "Add a new field.",
+                "operationId": "6b57df8f7a0ab646ba93be49f0fe8509",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/fields/{field_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get the field",
+                "description": "Get the field.",
+                "operationId": "3aaabb69051dd5aac703114ab759573e",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the field",
+                "description": "Delete the field.",
+                "operationId": "e0bd4480e450d32f71e92b38d856b0ff",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field deleted successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the field",
+                "description": "Update the field.",
+                "operationId": "fd2v1.28.035f1fa2b9799e02b92a986b9",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/fields/{field_id}/options": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List the options",
+                "description": "List the options.",
+                "operationId": "e826b993f285ae7ce39368af61a2fbe0",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Options retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new option",
+                "description": "Add a new option.",
+                "operationId": "02d63db7da088ded97817429d16dcd90",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Option added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/fields/{field_id}/options/{option_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get the option",
+                "description": "Get the option.",
+                "operationId": "4ea96ac3f2ac46baf6a2a0102d8a62da",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/option_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Option retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the option",
+                "description": "Delete the option.",
+                "operationId": "e1b8839cc98d1606996b1d528f4f09f1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/option_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Option deleted successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the option",
+                "description": "Update the option.",
+                "operationId": "05561297a48105edaac00584dcb3a849",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/field_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/option_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Option updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/ports": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "List the ports",
+                "description": "List the ports.",
+                "operationId": "1a220594d472f09228c992905ee9d1b1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ports retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Add a new port",
+                "description": "Add a new port.",
+                "operationId": "1594d457fd3901e5cfb24b66136f1d76",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Port added successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/templates/{template_id}/ports/{port_id}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Get the port",
+                "description": "Get the port.",
+                "operationId": "ac854ed144c58457795ec9bd0079f0d5",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/port_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Port retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Delete the port",
+                "description": "Delete the port.",
+                "operationId": "71488471fcc8cd7f09fd1df9c9b1cf06",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/port_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Port deleted successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Templates"
+                ],
+                "summary": "Update the port",
+                "description": "Update the port.",
+                "operationId": "d08a4b02e225c72782939f5e83f3ffe4",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/template_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/port_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Port updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users",
+                "description": "List the users.",
+                "operationId": "2fc98717af297c32a6671d6f09daaf40",
+                "responses": {
+                    "200": {
+                        "description": "Users retrieved successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Add a new user",
+                "description": "Add a new user.",
+                "operationId": "657bb4a7c6b5c50ddf313d3d87c42f85",
+                "responses": {
+                    "200": {
+                        "description": "User created successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a user",
+                "description": "Get the user.",
+                "operationId": "7460e6b384b35ef4c6b5c5084ca746dd",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User retrieved successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "description": "Delete the user.",
+                "operationId": "c2468ac44f618d912e6dc2dff57f288f",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user",
+                "description": "Update the user.",
+                "operationId": "78cd5f575a858192b8abfe39f4843ef2",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerErrorResponse"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "ForbiddenResponse": {
+                "description": "Forbidden",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Forbidden"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "NotFoundResponse": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Not Found"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "ValidationErrorResponse": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Validation Error"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "The user id field is required."
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "ServerErrorResponse": {
+                "description": "Server error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Server Error"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "UnauthorizedResponse": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Unauthorized"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "cluster_id": {
+                "name": "cluster_id",
+                "in": "path",
+                "description": "The ID of the cluster",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "deployment_id": {
+                "name": "deployment_id",
+                "in": "path",
+                "description": "The ID of the deployment",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "network_policy_id": {
+                "name": "network_policy_id",
+                "in": "path",
+                "description": "The ID of the network policy",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "commit_id": {
+                "name": "commit_id",
+                "in": "path",
+                "description": "The ID of the commit",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "project_id": {
+                "name": "project_id",
+                "in": "path",
+                "description": "The ID of the project",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "role_id": {
+                "name": "role_id",
+                "in": "path",
+                "description": "The ID of the role",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "template_id": {
+                "name": "template_id",
+                "in": "path",
+                "description": "The ID of the template",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "folder_id": {
+                "name": "folder_id",
+                "in": "path",
+                "description": "The ID of the folder",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "file_id": {
+                "name": "file_id",
+                "in": "path",
+                "description": "The ID of the file",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "field_id": {
+                "name": "field_id",
+                "in": "path",
+                "description": "The ID of the field",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "option_id": {
+                "name": "option_id",
+                "in": "path",
+                "description": "The ID of the option",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "port_id": {
+                "name": "port_id",
+                "in": "path",
+                "description": "The ID of the port",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "user_id": {
+                "name": "user_id",
+                "in": "path",
+                "description": "The ID of the user",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Endpoints for user authentication"
+        },
+        {
+            "name": "Clusters",
+            "description": "Endpoints for cluster management"
+        },
+        {
+            "name": "Deployments",
+            "description": "Endpoints for deployment management"
+        },
+        {
+            "name": "Projects",
+            "description": "Endpoints for project management"
+        },
+        {
+            "name": "Roles",
+            "description": "Endpoints for role management"
+        },
+        {
+            "name": "Templates",
+            "description": "Endpoints for template management"
+        },
+        {
+            "name": "Users",
+            "description": "Endpoints for user management"
+        }
+    ]
+}
