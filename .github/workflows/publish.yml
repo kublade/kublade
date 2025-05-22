@@ -63,3 +63,13 @@ jobs:
           docker push ghcr.io/kublade/core-worker:${{ github.ref_name }}
           docker tag ghcr.io/kublade/core-worker:${{ github.ref_name }} ghcr.io/kublade/core-worker:latest
           docker push ghcr.io/kublade/core-worker:latest
+  notify:
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - name: Trigger remote update
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: kublade/documentation
+          event-type: core-release
+          token: ${{ secrets.DOCUMENTATION_REPOSITORY_TOKEN }}
