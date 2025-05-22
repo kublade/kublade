@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.28.1](https://github.com/kublade/kublade/compare/v1.28.0...v1.28.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* api response status field ([42590ab](https://github.com/kublade/kublade/commit/42590ab98aeef5996f422ef6d9955ac69117e017))
+
 ## [1.28.0](https://github.com/kublade/kublade/compare/v1.27.2...v1.28.0) (2025-05-22)
 
 
