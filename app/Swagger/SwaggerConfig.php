@@ -31,7 +31,7 @@ use OpenApi\Annotations as OA;
  *         @OA\JsonContent(
  *             type="object",
  *
- *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="status", type="string", example="error"),
  *             @OA\Property(property="message", type="string", example="Forbidden")
  *         )
  *     ),
@@ -43,7 +43,7 @@ use OpenApi\Annotations as OA;
  *         @OA\JsonContent(
  *             type="object",
  *
- *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="status", type="string", example="error"),
  *             @OA\Property(property="message", type="string", example="Not Found")
  *         )
  *     ),
@@ -55,7 +55,7 @@ use OpenApi\Annotations as OA;
  *         @OA\JsonContent(
  *             type="object",
  *
- *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="status", type="string", example="error"),
  *             @OA\Property(property="message", type="string", example="Validation Error"),
  *             @OA\Property(property="data", type="array", @OA\Items(type="string", example="The user id field is required."))
  *         )
@@ -68,7 +68,7 @@ use OpenApi\Annotations as OA;
  *         @OA\JsonContent(
  *             type="object",
  *
- *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="status", type="string", example="error"),
  *             @OA\Property(property="message", type="string", example="Server Error")
  *         )
  *     ),
@@ -80,7 +80,7 @@ use OpenApi\Annotations as OA;
  *         @OA\JsonContent(
  *             type="object",
  *
- *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="status", type="string", example="error"),
  *             @OA\Property(property="message", type="string", example="Unauthorized")
  *         )
  *     )
