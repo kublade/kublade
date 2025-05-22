@@ -19,6 +19,20 @@ use Illuminate\Support\Facades\Validator;
  *
  * This class is the controller for the cluster actions.
  *
+ * @OA\Tag(
+ *     name="Clusters",
+ *     description="Endpoints for cluster management"
+ * )
+ *
+ * @OA\Parameter(
+ *     name="cluster_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the cluster",
+ *
+ *     @OA\Schema(type="string")
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class ClusterController extends Controller
@@ -33,6 +47,19 @@ class ClusterController extends Controller
 
     /**
      * List clusters.
+     *
+     * @OA\Get(
+     *     path="/api/projects/{project_id}/clusters",
+     *     summary="List clusters",
+     *     tags={"Clusters"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="Clusters retrieved successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      *
@@ -66,6 +93,21 @@ class ClusterController extends Controller
     /**
      * Get a cluster.
      *
+     * @OA\Get(
+     *     path="/api/projects/{project_id}/clusters/{cluster_id}",
+     *     summary="Get a cluster",
+     *     tags={"Clusters"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
+     *
+     *     @OA\Response(response=200, description="Cluster retrieved successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param string $project_id
      * @param string $cluster_id
      *
@@ -96,6 +138,19 @@ class ClusterController extends Controller
 
     /**
      * Add a new cluster.
+     *
+     * @OA\Post(
+     *     path="/api/projects/{project_id}/clusters",
+     *     summary="Add a new cluster",
+     *     tags={"Clusters"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=201, description="Cluster created successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param Request $request
      *
@@ -168,11 +223,25 @@ class ClusterController extends Controller
             ]);
         }
 
-        return Response::generate(500, 'error', 'Action failed');
+        return Response::generate(500, 'error', 'Cluster not created');
     }
 
     /**
      * Update the cluster.
+     *
+     * @OA\Patch(
+     *     path="/api/projects/{project_id}/clusters/{cluster_id}",
+     *     summary="Update a cluster",
+     *     tags={"Clusters"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
+     *
+     *     @OA\Response(response=200, description="Cluster updated successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $project_id
      * @param string  $cluster_id
@@ -288,6 +357,20 @@ class ClusterController extends Controller
 
     /**
      * Delete the cluster.
+     *
+     * @OA\Delete(
+     *     path="/api/projects/{project_id}/clusters/{cluster_id}",
+     *     summary="Delete a cluster",
+     *     tags={"Clusters"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
+     *
+     *     @OA\Response(response=200, description="Cluster deleted successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      * @param string $cluster_id

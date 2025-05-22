@@ -51,7 +51,9 @@ Route::middleware([
     Route::patch('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_field'])->name('api.template.field.update')->middleware('api.permission.guard:templates.fields.update');
     Route::delete('/templates/{template_id}/fields/{field_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_field'])->name('api.template.field.delete')->middleware('api.permission.guard:templates.fields.delete');
 
+    Route::get('/templates/{template_id}/fields/{field_id}/options', [App\Http\Controllers\API\TemplateController::class, 'action_list_option'])->name('api.template.field.option.list')->middleware('api.permission.guard:templates.fields.options.view');
     Route::post('/templates/{template_id}/fields/{field_id}/options', [App\Http\Controllers\API\TemplateController::class, 'action_add_option'])->name('api.template.field.option.add')->middleware('api.permission.guard:templates.fields.options.add');
+    Route::get('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get_option'])->name('api.template.field.option.get')->middleware('api.permission.guard:templates.fields.options.view');
     Route::patch('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update_option'])->name('api.template.field.option.update')->middleware('api.permission.guard:templates.fields.options.update');
     Route::delete('/templates/{template_id}/fields/{field_id}/options/{option_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete_option'])->name('api.template.field.option.delete')->middleware('api.permission.guard:templates.fields.options.delete');
 

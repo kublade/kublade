@@ -16,6 +16,20 @@ use Illuminate\Support\Facades\Validator;
  *
  * This class is the controller for the project actions.
  *
+ * @OA\Tag(
+ *     name="Projects",
+ *     description="Endpoints for project management"
+ * )
+ *
+ * @OA\Parameter(
+ *     name="project_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the project",
+ *
+ *     @OA\Schema(type="string")
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class ProjectController extends Controller
@@ -30,6 +44,16 @@ class ProjectController extends Controller
 
     /**
      * List the projects.
+     *
+     * @OA\Get(
+     *     path="/api/projects",
+     *     summary="List projects",
+     *     tags={"Projects"},
+     *
+     *     @OA\Response(response=200, description="Projects retrieved successfully"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -50,6 +74,20 @@ class ProjectController extends Controller
 
     /**
      * Get the project.
+     *
+     * @OA\Get(
+     *     path="/api/projects/{project_id}",
+     *     summary="Get a project",
+     *     tags={"Projects"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="Project retrieved successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      *
@@ -81,6 +119,17 @@ class ProjectController extends Controller
     /**
      * Add a new project.
      *
+     * @OA\Post(
+     *     path="/api/projects",
+     *     summary="Add a new project",
+     *     tags={"Projects"},
+     *
+     *     @OA\Response(response=201, description="Project added successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -106,11 +155,24 @@ class ProjectController extends Controller
             ]);
         }
 
-        return Response::generate(400, 'error', 'Project not created');
+        return Response::generate(500, 'error', 'Project not created');
     }
 
     /**
      * Update the project.
+     *
+     * @OA\Patch(
+     *     path="/api/projects/{project_id}",
+     *     summary="Update a project",
+     *     tags={"Projects"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="Project updated successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $project_id
      * @param Request $request
@@ -150,6 +212,19 @@ class ProjectController extends Controller
 
     /**
      * Delete the project.
+     *
+     * @OA\Delete(
+     *     path="/api/projects/{project_id}",
+     *     summary="Delete a project",
+     *     tags={"Projects"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="Project deleted successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      *
