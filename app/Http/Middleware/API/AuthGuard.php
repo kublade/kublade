@@ -39,6 +39,6 @@ class AuthGuard
             return $next($request);
         }
 
-        return Response::generate(401, 'error', 'Server Error');
+        return Response::generate(500, 'error', 'Server Error');
     }
 }

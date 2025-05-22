@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\API\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Helpers\API\Response;
 use App\Http\Controllers\Controller;
@@ -14,6 +14,20 @@ use Spatie\Permission\Models\Role;
  * Class RoleController.
  *
  * This class is the controller for the role actions.
+ *
+ * @OA\Tag(
+ *     name="Roles",
+ *     description="Endpoints for role management"
+ * )
+ *
+ * @OA\Parameter(
+ *     name="role_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the role",
+ *
+ *     @OA\Schema(type="string")
+ * )
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
@@ -29,6 +43,16 @@ class RoleController extends Controller
 
     /**
      * List the roles.
+     *
+     * @OA\Get(
+     *     path="/api/roles",
+     *     summary="List roles",
+     *     tags={"Roles"},
+     *
+     *     @OA\Response(response=200, description="Roles retrieved successfully"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -50,6 +74,20 @@ class RoleController extends Controller
     /**
      * Get the role.
      *
+     * @OA\Get(
+     *     path="/api/roles/{role_id}",
+     *     summary="Get a role",
+     *     tags={"Roles"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/role_id"),
+     *
+     *     @OA\Response(response=200, description="Role retrieved successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param string $role_id
      *
      * @return \Illuminate\Http\JsonResponse
@@ -67,7 +105,9 @@ class RoleController extends Controller
         }
 
         if ($role = Role::where('id', $role_id)->first()) {
-            return Response::generate(200, 'success', 'Role retrieved', $role->toArray());
+            return Response::generate(200, 'success', 'Role retrieved', [
+                'role' => $role->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Role not found');
@@ -75,6 +115,17 @@ class RoleController extends Controller
 
     /**
      * Add a new role.
+     *
+     * @OA\Post(
+     *     path="/api/roles",
+     *     summary="Add a new role",
+     *     tags={"Roles"},
+     *
+     *     @OA\Response(response=200, description="Role created successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param Request $request
      *
@@ -98,14 +149,29 @@ class RoleController extends Controller
         ) {
             $role->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'Role created', $role->toArray());
+            return Response::generate(200, 'success', 'Role created', [
+                'role' => $role->toArray(),
+            ]);
         }
 
-        return Response::generate(400, 'error', 'Role not created');
+        return Response::generate(500, 'error', 'Role not created');
     }
 
     /**
      * Update the role.
+     *
+     * @OA\Patch(
+     *     path="/api/roles/{role_id}",
+     *     summary="Update a role",
+     *     tags={"Roles"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/role_id"),
+     *
+     *     @OA\Response(response=200, description="Role updated successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $role_id
      * @param Request $request
@@ -130,7 +196,9 @@ class RoleController extends Controller
 
             $role->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'Role updated', $role->toArray());
+            return Response::generate(200, 'success', 'Role updated', [
+                'role' => $role->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Role not found');
@@ -138,6 +206,19 @@ class RoleController extends Controller
 
     /**
      * Delete the role.
+     *
+     * @OA\Delete(
+     *     path="/api/roles/{role_id}",
+     *     summary="Delete a role",
+     *     tags={"Roles"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/role_id"),
+     *
+     *     @OA\Response(response=200, description="Role deleted successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $role_id
      *
@@ -158,7 +239,9 @@ class RoleController extends Controller
         if ($role = Role::where('id', $role_id)->first()) {
             $role->delete();
 
-            return Response::generate(200, 'success', 'Role deleted', $role->toArray());
+            return Response::generate(200, 'success', 'Role deleted', [
+                'role' => $role->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Role not found');

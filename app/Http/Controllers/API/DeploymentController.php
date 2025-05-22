@@ -26,6 +26,38 @@ use Illuminate\Validation\Rule;
  *
  * This class is the controller for the deployment actions.
  *
+ * @OA\Tag(
+ *     name="Deployments",
+ *     description="Endpoints for deployment management"
+ * )
+ *
+ * @OA\Parameter(
+ *     name="deployment_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the deployment",
+ *
+ *     @OA\Schema(type="string")
+ * )
+ *
+ * @OA\Parameter(
+ *     name="network_policy_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the network policy",
+ *
+ *     @OA\Schema(type="string")
+ * )
+ *
+ * @OA\Parameter(
+ *     name="commit_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the commit",
+ *
+ *     @OA\Schema(type="string")
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class DeploymentController extends Controller
@@ -40,6 +72,19 @@ class DeploymentController extends Controller
 
     /**
      * List the deployments.
+     *
+     * @OA\Get(
+     *     path="/projects/{project_id}/deployments",
+     *     summary="List deployments for a project",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="List of deployments"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      *
@@ -70,6 +115,21 @@ class DeploymentController extends Controller
 
     /**
      * Get the deployment.
+     *
+     * @OA\Get(
+     *     path="/projects/{project_id}/deployments/{deployment_id}",
+     *     summary="Get a deployment by ID",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *
+     *     @OA\Response(response=200, description="Deployment details"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      * @param string $deployment_id
@@ -103,6 +163,19 @@ class DeploymentController extends Controller
 
     /**
      * Add the deployment.
+     *
+     * @OA\Post(
+     *     path="/projects/{project_id}/deployments",
+     *     summary="Add a new deployment",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\Response(response=200, description="Deployment created"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $project_id
      * @param Request $request
@@ -267,11 +340,26 @@ class DeploymentController extends Controller
             }
         }
 
-        return Response::generate(404, 'error', 'Deployment not found');
+        return Response::generate(500, 'error', 'Deployment not created');
     }
 
     /**
      * Update the deployment.
+     *
+     * @OA\Patch(
+     *     path="/projects/{project_id}/deployments/{deployment_id}",
+     *     summary="Update a deployment",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *
+     *     @OA\Response(response=200, description="Deployment updated"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $project_id
      * @param string  $deployment_id
@@ -426,6 +514,21 @@ class DeploymentController extends Controller
     /**
      * Delete the deployment.
      *
+     * @OA\Delete(
+     *     path="/projects/{project_id}/deployments/{deployment_id}",
+     *     summary="Delete a deployment",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *
+     *     @OA\Response(response=200, description="Deployment deleted"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param string $project_id
      * @param string $deployment_id
      *
@@ -469,13 +572,30 @@ class DeploymentController extends Controller
     /**
      * Create the network policy.
      *
+     * @OA\Put(
+     *     path="/projects/{project_id}/deployments/{deployment_id}/network-policy",
+     *     summary="Create a network policy",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *     @OA\Parameter(ref="#/components/parameters/network_policy_id"),
+     *
+     *     @OA\Response(response=200, description="Network policy created"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param string  $project_id
      * @param string  $deployment_id
+     * @param string  $network_policy_id
      * @param Request $request
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function action_put_network_policy(string $project_id, string $deployment_id, Request $request)
+    public function action_put_network_policy(string $project_id, string $deployment_id, string $network_policy_id, Request $request)
     {
         $validator = Validator::make(array_merge($request->all(), [
             'project_id'    => $project_id,
@@ -512,8 +632,8 @@ class DeploymentController extends Controller
             return Response::generate(404, 'error', 'Target deployment not found');
         }
 
-        if ($request->id) {
-            $networkPolicy = DeploymentLink::where('id', '=', $request->id)->first();
+        if ($request->network_policy_id) {
+            $networkPolicy = DeploymentLink::where('id', '=', $request->network_policy_id)->first();
 
             if (empty($networkPolicy)) {
                 return Response::generate(404, 'error', 'Network policy not found');
@@ -546,6 +666,22 @@ class DeploymentController extends Controller
 
     /**
      * Delete the network policy.
+     *
+     * @OA\Delete(
+     *     path="/projects/{project_id}/deployments/{deployment_id}/network-policy/{network_policy_id}",
+     *     summary="Delete a network policy",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *     @OA\Parameter(ref="#/components/parameters/network_policy_id"),
+     *
+     *     @OA\Response(response=200, description="Network policy deleted"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      * @param string $deployment_id
@@ -584,6 +720,22 @@ class DeploymentController extends Controller
 
     /**
      * Revert the commit.
+     *
+     * @OA\Patch(
+     *     path="/projects/{project_id}/deployments/{deployment_id}/commit/{commit_id}",
+     *     summary="Revert a commit",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *     @OA\Parameter(ref="#/components/parameters/commit_id"),
+     *
+     *     @OA\Response(response=200, description="Commit reverted"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $project_id
      * @param string $deployment_id

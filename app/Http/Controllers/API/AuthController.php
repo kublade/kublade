@@ -17,12 +17,39 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  *
  * This class is the controller for the api authentication.
  *
+ * @OA\Tag(
+ *     name="Authentication",
+ *     description="Endpoints for user authentication"
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class AuthController extends Controller
 {
     /**
      * Register a new user.
+     *
+     * @OA\Post(
+     *     path="/api/auth/register",
+     *     summary="Register a new user",
+     *     tags={"Authentication"},
+     *
+     *     @OA\RequestBody(
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", example="password123")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=201, description="User registered successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param Request $request
      *
@@ -57,6 +84,27 @@ class AuthController extends Controller
     /**
      * Login a user.
      *
+     * @OA\Post(
+     *     path="/api/auth/login",
+     *     summary="Login a user",
+     *     tags={"Authentication"},
+     *
+     *     @OA\RequestBody(
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="email", type="string", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", example="password123")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Login successful"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -84,6 +132,16 @@ class AuthController extends Controller
     /**
      * Get the authenticated user.
      *
+     * @OA\Get(
+     *     path="/api/auth/me",
+     *     summary="Get the authenticated user",
+     *     tags={"Authentication"},
+     *
+     *     @OA\Response(response=200, description="User authenticated"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -96,6 +154,16 @@ class AuthController extends Controller
     /**
      * Logout a user.
      *
+     * @OA\Post(
+     *     path="/api/auth/logout",
+     *     summary="Logout a user",
+     *     tags={"Authentication"},
+     *
+     *     @OA\Response(response=200, description="Successfully logged out"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
@@ -107,6 +175,16 @@ class AuthController extends Controller
 
     /**
      * Refresh a token.
+     *
+     * @OA\Post(
+     *     path="/api/auth/refresh",
+     *     summary="Refresh a token",
+     *     tags={"Authentication"},
+     *
+     *     @OA\Response(response=200, description="Token refreshed"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @return \Illuminate\Http\JsonResponse
      */

@@ -30,6 +30,25 @@ jobs:
           extensions: curl, fileinfo, imagick, imap, json, pdo
       - name: Install PHP dependencies
         run: composer install
+      - name: Generate API documentation
+        run: php artisan l5-swagger:generate
+      - name: Set API documentation version
+        run: sed -i "s/0.0.0/$TAG/g" storage/api-docs/api-docs.json
+        env:
+          TAG: ${{ github.ref_name }}
+      - name: Copy API documentation
+        run: |
+          mkdir -p docs
+          cp storage/api-docs/api-docs.json docs/api-docs-${{ github.ref_name }}.json
+          cp storage/api-docs/api-docs.json docs/api-docs-latest.json
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          cname: documents.kublade.org
+          keep_files: true
+          publish_branch: gh-pages
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
       - name: Build and push app image

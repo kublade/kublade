@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\API\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Helpers\API\Response;
 use App\Http\Controllers\Controller;
@@ -16,6 +16,20 @@ use Illuminate\Support\Facades\Validator;
  * Class UserController.
  *
  * This class is the controller for the user actions.
+ *
+ * @OA\Tag(
+ *     name="Users",
+ *     description="Endpoints for user management"
+ * )
+ *
+ * @OA\Parameter(
+ *     name="user_id",
+ *     in="path",
+ *     required=true,
+ *     description="The ID of the user",
+ *
+ *     @OA\Schema(type="string")
+ * )
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
@@ -31,6 +45,16 @@ class UserController extends Controller
 
     /**
      * List the users.
+     *
+     * @OA\Get(
+     *     path="/api/users",
+     *     summary="List users",
+     *     tags={"Users"},
+     *
+     *     @OA\Response(response=200, description="Users retrieved successfully"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -52,6 +76,19 @@ class UserController extends Controller
     /**
      * Get the user.
      *
+     * @OA\Get(
+     *     path="/api/users/{user_id}",
+     *     summary="Get a user",
+     *     tags={"Users"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/user_id"),
+     *
+     *     @OA\Response(response=200, description="User retrieved successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
      * @param string $user_id
      *
      * @return \Illuminate\Http\JsonResponse
@@ -69,7 +106,9 @@ class UserController extends Controller
         }
 
         if ($user = User::where('id', $user_id)->first()) {
-            return Response::generate(200, 'success', 'User retrieved', $user->toArray());
+            return Response::generate(200, 'success', 'User retrieved', [
+                'user' => $user->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'User not found');
@@ -77,6 +116,17 @@ class UserController extends Controller
 
     /**
      * Add a new user.
+     *
+     * @OA\Post(
+     *     path="/api/users",
+     *     summary="Add a new user",
+     *     tags={"Users"},
+     *
+     *     @OA\Response(response=200, description="User created successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param Request $request
      *
@@ -106,14 +156,29 @@ class UserController extends Controller
             $user->syncRoles($request->roles ?? []);
             $user->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'User created', $user->toArray());
+            return Response::generate(200, 'success', 'User created', [
+                'user' => $user->toArray(),
+            ]);
         }
 
-        return Response::generate(400, 'error', 'User not created');
+        return Response::generate(500, 'error', 'User not created');
     }
 
     /**
      * Update the user.
+     *
+     * @OA\Patch(
+     *     path="/api/users/{user_id}",
+     *     summary="Update a user",
+     *     tags={"Users"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/user_id"),
+     *
+     *     @OA\Response(response=200, description="User updated successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string  $user_id
      * @param Request $request
@@ -144,14 +209,29 @@ class UserController extends Controller
             $user->syncRoles($request->roles ?? []);
             $user->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'User updated', $user->toArray());
+            return Response::generate(200, 'success', 'User updated', [
+                'user' => $user->toArray(),
+            ]);
         }
 
-        return Response::generate(400, 'error', 'User not updated');
+        return Response::generate(404, 'error', 'User not found');
     }
 
     /**
      * Delete the user.
+     *
+     * @OA\Delete(
+     *     path="/api/users/{user_id}",
+     *     summary="Delete a user",
+     *     tags={"Users"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/user_id"),
+     *
+     *     @OA\Response(response=200, description="User deleted successfully"),
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
      *
      * @param string $user_id
      *
@@ -176,7 +256,9 @@ class UserController extends Controller
         ) {
             $user->delete();
 
-            return Response::generate(200, 'success', 'User deleted', $user->toArray());
+            return Response::generate(200, 'success', 'User deleted', [
+                'user' => $user->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'User not found');

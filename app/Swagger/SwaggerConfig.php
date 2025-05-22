@@ -13,18 +13,13 @@ use OpenApi\Annotations as OA;
  *      description="Kublade Swagger API documentation",
  *
  *      @OA\Contact(
- *          email="support@kublade.org"
+ *          email="hi@kublade.org"
  *      ),
  *
  *      @OA\License(
- *          name="BSL 1.1",
+ *          name="Apache-2.0",
  *          url="https://kublade.org/docs/license/"
  *      )
- * )
- *
- * @OA\Tag(
- *     name="Authentication",
- *     description="Endpoints for user authentication"
  * )
  *
  * @OA\Components(
@@ -63,6 +58,30 @@ use OpenApi\Annotations as OA;
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(property="message", type="string", example="Validation Error"),
  *             @OA\Property(property="data", type="array", @OA\Items(type="string", example="The user id field is required."))
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response="ServerErrorResponse",
+ *         description="Server error",
+ *
+ *         @OA\JsonContent(
+ *             type="object",
+ *
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Server Error")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response="UnauthorizedResponse",
+ *         description="Unauthorized",
+ *
+ *         @OA\JsonContent(
+ *             type="object",
+ *
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Unauthorized")
  *         )
  *     )
  * )
