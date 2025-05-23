@@ -16,6 +16,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * This class is the model for template fields.
  *
+ * @OA\Schema(
+ *     schema="TemplateField",
+ *     type="object",
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="template_id", type="string", format="uuid", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="advanced", type="boolean", example=false),
+ *     @OA\Property(property="type", type="string", example="text"),
+ *     @OA\Property(property="required", type="boolean", example=false),
+ *     @OA\Property(property="secret", type="boolean", example=false),
+ *     @OA\Property(property="label", type="string", example="Label"),
+ *     @OA\Property(property="key", type="string", example="key"),
+ *     @OA\Property(property="value", type="string", example="Value", nullable=true),
+ *     @OA\Property(property="min", type="number", example=0, nullable=true),
+ *     @OA\Property(property="max", type="number", example=0, nullable=true),
+ *     @OA\Property(property="step", type="number", example=0, nullable=true),
+ *     @OA\Property(property="set_on_create", type="boolean", example=false),
+ *     @OA\Property(property="set_on_update", type="boolean", example=false),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string      $id

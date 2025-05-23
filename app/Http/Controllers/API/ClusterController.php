@@ -60,7 +60,7 @@ class ClusterController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="clusters", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/Cluster")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -126,7 +126,7 @@ class ClusterController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Cluster retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="cluster", type="object")
+     *                 @OA\Property(property="cluster", ref="#/components/schemas/Cluster")
      *             )
      *         )
      *     ),
@@ -213,7 +213,7 @@ class ClusterController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Cluster created successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="cluster", type="object")
+     *                 @OA\Property(property="cluster", ref="#/components/schemas/Cluster")
      *             )
      *         )
      *     ),
@@ -346,7 +346,7 @@ class ClusterController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Cluster updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="cluster", type="object")
+     *                 @OA\Property(property="cluster", ref="#/components/schemas/Cluster")
      *             )
      *         )
      *     ),
@@ -489,7 +489,7 @@ class ClusterController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Cluster deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="cluster", type="object")
+     *                 @OA\Property(property="cluster", ref="#/components/schemas/Cluster")
      *             )
      *         )
      *     ),

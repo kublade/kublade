@@ -15,6 +15,47 @@ use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * Class User.
+ *
+ * This class is the model for the user.
+ *
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *
+ *     @OA\Property(property="id", type="integer", format="int64", example="1"),
+ *     @OA\Property(property="name", type="string", example="John Doe"),
+ *     @OA\Property(property="email", type="string", example="john.doe@example.com"),
+ *     @OA\Property(property="email_verified_at", type="string", format="date-time", example="2021-01-01T00:00:00Z", nullable=true),
+ *     @OA\Property(property="password", type="string", example="password123"),
+ *     @OA\Property(property="remember_token", type="string", example="remember_token123", nullable=true),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="Role",
+ *     type="object",
+ *
+ *     @OA\Property(property="id", type="integer", format="int64", example="1"),
+ *     @OA\Property(property="name", type="string", example="John Doe"),
+ *     @OA\Property(property="guard_name", type="string", example="api"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ * )
+ *
+ * @property int    $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $remember_token
+ * @property string $email_verified_at
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
