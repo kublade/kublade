@@ -22,14 +22,6 @@ use Illuminate\Support\Facades\Validator;
 class ClusterController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the cluster dashboard.
      *
      * @param string $project_id

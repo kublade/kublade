@@ -45,7 +45,22 @@ class AuthController extends Controller
      *         )
      *     ),
      *
-     *     @OA\Response(response=201, description="User registered successfully"),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User registered successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="User registered successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object"),
+     *                 @OA\Property(property="token", type="string")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -99,7 +114,21 @@ class AuthController extends Controller
      *         )
      *     ),
      *
-     *     @OA\Response(response=200, description="Login successful"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Login successful"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="token", type="string")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -137,7 +166,19 @@ class AuthController extends Controller
      *     summary="Get the authenticated user",
      *     tags={"Authentication"},
      *
-     *     @OA\Response(response=200, description="User authenticated"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User authenticated",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="User authenticated"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -159,7 +200,18 @@ class AuthController extends Controller
      *     summary="Logout a user",
      *     tags={"Authentication"},
      *
-     *     @OA\Response(response=200, description="Successfully logged out"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully logged out",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Successfully logged out")
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -181,7 +233,21 @@ class AuthController extends Controller
      *     summary="Refresh a token",
      *     tags={"Authentication"},
      *
-     *     @OA\Response(response=200, description="Token refreshed"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token refreshed",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Token refreshed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="token", type="string")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )

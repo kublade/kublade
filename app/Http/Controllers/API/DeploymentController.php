@@ -63,14 +63,6 @@ use Illuminate\Validation\Rule;
 class DeploymentController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the deployments.
      *
      * @OA\Get(
@@ -79,8 +71,31 @@ class DeploymentController extends Controller
      *     tags={"Deployments"},
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="List of deployments"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployments retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployments retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployments", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -104,7 +119,7 @@ class DeploymentController extends Controller
 
         $deployments = Deployment::cursorPaginate(10);
 
-        return Response::generate(200, 'success', 'Deployments retrieved', [
+        return Response::generate(200, 'success', 'Deployments retrieved successfully', [
             'deployments' => $deployments->items(),
             'links'       => [
                 'next' => $deployments->nextCursor()?->encode(),
@@ -124,7 +139,21 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *
-     *     @OA\Response(response=200, description="Deployment details"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployment details",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployment details"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployment", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -171,7 +200,34 @@ class DeploymentController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
-     *     @OA\Response(response=200, description="Deployment created"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="template_id", type="string"),
+     *             @OA\Property(property="cluster_id", type="string"),
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="data", type="object"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployment created",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployment created"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployment", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -354,7 +410,32 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *
-     *     @OA\Response(response=200, description="Deployment updated"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="data", type="object"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployment updated",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployment updated"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployment", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -522,7 +603,21 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *
-     *     @OA\Response(response=200, description="Deployment deleted"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployment deleted",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployment deleted"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployment", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -581,7 +676,32 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *     @OA\Parameter(ref="#/components/parameters/network_policy_id"),
      *
-     *     @OA\Response(response=200, description="Network policy created"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="source_deployment_id", type="string"),
+     *             @OA\Property(property="target_deployment_id", type="string"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Network policy created",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Network policy put"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="network_policy", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -598,14 +718,15 @@ class DeploymentController extends Controller
     public function action_put_network_policy(string $project_id, string $deployment_id, string $network_policy_id, Request $request)
     {
         $validator = Validator::make(array_merge($request->all(), [
-            'project_id'    => $project_id,
-            'deployment_id' => $deployment_id,
+            'project_id'        => $project_id,
+            'deployment_id'     => $deployment_id,
+            'network_policy_id' => $network_policy_id,
         ]), [
             'project_id'           => ['required', 'string', 'max:255'],
             'deployment_id'        => ['required', 'string', 'max:255'],
             'source_deployment_id' => ['required', 'string', 'max:255'],
             'target_deployment_id' => ['required', 'string', 'max:255'],
-            'id'                   => ['nullable', 'string', 'max:255'],
+            'network_policy_id'    => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -676,7 +797,21 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *     @OA\Parameter(ref="#/components/parameters/network_policy_id"),
      *
-     *     @OA\Response(response=200, description="Network policy deleted"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Network policy deleted",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Network policy deleted"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="network_policy", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -730,7 +865,21 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *     @OA\Parameter(ref="#/components/parameters/commit_id"),
      *
-     *     @OA\Response(response=200, description="Commit reverted"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Commit reverted",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Commit reverted"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="commit", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),

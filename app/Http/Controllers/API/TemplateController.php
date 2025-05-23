@@ -88,14 +88,6 @@ use Illuminate\Support\Facades\Validator;
 class TemplateController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the templates.
      *
      * @OA\Get(
@@ -103,7 +95,31 @@ class TemplateController extends Controller
      *     summary="List templates",
      *     tags={"Templates"},
      *
-     *     @OA\Response(response=200, description="Templates retrieved successfully"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Templates retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Templates retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="templates", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -135,7 +151,21 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="Template retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -176,7 +206,32 @@ class TemplateController extends Controller
      *     summary="Add a new template",
      *     tags={"Templates"},
      *
-     *     @OA\Response(response=200, description="Template added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -220,9 +275,36 @@ class TemplateController extends Controller
      *     summary="Import a new template",
      *     tags={"Templates"},
      *
-     *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\RequestBody(
+     *         required=true,
      *
-     *     @OA\Response(response=200, description="Template imported successfully"),
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *             @OA\Property(property="url", type="string"),
+     *             @OA\Property(property="chart", type="string"),
+     *             @OA\Property(property="repo", type="string", nullable=true),
+     *             @OA\Property(property="namespace", type="string", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template imported successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template imported successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -286,7 +368,32 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="Template updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -330,7 +437,23 @@ class TemplateController extends Controller
      *     summary="Delete the template",
      *     tags={"Templates"},
      *
-     *     @OA\Response(response=200, description="Template deleted successfully"),
+     *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -355,7 +478,9 @@ class TemplateController extends Controller
         if ($template = Template::where('id', $template_id)->first()) {
             $template->delete();
 
-            return Response::generate(200, 'success', 'Template deleted successfully');
+            return Response::generate(200, 'success', 'Template deleted successfully', [
+                'template' => $template->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Template not found');
@@ -370,8 +495,31 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Folders retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Folders retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Folders retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="folders", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -406,7 +554,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/folder_id"),
      *
-     *     @OA\Response(response=200, description="Folder retrieved successfully"),
+     *     @OA\Response(response=200, description="Folder retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Folder retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="folder", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -451,7 +611,30 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="Folder added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="parent_id", type="string", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Folder added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Folder added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="folder", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -499,7 +682,30 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/folder_id"),
      *
-     *     @OA\Response(response=200, description="Folder updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="parent_id", type="string", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Folder updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Folder updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="folder", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -551,7 +757,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/folder_id"),
      *
-     *     @OA\Response(response=200, description="Folder deleted successfully"),
+     *     @OA\Response(response=200, description="Folder deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Folder deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="folder", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -583,7 +801,9 @@ class TemplateController extends Controller
         ) {
             $folder->delete();
 
-            return Response::generate(200, 'success', 'Folder deleted successfully');
+            return Response::generate(200, 'success', 'Folder deleted successfully', [
+                'folder' => $folder->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Folder not found');
@@ -598,8 +818,31 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Files retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Files retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Files retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="files", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -634,7 +877,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/file_id"),
      *
-     *     @OA\Response(response=200, description="File retrieved successfully"),
+     *     @OA\Response(response=200, description="File retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="File retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="file", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -679,7 +934,31 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="File added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="template_directory_id", type="string", nullable=true),
+     *             @OA\Property(property="mime_type", type="string"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="File added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="File added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="file", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -739,7 +1018,32 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/file_id"),
      *
-     *     @OA\Response(response=200, description="File updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="template_directory_id", type="string", nullable=true),
+     *             @OA\Property(property="mime_type", type="string"),
+     *             @OA\Property(property="content", type="string", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="File updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="File updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="file", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -804,7 +1108,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/file_id"),
      *
-     *     @OA\Response(response=200, description="File deleted successfully"),
+     *     @OA\Response(response=200, description="File deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="File deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="file", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -844,7 +1160,9 @@ class TemplateController extends Controller
                     'update' => true,
                 ]);
 
-            return Response::generate(200, 'success', 'File deleted successfully');
+            return Response::generate(200, 'success', 'File deleted successfully', [
+                'file' => $file->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'File not found');
@@ -859,8 +1177,31 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Fields retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fields retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Fields retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="fields", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -891,7 +1232,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *
-     *     @OA\Response(response=200, description="Field retrieved successfully"),
+     *     @OA\Response(response=200, description="Field retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Field retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="field", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -938,7 +1291,39 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="Field added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="type", type="string"),
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="key", type="string"),
+     *             @OA\Property(property="value", type="string", nullable=true),
+     *             @OA\Property(property="required", type="boolean", nullable=true),
+     *             @OA\Property(property="secret", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_create", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_update", type="boolean", nullable=true),
+     *             @OA\Property(property="min", type="number", nullable=true),
+     *             @OA\Property(property="max", type="number", nullable=true),
+     *             @OA\Property(property="step", type="number", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Field added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Field added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="field", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1032,7 +1417,39 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *
-     *     @OA\Response(response=200, description="Field updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="type", type="string"),
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="key", type="string"),
+     *             @OA\Property(property="value", type="string", nullable=true),
+     *             @OA\Property(property="required", type="boolean", nullable=true),
+     *             @OA\Property(property="secret", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_create", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_update", type="boolean", nullable=true),
+     *             @OA\Property(property="min", type="number", nullable=true),
+     *             @OA\Property(property="max", type="number", nullable=true),
+     *             @OA\Property(property="step", type="number", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Field updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Field updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="field", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1115,7 +1532,9 @@ class TemplateController extends Controller
                 break;
         }
 
-        return Response::generate(200, 'success', 'Field updated successfully');
+        return Response::generate(200, 'success', 'Field updated successfully', [
+            'field' => $field->toArray(),
+        ]);
     }
 
     /**
@@ -1129,7 +1548,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *
-     *     @OA\Response(response=200, description="Field deleted successfully"),
+     *     @OA\Response(response=200, description="Field deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Field deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="field", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1160,7 +1591,9 @@ class TemplateController extends Controller
         ) {
             $field->delete();
 
-            return Response::generate(200, 'success', 'Field deleted successfully');
+            return Response::generate(200, 'success', 'Field deleted successfully', [
+                'field' => $field->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Field not found');
@@ -1176,8 +1609,31 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Options retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Options retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Options retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="options", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1210,7 +1666,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *     @OA\Parameter(ref="#/components/parameters/option_id"),
      *
-     *     @OA\Response(response=200, description="Option retrieved successfully"),
+     *     @OA\Response(response=200, description="Option retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Option retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="option", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1261,7 +1729,31 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *
-     *     @OA\Response(response=200, description="Option added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="value", type="string"),
+     *             @OA\Property(property="default", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Option added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Option added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="option", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1320,7 +1812,31 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *     @OA\Parameter(ref="#/components/parameters/option_id"),
      *
-     *     @OA\Response(response=200, description="Option updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="value", type="string"),
+     *             @OA\Property(property="default", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Option updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Option updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="option", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1364,7 +1880,9 @@ class TemplateController extends Controller
             'default' => ! empty($request->default),
         ]);
 
-        return Response::generate(200, 'success', 'Option updated successfully');
+        return Response::generate(200, 'success', 'Option updated successfully', [
+            'option' => $option->toArray(),
+        ]);
     }
 
     /**
@@ -1379,7 +1897,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *     @OA\Parameter(ref="#/components/parameters/option_id"),
      *
-     *     @OA\Response(response=200, description="Option deleted successfully"),
+     *     @OA\Response(response=200, description="Option deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Option deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="option", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1413,7 +1943,9 @@ class TemplateController extends Controller
         ) {
             $option->delete();
 
-            return Response::generate(200, 'success', 'Option deleted successfully');
+            return Response::generate(200, 'success', 'Option deleted successfully', [
+                'option' => $option->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Option not found');
@@ -1428,8 +1960,31 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Ports retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ports retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Ports retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="ports", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1460,7 +2015,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/port_id"),
      *
-     *     @OA\Response(response=200, description="Port retrieved successfully"),
+     *     @OA\Response(response=200, description="Port retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Port retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="port", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1507,7 +2074,32 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
-     *     @OA\Response(response=200, description="Port added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="group", type="string"),
+     *             @OA\Property(property="claim", type="string", nullable=true),
+     *             @OA\Property(property="preferred_port", type="number", nullable=true),
+     *             @OA\Property(property="random", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Port added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Port added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="port", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1560,7 +2152,32 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/port_id"),
      *
-     *     @OA\Response(response=200, description="Port updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="group", type="string"),
+     *             @OA\Property(property="claim", type="string", nullable=true),
+     *             @OA\Property(property="preferred_port", type="number", nullable=true),
+     *             @OA\Property(property="random", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Port updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Port updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="port", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -1600,7 +2217,9 @@ class TemplateController extends Controller
             'random'         => ! empty($request->random),
         ]);
 
-        return Response::generate(200, 'success', 'Port updated successfully');
+        return Response::generate(200, 'success', 'Port updated successfully', [
+            'port' => $port->toArray(),
+        ]);
     }
 
     /**
@@ -1614,7 +2233,19 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/port_id"),
      *
-     *     @OA\Response(response=200, description="Port deleted successfully"),
+     *     @OA\Response(response=200, description="Port deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Port deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="port", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -1643,7 +2274,9 @@ class TemplateController extends Controller
         ) {
             $port->delete();
 
-            return Response::generate(200, 'success', 'Port deleted successfully');
+            return Response::generate(200, 'success', 'Port deleted successfully', [
+                'port' => $port->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Port not found');

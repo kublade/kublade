@@ -35,14 +35,6 @@ use Illuminate\Support\Facades\Validator;
 class ProjectController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the projects.
      *
      * @OA\Get(
@@ -50,7 +42,31 @@ class ProjectController extends Controller
      *     summary="List projects",
      *     tags={"Projects"},
      *
-     *     @OA\Response(response=200, description="Projects retrieved successfully"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Projects retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Projects retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="projects", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -61,7 +77,7 @@ class ProjectController extends Controller
     {
         $projects = Project::cursorPaginate(10);
 
-        return Response::generate(200, 'success', 'Projects retrieved', [
+        return Response::generate(200, 'success', 'Projects retrieved successfully', [
             'projects' => collect($projects->items())->map(function ($item) {
                 return $item->toArray();
             }),
@@ -82,7 +98,21 @@ class ProjectController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
-     *     @OA\Response(response=200, description="Project retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Project retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Project retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="project", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -111,7 +141,7 @@ class ProjectController extends Controller
             return Response::generate(404, 'error', 'Project not found');
         }
 
-        return Response::generate(200, 'success', 'Project retrieved', [
+        return Response::generate(200, 'success', 'Project retrieved successfully', [
             'project' => $project->toArray(),
         ]);
     }
@@ -124,7 +154,31 @@ class ProjectController extends Controller
      *     summary="Add a new project",
      *     tags={"Projects"},
      *
-     *     @OA\Response(response=201, description="Project added successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="Project added successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Project added successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="project", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -150,7 +204,7 @@ class ProjectController extends Controller
                 'name'    => $request->name,
             ])
         ) {
-            return Response::generate(201, 'success', 'Project added', [
+            return Response::generate(201, 'success', 'Project added successfully', [
                 'project' => $project->toArray(),
             ]);
         }
@@ -168,7 +222,29 @@ class ProjectController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
-     *     @OA\Response(response=200, description="Project updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=200, description="Project updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Project updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="project", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -204,7 +280,9 @@ class ProjectController extends Controller
                 'name' => $request->name,
             ]);
 
-            return Response::generate(200, 'success', 'Project updated');
+            return Response::generate(200, 'success', 'Project updated successfully', [
+                'project' => $project->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Project not found');
@@ -220,7 +298,21 @@ class ProjectController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
-     *     @OA\Response(response=200, description="Project deleted successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Project deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Project deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="project", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -244,12 +336,14 @@ class ProjectController extends Controller
 
         if (
             $project = Project::where('id', $project_id)
-                ->where('user_id', '=', Auth::id())
                 ->first()
         ) {
-            $project->delete();
+            //$project->delete();
+            var_dump('C');
 
-            return Response::generate(200, 'success', 'Project deleted');
+            return Response::generate(200, 'success', 'Project deleted successfully', [
+                'project' => $project->toArray(),
+            ]);
         }
 
         return Response::generate(404, 'error', 'Project not found');

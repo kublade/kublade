@@ -34,14 +34,6 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the roles.
      *
      * @OA\Get(
@@ -49,7 +41,31 @@ class RoleController extends Controller
      *     summary="List roles",
      *     tags={"Roles"},
      *
-     *     @OA\Response(response=200, description="Roles retrieved successfully"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Roles retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Roles retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="roles", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
@@ -60,7 +76,7 @@ class RoleController extends Controller
     {
         $roles = Role::cursorPaginate(10);
 
-        return Response::generate(200, 'success', 'Roles retrieved', [
+        return Response::generate(200, 'success', 'Roles retrieved successfully', [
             'roles' => collect($roles->items())->map(function ($item) {
                 return $item->toArray();
             }),
@@ -81,7 +97,21 @@ class RoleController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/role_id"),
      *
-     *     @OA\Response(response=200, description="Role retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Role retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Role retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="role", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -105,7 +135,7 @@ class RoleController extends Controller
         }
 
         if ($role = Role::where('id', $role_id)->first()) {
-            return Response::generate(200, 'success', 'Role retrieved', [
+            return Response::generate(200, 'success', 'Role retrieved successfully', [
                 'role' => $role->toArray(),
             ]);
         }
@@ -121,7 +151,32 @@ class RoleController extends Controller
      *     summary="Add a new role",
      *     tags={"Roles"},
      *
-     *     @OA\Response(response=200, description="Role created successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Role created successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Role created successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="role", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -149,7 +204,7 @@ class RoleController extends Controller
         ) {
             $role->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'Role created', [
+            return Response::generate(200, 'success', 'Role created successfully', [
                 'role' => $role->toArray(),
             ]);
         }
@@ -167,7 +222,32 @@ class RoleController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/role_id"),
      *
-     *     @OA\Response(response=200, description="Role updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Role updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Role updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="role", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -196,7 +276,7 @@ class RoleController extends Controller
 
             $role->syncPermissions($request->permissions ?? []);
 
-            return Response::generate(200, 'success', 'Role updated', [
+            return Response::generate(200, 'success', 'Role updated successfully', [
                 'role' => $role->toArray(),
             ]);
         }
@@ -214,7 +294,21 @@ class RoleController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/role_id"),
      *
-     *     @OA\Response(response=200, description="Role deleted successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Role deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Role deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="role", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -239,7 +333,7 @@ class RoleController extends Controller
         if ($role = Role::where('id', $role_id)->first()) {
             $role->delete();
 
-            return Response::generate(200, 'success', 'Role deleted', [
+            return Response::generate(200, 'success', 'Role deleted successfully', [
                 'role' => $role->toArray(),
             ]);
         }

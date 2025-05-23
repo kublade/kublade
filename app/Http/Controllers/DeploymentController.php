@@ -33,14 +33,6 @@ use Illuminate\Validation\Rule;
 class DeploymentController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the deployment index page.
      *
      * @param string $project_id
@@ -608,7 +600,7 @@ class DeploymentController extends Controller
         Validator::make($request->toArray(), [
             'source_deployment_id' => ['required', 'string'],
             'target_deployment_id' => ['required', 'string'],
-            'id'                   => ['nullable', 'string'],
+            'network_policy_id'    => ['nullable', 'string'],
         ])->validate();
 
         if (
@@ -631,8 +623,8 @@ class DeploymentController extends Controller
             return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
         }
 
-        if ($request->id) {
-            $networkPolicy = DeploymentLink::where('id', '=', $request->id)->first();
+        if ($request->network_policy_id) {
+            $networkPolicy = DeploymentLink::where('id', '=', $request->network_policy_id)->first();
 
             if (empty($networkPolicy)) {
                 return redirect()->back()->with('warning', __('Ooops, something went wrong.'));

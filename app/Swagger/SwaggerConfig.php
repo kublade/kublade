@@ -24,6 +24,15 @@ use OpenApi\Annotations as OA;
  *
  * @OA\Components(
  *
+ *     @OA\Parameter(
+ *         name="cursor",
+ *         in="query",
+ *         required=false,
+ *         description="Cursor for pagination",
+ *
+ *         @OA\Schema(type="string")
+ *     ),
+ *
  *     @OA\Response(
  *         response="ForbiddenResponse",
  *         description="Forbidden",

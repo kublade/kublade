@@ -38,14 +38,6 @@ use Illuminate\Support\Facades\Validator;
 class ClusterController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List clusters.
      *
      * @OA\Get(
@@ -54,8 +46,31 @@ class ClusterController extends Controller
      *     tags={"Clusters"},
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
-     *     @OA\Response(response=200, description="Clusters retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Clusters retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Clusters retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="clusters", type="array",
+     *
+     *                     @OA\Items(type="object")
+     *                 ),
+     *
+     *                 @OA\Property(property="links", type="object",
+     *                     @OA\Property(property="next", type="string"),
+     *                     @OA\Property(property="prev", type="string")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -101,7 +116,21 @@ class ClusterController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
      *
-     *     @OA\Response(response=200, description="Cluster retrieved successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cluster retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Cluster retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="cluster", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
@@ -146,7 +175,49 @@ class ClusterController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
-     *     @OA\Response(response=201, description="Cluster created successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="git", type="object",
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
+     *             @OA\Property(property="k8s", type="object",
+     *                 @OA\Property(property="api_url", type="string"),
+     *                 @OA\Property(property="kubeconfig", type="string"),
+     *                 @OA\Property(property="service_account_token", type="string"),
+     *                 @OA\Property(property="node_prefix", type="string", nullable=true),
+     *             ),
+     *             @OA\Property(property="namespace", type="object",
+     *                 @OA\Property(property="utility", type="string"),
+     *                 @OA\Property(property="ingress", type="string"),
+     *             ),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="Cluster created successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Cluster created successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="cluster", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -237,7 +308,49 @@ class ClusterController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
      *
-     *     @OA\Response(response=200, description="Cluster updated successfully"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="git", type="object",
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
+     *             @OA\Property(property="k8s", type="object",
+     *                 @OA\Property(property="api_url", type="string"),
+     *                 @OA\Property(property="kubeconfig", type="string"),
+     *                 @OA\Property(property="service_account_token", type="string"),
+     *                 @OA\Property(property="node_prefix", type="string", nullable=true),
+     *             ),
+     *             @OA\Property(property="namespace", type="object",
+     *                 @OA\Property(property="utility", type="string"),
+     *                 @OA\Property(property="ingress", type="string"),
+     *             ),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cluster updated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Cluster updated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="cluster", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -366,7 +479,21 @@ class ClusterController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
      *
-     *     @OA\Response(response=200, description="Cluster deleted successfully"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cluster deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Cluster deleted successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="cluster", type="object")
+     *             )
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")

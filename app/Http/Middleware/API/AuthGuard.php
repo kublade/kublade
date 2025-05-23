@@ -27,16 +27,18 @@ class AuthGuard
      *
      * @return JsonResponse
      */
-    public function handle(Request $request, Closure $next): JsonResponse
+    public function handle(Request $request, Closure $next)
     {
+        Auth::shouldUse('api');
+
         if (!Auth::guard('api')->check()) {
             return Response::generate(401, 'error', 'Unauthorized');
         }
 
-        Auth::shouldUse('api');
+        $response = $next($request);
 
-        if ($next($request) instanceof JsonResponse) {
-            return $next($request);
+        if ($response instanceof JsonResponse) {
+            return $response;
         }
 
         return Response::generate(500, 'error', 'Server Error');
