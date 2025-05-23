@@ -1,7 +1,7 @@
 #!/bin/bash
 
 {
-  echo "# Project Dependencies with Licenses"
+  echo "# Dependencies"
   echo ""
   echo "## PHP (Composer) Dependencies"
   echo ""
