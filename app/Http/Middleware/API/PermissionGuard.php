@@ -36,7 +36,9 @@ class PermissionGuard
 
         if (
             !$user ||
-            $permissionSet->every(fn (string $permission) => !$user->can($permission))
+            $permissionSet->every(function (string $permission) {
+                return !$user->can($permission);
+            })
         ) {
             return Response::generate(401, 'error', 'Unauthorized');
         }
