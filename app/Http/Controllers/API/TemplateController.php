@@ -178,6 +178,17 @@ class TemplateController extends Controller
      *     summary="Add a new template",
      *     tags={"Templates"},
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Template added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -222,7 +233,20 @@ class TemplateController extends Controller
      *     summary="Import a new template",
      *     tags={"Templates"},
      *
-     *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *             @OA\Property(property="url", type="string"),
+     *             @OA\Property(property="chart", type="string"),
+     *             @OA\Property(property="repo", type="string", nullable=true),
+     *             @OA\Property(property="namespace", type="string", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Template imported successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -287,6 +311,17 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Template updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -454,6 +489,17 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="parent_id", type="string", nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Folder added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -501,6 +547,17 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/folder_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="parent_id", type="string", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Folder updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -683,6 +740,18 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="template_directory_id", type="string", nullable=true),
+     *             @OA\Property(property="mime_type", type="string"),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="File added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -742,6 +811,19 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/file_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="template_directory_id", type="string", nullable=true),
+     *             @OA\Property(property="mime_type", type="string"),
+     *             @OA\Property(property="content", type="string", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="File updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -943,6 +1025,26 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="type", type="string"),
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="key", type="string"),
+     *             @OA\Property(property="value", type="string", nullable=true),
+     *             @OA\Property(property="required", type="boolean", nullable=true),
+     *             @OA\Property(property="secret", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_create", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_update", type="boolean", nullable=true),
+     *             @OA\Property(property="min", type="number", nullable=true),
+     *             @OA\Property(property="max", type="number", nullable=true),
+     *             @OA\Property(property="step", type="number", nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Field added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -1036,6 +1138,26 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="type", type="string"),
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="key", type="string"),
+     *             @OA\Property(property="value", type="string", nullable=true),
+     *             @OA\Property(property="required", type="boolean", nullable=true),
+     *             @OA\Property(property="secret", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_create", type="boolean", nullable=true),
+     *             @OA\Property(property="set_on_update", type="boolean", nullable=true),
+     *             @OA\Property(property="min", type="number", nullable=true),
+     *             @OA\Property(property="max", type="number", nullable=true),
+     *             @OA\Property(property="step", type="number", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Field updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -1267,6 +1389,18 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="value", type="string"),
+     *             @OA\Property(property="default", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Option added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -1325,6 +1459,18 @@ class TemplateController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
      *     @OA\Parameter(ref="#/components/parameters/option_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="label", type="string"),
+     *             @OA\Property(property="value", type="string"),
+     *             @OA\Property(property="default", type="boolean", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Option updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -1514,6 +1660,19 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="group", type="string"),
+     *             @OA\Property(property="claim", type="string", nullable=true),
+     *             @OA\Property(property="preferred_port", type="number", nullable=true),
+     *             @OA\Property(property="random", type="boolean", nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Port added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -1566,6 +1725,19 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/port_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="group", type="string"),
+     *             @OA\Property(property="claim", type="string", nullable=true),
+     *             @OA\Property(property="preferred_port", type="number", nullable=true),
+     *             @OA\Property(property="random", type="boolean", nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Port updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

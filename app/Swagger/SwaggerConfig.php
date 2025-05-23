@@ -29,6 +29,7 @@ use OpenApi\Annotations as OA;
  *         in="query",
  *         required=false,
  *         description="Cursor for pagination",
+ *
  *         @OA\Schema(type="string")
  *     ),
  *

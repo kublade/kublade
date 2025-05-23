@@ -147,6 +147,34 @@ class ClusterController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="git", type="object",
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
+     *             @OA\Property(property="k8s", type="object",
+     *                 @OA\Property(property="api_url", type="string"),
+     *                 @OA\Property(property="kubeconfig", type="string"),
+     *                 @OA\Property(property="service_account_token", type="string"),
+     *                 @OA\Property(property="node_prefix", type="string", nullable=true),
+     *             ),
+     *             @OA\Property(property="namespace", type="object",
+     *                 @OA\Property(property="utility", type="string"),
+     *                 @OA\Property(property="ingress", type="string"),
+     *             ),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=201, description="Cluster created successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -237,6 +265,34 @@ class ClusterController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/cluster_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="git", type="object",
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
+     *             @OA\Property(property="k8s", type="object",
+     *                 @OA\Property(property="api_url", type="string"),
+     *                 @OA\Property(property="kubeconfig", type="string"),
+     *                 @OA\Property(property="service_account_token", type="string"),
+     *                 @OA\Property(property="node_prefix", type="string", nullable=true),
+     *             ),
+     *             @OA\Property(property="namespace", type="object",
+     *                 @OA\Property(property="utility", type="string"),
+     *                 @OA\Property(property="ingress", type="string"),
+     *             ),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Cluster updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

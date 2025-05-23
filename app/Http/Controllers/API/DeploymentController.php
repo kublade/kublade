@@ -172,6 +172,19 @@ class DeploymentController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="template_id", type="string"),
+     *             @OA\Property(property="cluster_id", type="string"),
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="data", type="object"),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Deployment created"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -354,6 +367,17 @@ class DeploymentController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="data", type="object"),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Deployment updated"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
@@ -582,6 +606,17 @@ class DeploymentController extends Controller
      *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
      *     @OA\Parameter(ref="#/components/parameters/network_policy_id"),
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="source_deployment_id", type="string"),
+     *             @OA\Property(property="target_deployment_id", type="string"),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Network policy created"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -599,14 +634,15 @@ class DeploymentController extends Controller
     public function action_put_network_policy(string $project_id, string $deployment_id, string $network_policy_id, Request $request)
     {
         $validator = Validator::make(array_merge($request->all(), [
-            'project_id'    => $project_id,
-            'deployment_id' => $deployment_id,
+            'project_id'        => $project_id,
+            'deployment_id'     => $deployment_id,
+            'network_policy_id' => $network_policy_id,
         ]), [
             'project_id'           => ['required', 'string', 'max:255'],
             'deployment_id'        => ['required', 'string', 'max:255'],
             'source_deployment_id' => ['required', 'string', 'max:255'],
             'target_deployment_id' => ['required', 'string', 'max:255'],
-            'id'                   => ['nullable', 'string', 'max:255'],
+            'network_policy_id'    => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {

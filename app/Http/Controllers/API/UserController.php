@@ -124,6 +124,20 @@ class UserController extends Controller
      *     summary="Add a new user",
      *     tags={"Users"},
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="roles", type="array", @OA\Items(type="string"), nullable=true),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="User created successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -175,6 +189,20 @@ class UserController extends Controller
      *     tags={"Users"},
      *
      *     @OA\Parameter(ref="#/components/parameters/user_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="roles", type="array", @OA\Items(type="string"), nullable=true),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="User updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

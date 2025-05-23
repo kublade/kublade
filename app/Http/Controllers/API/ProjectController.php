@@ -126,6 +126,16 @@ class ProjectController extends Controller
      *     summary="Add a new project",
      *     tags={"Projects"},
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=201, description="Project added successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -169,6 +179,16 @@ class ProjectController extends Controller
      *     tags={"Projects"},
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Project updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

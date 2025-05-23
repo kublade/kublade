@@ -123,6 +123,17 @@ class RoleController extends Controller
      *     summary="Add a new role",
      *     tags={"Roles"},
      *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
+     *
      *     @OA\Response(response=200, description="Role created successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -168,6 +179,17 @@ class RoleController extends Controller
      *     tags={"Roles"},
      *
      *     @OA\Parameter(ref="#/components/parameters/role_id"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
+     *         )
+     *     ),
      *
      *     @OA\Response(response=200, description="Role updated successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
