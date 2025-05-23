@@ -55,7 +55,7 @@ class RoleController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="roles", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/Role")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -107,7 +107,7 @@ class RoleController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Role retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="role", type="object")
+     *                 @OA\Property(property="role", ref="#/components/schemas/Role")
      *             )
      *         )
      *     ),
@@ -172,7 +172,7 @@ class RoleController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Role created successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="role", type="object")
+     *                 @OA\Property(property="role", ref="#/components/schemas/Role")
      *             )
      *         )
      *     ),
@@ -243,7 +243,7 @@ class RoleController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Role updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="role", type="object")
+     *                 @OA\Property(property="role", ref="#/components/schemas/Role")
      *             )
      *         )
      *     ),
@@ -304,7 +304,7 @@ class RoleController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Role deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="role", type="object")
+     *                 @OA\Property(property="role", ref="#/components/schemas/Role")
      *             )
      *         )
      *     ),

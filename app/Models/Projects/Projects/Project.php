@@ -19,6 +19,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * This class is the model for projects.
  *
+ * @OA\Schema(
+ *     schema="Project",
+ *     type="object",
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="user_id", type="integer", format="int64", example="1"),
+ *     @OA\Property(property="name", type="string", example="Project 1"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id

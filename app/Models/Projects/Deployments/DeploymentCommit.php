@@ -17,6 +17,19 @@ use Illuminate\Support\Collection;
  *
  * This class is the model for deployment commits.
  *
+ * @OA\Schema(
+ *     schema="DeploymentCommit",
+ *     type="object",
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="deployment_id", type="string", format="uuid", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="hash", type="string", example="123e4567-e89b-12d3-a456-426614174000"),
+ *     @OA\Property(property="message", type="string", example="Deployment commit message"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", example="2021-01-01 00:00:00", nullable=true),
+ * )
+ *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id

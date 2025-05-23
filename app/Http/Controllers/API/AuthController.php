@@ -55,7 +55,7 @@ class AuthController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User registered successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", type="object"),
+     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
      *                 @OA\Property(property="token", type="string")
      *             )
      *         )
@@ -175,7 +175,7 @@ class AuthController extends Controller
      *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User authenticated"),
-     *             @OA\Property(property="data", type="object")
+     *             @OA\Property(property="data", ref="#/components/schemas/User")
      *         )
      *     ),
      *

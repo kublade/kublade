@@ -109,7 +109,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="templates", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/Template")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -161,7 +161,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Template retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="template", type="object")
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
      *             )
      *         )
      *     ),
@@ -227,7 +227,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Template added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="template", type="object")
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
      *             )
      *         )
      *     ),
@@ -300,7 +300,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Template imported successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="template", type="object")
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
      *             )
      *         )
      *     ),
@@ -389,7 +389,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Template updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="template", type="object")
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
      *             )
      *         )
      *     ),
@@ -449,7 +449,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Template deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="template", type="object")
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
      *             )
      *         )
      *     ),
@@ -509,7 +509,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="folders", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/TemplateDirectory")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -562,7 +562,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Folder retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="folder", type="object")
+     *                 @OA\Property(property="folder", ref="#/components/schemas/TemplateDirectory")
      *             )
      *         )
      *     ),
@@ -630,7 +630,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Folder added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="folder", type="object")
+     *                 @OA\Property(property="folder", ref="#/components/schemas/TemplateDirectory")
      *             )
      *         )
      *     ),
@@ -701,7 +701,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Folder updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="folder", type="object")
+     *                 @OA\Property(property="folder", ref="#/components/schemas/TemplateDirectory")
      *             )
      *         )
      *     ),
@@ -765,7 +765,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Folder deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="folder", type="object")
+     *                 @OA\Property(property="folder", ref="#/components/schemas/TemplateDirectory")
      *             )
      *         )
      *     ),
@@ -832,7 +832,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="files", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/TemplateFile")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -885,7 +885,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="File retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="file", type="object")
+     *                 @OA\Property(property="file", ref="#/components/schemas/TemplateFile")
      *             )
      *         )
      *     ),
@@ -954,7 +954,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="File added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="file", type="object")
+     *                 @OA\Property(property="file", ref="#/components/schemas/TemplateFile")
      *             )
      *         )
      *     ),
@@ -1039,7 +1039,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="File updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="file", type="object")
+     *                 @OA\Property(property="file", ref="#/components/schemas/TemplateFile")
      *             )
      *         )
      *     ),
@@ -1116,7 +1116,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="File deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="file", type="object")
+     *                 @OA\Property(property="file", ref="#/components/schemas/TemplateFile")
      *             )
      *         )
      *     ),
@@ -1191,7 +1191,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="fields", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/TemplateField")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -1240,7 +1240,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Field retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="field", type="object")
+     *                 @OA\Property(property="field", ref="#/components/schemas/TemplateField")
      *             )
      *         )
      *     ),
@@ -1319,7 +1319,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Field added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="field", type="object")
+     *                 @OA\Property(property="field", ref="#/components/schemas/TemplateField")
      *             )
      *         )
      *     ),
@@ -1445,7 +1445,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Field updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="field", type="object")
+     *                 @OA\Property(property="field", ref="#/components/schemas/TemplateField")
      *             )
      *         )
      *     ),
@@ -1623,7 +1623,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="options", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/TemplateFieldOption")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -1674,7 +1674,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Option retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="option", type="object")
+     *                 @OA\Property(property="option", ref="#/components/schemas/TemplateFieldOption")
      *             )
      *         )
      *     ),
@@ -1749,7 +1749,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Option added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="option", type="object")
+     *                 @OA\Property(property="option", ref="#/components/schemas/TemplateFieldOption")
      *             )
      *         )
      *     ),
@@ -1832,7 +1832,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Option updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="option", type="object")
+     *                 @OA\Property(property="option", ref="#/components/schemas/TemplateFieldOption")
      *             )
      *         )
      *     ),
@@ -1905,7 +1905,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Option deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="option", type="object")
+     *                 @OA\Property(property="option", ref="#/components/schemas/TemplateFieldOption")
      *             )
      *         )
      *     ),
@@ -1974,7 +1974,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="ports", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/TemplatePort")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -2023,7 +2023,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Port retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="port", type="object")
+     *                 @OA\Property(property="port", ref="#/components/schemas/TemplatePort")
      *             )
      *         )
      *     ),
@@ -2095,7 +2095,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Port added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="port", type="object")
+     *                 @OA\Property(property="port", ref="#/components/schemas/TemplatePort")
      *             )
      *         )
      *     ),
@@ -2173,7 +2173,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Port updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="port", type="object")
+     *                 @OA\Property(property="port", ref="#/components/schemas/TemplatePort")
      *             )
      *         )
      *     ),
@@ -2241,7 +2241,7 @@ class TemplateController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Port deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="port", type="object")
+     *                 @OA\Property(property="port", ref="#/components/schemas/TemplatePort")
      *             )
      *         )
      *     ),

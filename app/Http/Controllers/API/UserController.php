@@ -176,7 +176,7 @@ class UserController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User created successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", type="object")
+     *                 @OA\Property(property="user", ref="#/components/schemas/User")
      *             )
      *         )
      *     ),
@@ -256,7 +256,7 @@ class UserController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", type="object")
+     *                 @OA\Property(property="user", ref="#/components/schemas/User")
      *             )
      *         )
      *     ),
@@ -323,7 +323,7 @@ class UserController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="user", type="object")
+     *                 @OA\Property(property="user", ref="#/components/schemas/User")
      *             )
      *         )
      *     ),

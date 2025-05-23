@@ -56,7 +56,7 @@ class ProjectController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="projects", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/Project")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -108,7 +108,7 @@ class ProjectController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Project retrieved successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="project", type="object")
+     *                 @OA\Property(property="project", ref="#/components/schemas/Project")
      *             )
      *         )
      *     ),
@@ -174,7 +174,7 @@ class ProjectController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Project added successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="project", type="object")
+     *                 @OA\Property(property="project", ref="#/components/schemas/Project")
      *             )
      *         )
      *     ),
@@ -240,7 +240,7 @@ class ProjectController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Project updated successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="project", type="object")
+     *                 @OA\Property(property="project", ref="#/components/schemas/Project")
      *             )
      *         )
      *     ),
@@ -308,7 +308,7 @@ class ProjectController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Project deleted successfully"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="project", type="object")
+     *                 @OA\Property(property="project", ref="#/components/schemas/Project")
      *             )
      *         )
      *     ),

@@ -48,6 +48,8 @@ return [
                 'annotations' => [
                     base_path('app/Http/Controllers/API'),
                     base_path('app/Swagger'),
+                    base_path('app/Models'),
+                    base_path('app/Models/**'),
                 ],
             ],
         ],

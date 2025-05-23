@@ -85,7 +85,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="deployments", type="array",
      *
-     *                     @OA\Items(type="object")
+     *                     @OA\Items(ref="#/components/schemas/Deployment")
      *                 ),
      *
      *                 @OA\Property(property="links", type="object",
@@ -149,7 +149,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Deployment details"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="deployment", type="object")
+     *                 @OA\Property(property="deployment", ref="#/components/schemas/Deployment")
      *             )
      *         )
      *     ),
@@ -223,7 +223,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Deployment created"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="deployment", type="object")
+     *                 @OA\Property(property="deployment", ref="#/components/schemas/Deployment")
      *             )
      *         )
      *     ),
@@ -431,7 +431,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Deployment updated"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="deployment", type="object")
+     *                 @OA\Property(property="deployment", ref="#/components/schemas/Deployment")
      *             )
      *         )
      *     ),
@@ -613,7 +613,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Deployment deleted"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="deployment", type="object")
+     *                 @OA\Property(property="deployment", ref="#/components/schemas/Deployment")
      *             )
      *         )
      *     ),
@@ -697,7 +697,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Network policy put"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="network_policy", type="object")
+     *                 @OA\Property(property="network_policy", ref="#/components/schemas/DeploymentLink")
      *             )
      *         )
      *     ),
@@ -807,7 +807,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Network policy deleted"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="network_policy", type="object")
+     *                 @OA\Property(property="network_policy", ref="#/components/schemas/DeploymentLink")
      *             )
      *         )
      *     ),
@@ -875,7 +875,7 @@ class DeploymentController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Commit reverted"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="commit", type="object")
+     *                 @OA\Property(property="commit", ref="#/components/schemas/DeploymentCommit")
      *             )
      *         )
      *     ),
