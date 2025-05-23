@@ -50,6 +50,8 @@ class ProjectController extends Controller
      *     summary="List projects",
      *     tags={"Projects"},
      *
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
      *     @OA\Response(response=200, description="Projects retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")

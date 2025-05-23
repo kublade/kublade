@@ -79,6 +79,7 @@ class DeploymentController extends Controller
      *     tags={"Deployments"},
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="List of deployments"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

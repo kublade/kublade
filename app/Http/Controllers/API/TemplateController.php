@@ -103,6 +103,8 @@ class TemplateController extends Controller
      *     summary="List templates",
      *     tags={"Templates"},
      *
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
      *     @OA\Response(response=200, description="Templates retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
@@ -370,6 +372,7 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Folders retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -598,6 +601,7 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Files retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -859,6 +863,7 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Fields retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -1176,6 +1181,7 @@ class TemplateController extends Controller
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
      *     @OA\Parameter(ref="#/components/parameters/field_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Options retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
@@ -1428,6 +1434,7 @@ class TemplateController extends Controller
      *     tags={"Templates"},
      *
      *     @OA\Parameter(ref="#/components/parameters/template_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Ports retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),

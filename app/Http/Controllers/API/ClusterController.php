@@ -54,6 +54,7 @@ class ClusterController extends Controller
      *     tags={"Clusters"},
      *
      *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
      *
      *     @OA\Response(response=200, description="Clusters retrieved successfully"),
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),

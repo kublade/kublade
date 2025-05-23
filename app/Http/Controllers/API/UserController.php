@@ -51,6 +51,8 @@ class UserController extends Controller
      *     summary="List users",
      *     tags={"Users"},
      *
+     *     @OA\Parameter(ref="#/components/parameters/cursor"),
+     *
      *     @OA\Response(response=200, description="Users retrieved successfully"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
