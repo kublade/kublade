@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.30.1](https://github.com/kublade/kublade/compare/v1.30.0...v1.30.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* uncomment project deletion call ([360bf6b](https://github.com/kublade/kublade/commit/360bf6bf96c655c7a36873326c2acb8f9744a633))
+
 ## [1.30.0](https://github.com/kublade/kublade/compare/v1.29.1...v1.30.0) (2025-05-23)
 
 
