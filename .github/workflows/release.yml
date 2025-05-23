@@ -20,7 +20,6 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Node.js 20.9.0
         uses: actions/setup-node@v3
         with:
@@ -39,14 +38,16 @@ jobs:
         run: |
           chmod +x dependencies.sh
           ./dependencies.sh
-      - name: Auto-commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Commit changes
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "chore(release): auto-generate dependencies"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          commit_message: "chore(release): auto-generate dependencies"
-          branch: main
-          file_pattern: DEPENDENCIES.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
   release:
     name: Release
     runs-on: ubuntu-latest
