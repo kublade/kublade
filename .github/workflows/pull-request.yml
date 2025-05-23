@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '20.9.0'
 
-      - name: Install dependencies
+      - name: Install Node.js dependencies
         run: npm ci
 
       - name: Run commit lint

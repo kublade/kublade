@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.9.0'
+      - name: Install Node.js dependencies
+        run: npm ci
       - name: Set up PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
