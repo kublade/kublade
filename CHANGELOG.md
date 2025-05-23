@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.29.0](https://github.com/kublade/kublade/compare/v1.28.2...v1.29.0) (2025-05-23)
+
+
+### Features
+
+* publish dependencies and changelog ([654d39e](https://github.com/kublade/kublade/commit/654d39e6c60c87666f5a3af2008f178e7343bdd9))
+
+
+### Bug Fixes
+
+* add github token to workflow ([0a14083](https://github.com/kublade/kublade/commit/0a14083e382a0d5ed28a32eebb292946e61056de))
+* add github token to workflow ([01acdd5](https://github.com/kublade/kublade/commit/01acdd52778781e1b4516e2c694cd6310bd20b45))
+* add github token to workflow ([f3c73f1](https://github.com/kublade/kublade/commit/f3c73f1ee9ab2f8466e855fe3d49503e16014658))
+* add github token to workflow ([dc3c2dc](https://github.com/kublade/kublade/commit/dc3c2dc73fb68dc059fb46d4c18dc38a2f58f48a))
+* add github token to workflow ([782fdb3](https://github.com/kublade/kublade/commit/782fdb36cc0377181018074de18de1049ac45283))
+* add github token to workflow ([6512d4c](https://github.com/kublade/kublade/commit/6512d4cbc72e2b9d81b9ae294aeff037d54ebae3))
+* add github token to workflow ([c2aa67f](https://github.com/kublade/kublade/commit/c2aa67f01af761ff70c1b5096d69f42ebb249324))
+* add github token to workflow ([4e1d6c8](https://github.com/kublade/kublade/commit/4e1d6c8e036be0310beaf949cba9eba876caa8ee))
+* add github token to workflow ([b15bc71](https://github.com/kublade/kublade/commit/b15bc7183b955a189cd06055afad3b836254db23))
+* add github token to workflow ([2844e8c](https://github.com/kublade/kublade/commit/2844e8c78a78342db69993158afcdd4613c3a483))
+* install npm dependencies ([580ed91](https://github.com/kublade/kublade/commit/580ed91182ad2a0d6c1a1e195042f94e413772f5))
+* release pull ([f30e3be](https://github.com/kublade/kublade/commit/f30e3becdd171481bf709ebb3199f8d54bb49611))
+
 ## [1.28.2](https://github.com/kublade/kublade/compare/v1.28.1...v1.28.2) (2025-05-22)
 
 
