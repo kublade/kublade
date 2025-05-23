@@ -338,8 +338,7 @@ class ProjectController extends Controller
             $project = Project::where('id', $project_id)
                 ->first()
         ) {
-            //$project->delete();
-            var_dump('C');
+            $project->delete();
 
             return Response::generate(200, 'success', 'Project deleted successfully', [
                 'project' => $project->toArray(),
