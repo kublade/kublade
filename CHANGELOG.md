@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.30.0](https://github.com/kublade/kublade/compare/v1.29.1...v1.30.0) (2025-05-23)
+
+
+### Features
+
+* api response error serialization ([c0ac558](https://github.com/kublade/kublade/commit/c0ac5581c03467cb0e78d58fb0fd9a0d68f271c8))
+
+
+### Bug Fixes
+
+* add missing pagination parameter to documentation ([744a0cd](https://github.com/kublade/kublade/commit/744a0cde03fc9cc88ddbd7e683176c31a313e8e4))
+* add missing request bodies to documentation ([8100a06](https://github.com/kublade/kublade/commit/8100a06f632e1c80f43a3c3ac451dd294f237664))
+* add missing response bodies to documentation ([d7ad916](https://github.com/kublade/kublade/commit/d7ad916f14b2ee9c640a4da708460d11f5405cfc))
+* duplicate calls when using api guards ([ffe6bc3](https://github.com/kublade/kublade/commit/ffe6bc34d262d0891ffe9e940bdb5c1a6dd38d59))
+
 ## [1.29.1](https://github.com/kublade/kublade/compare/v1.29.0...v1.29.1) (2025-05-23)
 
 
