@@ -1,4 +1,4 @@
-# Project Dependencies with Licenses
+# Dependencies
 
 ## PHP (Composer) Dependencies
 
