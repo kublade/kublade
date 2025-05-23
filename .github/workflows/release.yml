@@ -48,6 +48,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com/${{ github.repository }}.git
           git add DEPENDENCIES.md
           git commit -m "chore(release): auto-generate dependencies" || echo "No changes to commit"
           git push
