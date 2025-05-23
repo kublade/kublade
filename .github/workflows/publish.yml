@@ -41,6 +41,9 @@ jobs:
           mkdir -p docs
           cp storage/api-docs/api-docs.json docs/api-docs-${{ github.ref_name }}.json
           cp storage/api-docs/api-docs.json docs/api-docs-latest.json
+          cp DEPENDENCIES.md docs/DEPENDENCIES-${{ github.ref_name }}.md
+          cp DEPENDENCIES.md docs/DEPENDENCIES-latest.md
+          cp CHANGELOG.md docs/CHANGELOG.md
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
