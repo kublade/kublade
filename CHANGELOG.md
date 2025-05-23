@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.29.1](https://github.com/kublade/kublade/compare/v1.29.0...v1.29.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* dependencies md headline ([16ceb70](https://github.com/kublade/kublade/commit/16ceb7000e4031ae5c3d1309728a5602a2ada6cd))
+
 ## [1.29.0](https://github.com/kublade/kublade/compare/v1.28.2...v1.29.0) (2025-05-23)
 
 
