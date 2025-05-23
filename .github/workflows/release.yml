@@ -6,11 +6,44 @@ on:
       - main
     paths-ignore:
       - 'CHANGELOG.md'
+      - 'DEPENDENCIES.md'
 
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Node.js 20.9.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.9.0'
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          extensions: curl, fileinfo, imagick, imap, json, pdo
+      - name: Install PHP dependencies
+        run: composer install
+      - name: Generate dependencies
+        run: |
+          chmod +x dependencies.sh
+          ./dependencies.sh
+      - name: Auto-commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(release): auto-generate dependencies"
+          branch: main
+          file_pattern: DEPENDENCIES.md
   release:
     name: Release
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: write
     steps:
