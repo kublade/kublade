@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.30.2](https://github.com/kublade/kublade/compare/v1.30.1...v1.30.2) (2025-05-23)
+
+
+### Bug Fixes
+
+* detailed response object documentation ([85fefc2](https://github.com/kublade/kublade/commit/85fefc254bce4aafc3fec5923565f9b4b958c085))
+
 ## [1.30.1](https://github.com/kublade/kublade/compare/v1.30.0...v1.30.1) (2025-05-23)
 
 
