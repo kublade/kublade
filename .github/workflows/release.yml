@@ -20,6 +20,12 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Generate a token
+        id: generate-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.SEMANTIC_RELEASE_APP_ID }}
+          private_key: ${{ secrets.SEMANTIC_RELEASE_KEY_PEM }}
       - name: Set up Node.js 20.9.0
         uses: actions/setup-node@v3
         with:
@@ -39,15 +45,13 @@ jobs:
           chmod +x dependencies.sh
           ./dependencies.sh
       - name: Commit changes
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -a -m "chore(release): auto-generate dependencies"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          commit_message: "chore(release): auto-generate dependencies"
+          branch: main
+          file_pattern: DEPENDENCIES.md
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
   release:
     name: Release
     runs-on: ubuntu-latest
