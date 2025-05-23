@@ -66,6 +66,8 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Pull latest remote changes
+        run: git pull origin main
       - name: Generate a token
         id: generate-token
         uses: tibdex/github-app-token@v2
