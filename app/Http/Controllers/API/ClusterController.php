@@ -38,14 +38,6 @@ use Illuminate\Support\Facades\Validator;
 class ClusterController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List clusters.
      *
      * @OA\Get(

@@ -34,14 +34,6 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the roles.
      *
      * @OA\Get(

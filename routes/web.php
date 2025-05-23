@@ -12,6 +12,7 @@ Route::get('/', function () {
 Auth::routes(['register' => false]);
 
 Route::middleware([
+    'auth',
     IdentifyProject::class,
 ])->group(function () {
     Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'page_index'])->name('project.index')->middleware('ui.permission.guard:projects.view');

@@ -88,14 +88,6 @@ use Illuminate\Support\Facades\Validator;
 class TemplateController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('api.guard');
-    }
-
-    /**
      * List the templates.
      *
      * @OA\Get(
