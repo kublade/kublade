@@ -36,17 +36,19 @@ class PermissionGuard
 
         if (
             !$user ||
-            $permissionSet->every(function (string $permission) {
+            $permissionSet->every(function (string $permission) use ($user) {
                 return !$user->can($permission);
             })
         ) {
             return Response::generate(401, 'error', 'Unauthorized');
         }
 
-        if ($next($request) instanceof JsonResponse) {
-            return $next($request);
+        $response = $next($request);
+
+        if ($response instanceof JsonResponse) {
+            return $response;
         }
 
-        return Response::generate(401, 'error', 'Server Error');
+        return Response::generate(500, 'error', 'Server Error');
     }
 }

@@ -336,10 +336,10 @@ class ProjectController extends Controller
 
         if (
             $project = Project::where('id', $project_id)
-                ->where('user_id', '=', Auth::id())
                 ->first()
         ) {
-            $project->delete();
+            //$project->delete();
+            var_dump('C');
 
             return Response::generate(200, 'success', 'Project deleted successfully', [
                 'project' => $project->toArray(),
