@@ -52,8 +52,7 @@ jobs:
           commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
           branch: main
           file_pattern: DEPENDENCIES.md
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          push_options: '--repo=https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com/${{ github.repository }}'
   release:
     name: Release
     runs-on: ubuntu-latest
