@@ -48,6 +48,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(release): auto-generate dependencies"
+          commit_user_name: "semantic-release-bot"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
           branch: main
           file_pattern: DEPENDENCIES.md
         env:
