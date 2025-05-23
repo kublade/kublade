@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.28.2](https://github.com/kublade/kublade/compare/v1.28.1...v1.28.2) (2025-05-22)
+
+
+### Bug Fixes
+
+* documentation repository remote deployment ([5a9e70c](https://github.com/kublade/kublade/commit/5a9e70c44da4cfed8c989cee1b49d63938d7e49b))
+
+## [1.28.1](https://github.com/kublade/kublade/compare/v1.28.0...v1.28.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* api response status field ([42590ab](https://github.com/kublade/kublade/commit/42590ab98aeef5996f422ef6d9955ac69117e017))
+
+## [1.28.0](https://github.com/kublade/kublade/compare/v1.27.2...v1.28.0) (2025-05-22)
+
+
+### Features
+
+* api documentation ([71eb87f](https://github.com/kublade/kublade/commit/71eb87fea496aca9178b0f5afe8fa2a5854a50d5))
+
 ## [1.27.2](https://github.com/kublade/kublade/compare/v1.27.1...v1.27.2) (2025-05-20)
 
 
