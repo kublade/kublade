@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.31.0](https://github.com/kublade/kublade/compare/v1.30.2...v1.31.0) (2025-05-24)
+
+
+### Features
+
+* improved autocompletion ([1cf5b76](https://github.com/kublade/kublade/commit/1cf5b7637a3a263cce7816e09072e6ddf0a3d503))
+
 ## [1.30.2](https://github.com/kublade/kublade/compare/v1.30.1...v1.30.2) (2025-05-23)
 
 
