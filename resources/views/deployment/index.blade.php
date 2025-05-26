@@ -349,17 +349,21 @@
                                                                     <td class="w-100">{!! str_replace("\n", '<br>', $commit->message) !!}</td>
                                                                     <td class="text-nowrap">{{ $commit->created_at->format('Y-m-d H:i:s') }}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="bg-light border-start border-end" colspan="4">
-                                                                        <a href="#" class="d-inline-block" data-bs-toggle="collapse" data-bs-target="#commit{{ $commit->id }}">
-                                                                            {{ __('Show diff') }}
+                                                                <tr class="border-bottom-0">
+                                                                    <td colspan="4">
+                                                                        <a href="#" class="d-flex align-items-center gap-2 justify-content-between text-decoration-none small collapsed" data-bs-toggle="collapse" data-bs-target="#commit{{ $commit->id }}">
+                                                                            <div class="d-flex align-items-center gap-2">
+                                                                                <i class="bi bi-file-earmark-diff"></i>
+                                                                                {{ __('Show diff') }}
+                                                                            </div>
+                                                                            <i class="bi bi-chevron-right"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="p-0 border-start border-end" colspan="4">
+                                                                    <td class="p-0" colspan="4">
                                                                         <div class="collapse" id="commit{{ $commit->id }}">
-                                                                            <div class="p-3">
+                                                                            <div class="p-3 border-top">
                                                                                 @if ($commit->diff->count() > 0)
                                                                                     @foreach ($commit->diff as $diff)
                                                                                         <span class="small mb-2 fw-bold d-block">{{ $diff['label'] }}</span>

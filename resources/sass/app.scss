@@ -203,11 +203,28 @@ body {
 }
 
 .table {
-    tr {
-        border-bottom: 1px solid var(--bs-table-border-color);
+    th, td {
+        padding: 0.75rem 1rem;
+    }
 
-        td {
-            border-bottom: 0;
+    thead, tfoot {
+        tr {
+            border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+
+            th {
+                --bs-bg-opacity: 1;
+                background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid var(--bs-table-border-color);
+
+            td {
+                border-bottom: 0;
+            }
         }
     }
 }
@@ -264,4 +281,24 @@ body {
             }
         }
     }
+}
+
+[data-bs-toggle="collapse"] {
+    i.bi-chevron-right {
+        transition-duration: 0.3s;
+    }
+
+    &:not(.collapsed) {
+        i.bi-chevron-right {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.badge {
+    font-family: var(--bs-font-monospace);
+    font-size: 0.75rem;
+    font-weight: normal;
+    padding: 0.5rem 0.75rem;
+    text-transform: uppercase;
 }
