@@ -5,16 +5,16 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card border border-secondary">
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="d-flex flex-column align-items-start justify-content-start gap-3 bg-banner h-100 p-5 text-white">
-                                <h5 class="h1 mb-2 font-monospace">{{ __('Confirm Password') }}</h5>
+                                <h5 class="h1 mb-0 font-monospace">{{ __('Confirm Password') }}</h5>
                                 <p class="mb-0">{{ __('Please confirm your password before continuing.') }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <form method="POST" action="{{ route('password.confirm') }}">
+                            <form class="p-5" method="POST" action="{{ route('password.confirm') }}">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -33,7 +33,7 @@
 
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-secondary text-white">
                                             {{ __('Confirm Password') }}
                                         </button>
 

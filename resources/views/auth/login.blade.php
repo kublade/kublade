@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="d-flex flex-column align-items-start justify-content-start gap-3 bg-banner h-100 p-5 text-white">
-                                <h5 class="h1 mb-2 font-monospace">{{ __('Login') }}</h5>
+                                <h5 class="h1 mb-0 font-monospace">{{ __('Login') }}</h5>
                                 <p class="mb-0">{{ __('Welcome back! Please enter your details.') }}</p>
                             </div>
                         </div>
@@ -47,10 +47,10 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6 offset-md-4">
-                                        <div class="form-check">
+                                        <div class="form-check mb-0 d-flex align-items-center gap-2">
                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                            <label class="form-check-label" for="remember">
+                                            <label class="form-check-label lh-1" for="remember">
                                                 {{ __('Remember Me') }}
                                             </label>
                                         </div>
@@ -58,13 +58,13 @@
                                 </div>
 
                                 <div class="row mb-0">
-                                    <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                    <div class="col-md-8 offset-md-4 d-flex align-items-center gap-3">
+                                        <button type="submit" class="btn btn-secondary text-white">
                                             {{ __('Login') }}
                                         </button>
 
                                         @if (Route::has('password.request'))
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                            <a class="btn btn-link p-0" href="{{ route('password.request') }}">
                                                 {{ __('Forgot Your Password?') }}
                                             </a>
                                         @endif
