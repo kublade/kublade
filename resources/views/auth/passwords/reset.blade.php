@@ -8,10 +8,9 @@
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="d-flex flex-column align-items-start justify-content-start gap-3 bg-banner h-100 p-5 text-white">
-                                <h5 class="h1 mb-0 font-monospace">{{ __('Reset Password') }}</h5>
-                                <p class="mb-0">{{ __('Enter your new password below.') }}</p>
-                            </div>
+                            <a href="{{ url('/') }}" class="d-flex flex-column align-items-center justify-content-center gap-3 bg-secondary h-100 p-5 text-white navbar-brand">
+                                <img src="/logo.svg" class="logo">
+                            </a>
                         </div>
                         <div class="col-md-6">
                             <form class="p-5" method="POST" action="{{ route('password.update') }}">

@@ -401,3 +401,13 @@ body {
         }
     }
 }
+
+.content-vertical-center {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    &.overflowing {
+        align-items: flex-start;
+    }
+}
