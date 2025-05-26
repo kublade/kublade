@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.32.0](https://github.com/kublade/kublade/compare/v1.31.0...v1.32.0) (2025-05-26)
+
+
+### Features
+
+* style re-write ([272e280](https://github.com/kublade/kublade/commit/272e280719dde6f09715060f487119f6dbf8a443))
+
 ## [1.31.0](https://github.com/kublade/kublade/compare/v1.30.2...v1.31.0) (2025-05-24)
 
 
