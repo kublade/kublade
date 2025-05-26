@@ -155,16 +155,20 @@
                                     </td>
                                 </tr>
                                 @if ($cluster->statistics)
-                                    <tr>
-                                        <td class="bg-light border-start border-end" colspan="4">
-                                            <a href="#" class="d-inline-block" data-bs-toggle="collapse" data-bs-target="#clusterStatistics{{ $cluster->id }}">
-                                                {{ __('Show nodes') }}
+                                    <tr class="border-bottom-0">
+                                        <td colspan="4">
+                                            <a href="#" class="d-flex align-items-center gap-2 justify-content-between text-decoration-none small collapsed" data-bs-toggle="collapse" data-bs-target="#clusterStatistics{{ $cluster->id }}">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="bi bi-hdd-stack"></i>
+                                                    {{ __('Show nodes') }}
+                                                </div>
+                                                <i class="bi bi-chevron-right"></i>
                                             </a>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="p-0 border-start border-end" colspan="4">
-                                            <div class="collapse" id="clusterStatistics{{ $cluster->id }}">
+                                        <td class="p-0" colspan="4">
+                                            <div class="collapse border-top" id="clusterStatistics{{ $cluster->id }}">
                                                 <table class="table mt-0 mb-0">
                                                     <thead>
                                                         <tr class="align-middle">
