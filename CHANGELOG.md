@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.32.1](https://github.com/kublade/kublade/compare/v1.32.0...v1.32.1) (2025-05-26)
+
+
+### Bug Fixes
+
+* login action button variant ([27759e1](https://github.com/kublade/kublade/commit/27759e114f8fe1dab261c7cff2920fc1563dd2d9))
+
 ## [1.32.0](https://github.com/kublade/kublade/compare/v1.31.0...v1.32.0) (2025-05-26)
 
 
