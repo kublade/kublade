@@ -8,7 +8,7 @@
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="{{ url('/') }}" class="d-flex flex-column align-items-center justify-content-center gap-3 bg-secondary h-100 p-5 text-white navbar-brand">
+                            <a href="{{ url('/') }}" class="d-flex flex-column align-items-center justify-content-center gap-3 bg-banner h-100 p-5 text-white navbar-brand">
                                 <img src="/logo.svg" class="logo">
                             </a>
                         </div>

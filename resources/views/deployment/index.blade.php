@@ -27,9 +27,9 @@
                     @if (!empty($deployment))
                         <div class="row">
                             <div class="col-md">
-                                <div class="border border-secondary rounded overflow-hidden">
-                                    <h5 class="bg-secondary ps-3 pe-2 py-2 mb-0 border-bottom border-secondary d-flex justify-content-between align-items-center gap-3">
-                                        <span class="fs-6 py-2 text-white">{{ __('Status') }}</span>
+                                <div class="border rounded overflow-hidden">
+                                    <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                        <span class="fs-6 py-2">{{ __('Status') }}</span>
                                     </h5>
                                     <p class="fs-3 mb-0 p-3 lh-1">{!! $deployment->simpleStatus !!}</p>
                                 </div>

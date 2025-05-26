@@ -7,7 +7,7 @@
 
 // Step 1: Define your base Sass variables
 $primary:    #000000;
-$secondary:  #ff2b1c;
+$secondary:  #C62B1C;
 $success:    #28a745;
 $info:       #17a2b8;
 $warning:    #ffc107;
@@ -370,10 +370,10 @@ body {
 
 .bg-banner {
     background: var(--bs-secondary);
-    background: url('../images/pattern.svg'), var(--bs-secondary);
+    background: url('../images/forest.png'), var(--bs-secondary);
     background-position: center;
     background-repeat: repeat;
-    background-blend-mode: color-burn;
+    background-blend-mode: darken;
 }
 
 .navbar-collapse {
