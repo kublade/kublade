@@ -27,9 +27,9 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-body shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-secondary shadow-sm">
             <div class="container">
-                <a class="navbar-brand py-3 px-4 me-0 bg-secondary" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">
+                <a class="navbar-brand py-3 me-0 bg-transparent" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">
                     <img src="/logo.svg" class="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -48,6 +48,7 @@
                                         @else
                                             {{ __('No project selected') }}
                                         @endif
+                                        <i class="bi bi-chevron-down"></i>
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-start" aria-labelledby="projectDropdown">
@@ -112,6 +113,7 @@
                                 <li class="nav-item dropdown">
                                     <a id="usersDropdown" class="nav-link dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ __('Users') }}
+                                        <i class="bi bi-chevron-down"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="usersDropdown">
                                         @can('users.view')
@@ -137,6 +139,7 @@
                             <li class="nav-item dropdown ms-4">
                                 <a id="userDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
+                                    <i class="bi bi-chevron-down"></i>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

@@ -14,7 +14,7 @@
     <div class="row justify-content-center">
         @if (!empty($template))
             <div class="col-md-4">
-                <div class="card mb-3">
+                <div class="card mb-3 border border-secondary">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Files') }}
                     </div>
@@ -22,7 +22,7 @@
                         @include('template.file-tree', ['template' => $template])
                     </div>
                 </div>
-                <div class="card mb-3">
+                <div class="card mb-3 border border-secondary">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>{{ __('Fields') }}</span>
                         <a href="{{ route('template.field.add', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary">
@@ -33,7 +33,7 @@
                         @include('template.field-tree', ['template' => $template])
                     </div>
                 </div>
-                <div class="card">
+                <div class="card border border-secondary">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>{{ __('Ports') }}</span>
                         <a href="{{ route('template.port.add', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary">
@@ -47,7 +47,7 @@
             </div>
         @endif
         <div class="{{ !empty($template) ? 'col-md-8' : 'col-md-12' }}">
-            <div class="card">
+            <div class="card border border-secondary">
                 @if (!empty($template))
                     @if (!empty($file))
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="card-body{{ !empty($file) ? ' p-0 overflow-hidden rounded' : '' }}">
+                <div class="card-body{{ !empty($file) ? ' p-0 pt-3 overflow-hidden rounded' : '' }}{{ empty($template) ? ' p-0' : '' }}">
                     @if (!empty($template))
                         @if (!empty($file))
                             <form action="{{ route('template.file.update.action', ['template_id' => $template->id, 'file_id' => $file->id]) }}" method="POST">
@@ -85,7 +85,7 @@
                         @endif
                     @else
                         <table class="table">
-                            <thead>
+                            <thead class="font-monospace">
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Template') }}</th>
                                     <th scope="col">{{ __('Actions') }}</th>

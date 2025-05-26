@@ -14,7 +14,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             @if (empty(request()->get('project')))
-                <div class="card mb-3">
+                <div class="card mb-3 border border-secondary">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        {{ __('Infrastructure') }}
+                    </div>
                     <div class="card-body">
                         <div class="border rounded overflow-hidden">
                             <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
@@ -92,15 +95,19 @@
                     </div>
                 </div>
             @endif
-            <div class="card">
+            <div class="card border border-secondary">
                 @if (empty(request()->get('project')))
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Projects') }}
                         <a href="{{ route('project.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
                     </div>
+                @else
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        {{ __('Project') }}
+                    </div>
                 @endif
 
-                <div class="card-body">
+                <div class="card-body{{ empty(request()->get('project')) ? ' p-0' : '' }}">
                     @if (!empty(request()->get('project')))
                         <div class="row row-gap-3">
                             <div class="col-md-6">
@@ -235,7 +242,7 @@
                         </div>
                     @else
                         <table class="table">
-                            <thead>
+                            <thead class="font-monospace">
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Project') }}</th>
                                     <th>{{ __('Statistics') }}</th>

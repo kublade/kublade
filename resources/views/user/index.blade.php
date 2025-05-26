@@ -4,14 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border border-secondary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Users') }}
                     <a href="{{ route('user.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <table class="table">
-                        <thead>
+                        <thead class="font-monospace">
                             <tr>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Email') }}</th>
