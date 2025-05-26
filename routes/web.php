@@ -9,7 +9,10 @@ Route::get('/', function () {
     return redirect('/projects');
 })->name('home');
 
-Auth::routes(['register' => false]);
+Auth::routes([
+    'register' => false,
+    'verify'   => false,
+]);
 
 Route::middleware([
     'auth',

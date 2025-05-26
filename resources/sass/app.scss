@@ -213,6 +213,7 @@ body {
 }
 
 .form-check-input {
+    margin-top: 0;
     width: 1.125rem;
     height: 1.125rem;
 }
@@ -398,5 +399,15 @@ body {
         .nav-item, .nav-link, .dropdown-toggle {
             margin: 0 !important;
         }
+    }
+}
+
+.content-vertical-center {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    &.overflowing {
+        align-items: flex-start;
     }
 }
