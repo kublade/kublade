@@ -26,14 +26,14 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-    <div id="app">
+    <div class="d-flex flex-column h-100 w-100 position-fixed top-0 left-0" id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-secondary shadow-sm">
             <div class="container">
                 <a class="navbar-brand py-3 me-0 bg-transparent" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">
                     <img src="/logo.svg" class="logo">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <i class="bi bi-list fs-2 text-white"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -160,7 +160,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 flex-grow-1 overflow-auto position-relative">
             @yield('content')
         </main>
     </div>

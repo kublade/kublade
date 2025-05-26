@@ -363,6 +363,8 @@ body {
 
 .dropdown-menu {
     --bs-dropdown-link-active-bg: var(--bs-secondary);
+
+    border-color: var(--bs-secondary);
 }
 
 .bg-banner {
@@ -371,4 +373,30 @@ body {
     background-position: center;
     background-repeat: repeat;
     background-blend-mode: color-burn;
+}
+
+.navbar-collapse {
+    @media (max-width: 767px) {
+        background-color: var(--bs-secondary);
+        z-index: 1000;
+        margin-left: calc(var(--bs-gutter-x) * 0.5 * -1);
+        margin-right: calc(var(--bs-gutter-x) * 0.5 * -1);
+        max-height: calc(100vh - 5rem);
+        
+        &.show {
+            overflow-y: auto;
+        }
+        
+        > .navbar-nav {
+            padding: 1rem;
+
+            &:first-child {
+                padding-bottom: 0;
+            }
+        }
+
+        .nav-item, .nav-link, .dropdown-toggle {
+            margin: 0 !important;
+        }
+    }
 }
