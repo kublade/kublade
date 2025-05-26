@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.0](https://github.com/kublade/kublade/compare/v1.32.1...v1.33.0) (2025-05-26)
+
+
+### Features
+
+* login background image ([fe27d55](https://github.com/kublade/kublade/commit/fe27d55f602d4918b5d3de2b5a4054c8c73d1665))
+
+
+### Bug Fixes
+
+* swap favicon ([ad97ee1](https://github.com/kublade/kublade/commit/ad97ee100f6596d89c156bacf8118658ba3fef5a))
+
 ## [1.32.1](https://github.com/kublade/kublade/compare/v1.32.0...v1.32.1) (2025-05-26)
 
 
