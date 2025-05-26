@@ -11,7 +11,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border border-secondary">
                 <div class="card-header">{{ __('Update role') }}</div>
 
                 <div class="card-body">

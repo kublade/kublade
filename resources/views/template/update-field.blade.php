@@ -11,7 +11,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card mb-3">
+            <div class="card border border-secondary mb-3">
                 <div class="card-header">{{ __('Update field') }}</div>
 
                 <div class="card-body">
@@ -224,15 +224,15 @@
                 </div>
             </div>
             @if ($field->type === 'input_radio' || $field->type === 'input_radio_image' || $field->type === 'select')
-            <div class="card">
+            <div class="card border border-secondary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Options') }}</span>
                     <a href="{{ route('template.field.option.add', ['template_id' => $template->id, 'field_id' => $field->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <table class="table">
-                        <thead>
+                        <thead class="font-monospace">
                             <tr class="align-middle">
                                 <th class="w-100" scope="col">{{ __('Label') }}</th>
                                 <th scope="col">{{ __('Value') }}</th>

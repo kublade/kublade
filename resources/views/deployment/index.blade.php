@@ -11,15 +11,19 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card border border-secondary">
                 @if (!empty(request()->get('project')) && empty($deployment))
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Deployments') }}
                         <a href="{{ route('deployment.add', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
                     </div>
+                @else
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        {{ __('Deployment') }}
+                    </div>
                 @endif
 
-                <div class="card-body d-flex flex-column gap-4">
+                <div class="card-body d-flex flex-column gap-4{{ empty($deployment) ? ' p-0' : '' }}">
                     @if (!empty($deployment))
                         <div class="row">
                             <div class="col-md">
@@ -330,12 +334,12 @@
                                                 <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                     <span class="fs-6 py-2">{{ __('Versions') }}</span>
                                                 </h5>
-                                                <div class="p-3">
+                                                <div>
                                                     @php	
                                                         $commits = $deployment->commits()->paginate(10);
                                                     @endphp
                                                     <table class="table">
-                                                        <thead>
+                                                        <thead class="font-monospace">
                                                             <tr>
                                                                 <th>{{ __('Hash') }}</th>
                                                                 <th class="w-100">{{ __('Message') }}</th>
@@ -422,7 +426,7 @@
                         </div>
                     @else
                         <table class="table">
-                            <thead>
+                            <thead class="font-monospace">
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Deployment') }}</th>
                                     <th scope="col">{{ __('Template') }}</th>

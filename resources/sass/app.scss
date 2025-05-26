@@ -56,8 +56,23 @@ body {
 }
 
 .navbar {
+    --bs-navbar-hover-color: var(--bs-white);
+    --bs-navbar-active-color: var(--bs-white);
+
     height: 5rem;
     padding: 0;
+
+    .navbar-nav {
+        --bs-nav-link-color: var(--bs-white);
+        --bs-nav-link-hover-color: var(--bs-white);
+        --bs-nav-link-active-color: var(--bs-white);
+
+        .btn {
+            color: var(--bs-secondary) !important;
+            background-color: var(--bs-white);
+            border-color: var(--bs-secondary);
+        }
+    }
 
     &-brand {
         align-items: center;
@@ -203,6 +218,8 @@ body {
 }
 
 .table {
+    margin-bottom: 0;
+
     th, td {
         padding: 0.75rem 1rem;
     }
@@ -232,11 +249,29 @@ body {
 .card {
     border: 0;
     box-shadow: var(--bs-box-shadow-sm);
+    overflow: hidden;
 
     &-header {
         background-color: var(--bs-body);
         color: var(--bs-body);
         border-bottom: 1px solid transparent;
+    }
+
+    &.border-secondary {
+        .card-header, .card-footer {
+            background-color: var(--bs-secondary);
+            color: var(--bs-white);
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            justify-content: space-between;
+
+            .btn {
+                color: var(--bs-secondary);
+                background-color: var(--bs-white);
+                border-color: var(--bs-secondary);
+            }
+        }
     }
 }
 
@@ -301,4 +336,39 @@ body {
     font-weight: normal;
     padding: 0.5rem 0.75rem;
     text-transform: uppercase;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::after {
+        display: none;
+    }
+
+    i.bi-chevron-down {
+        font-size: 0.875em;
+        transition-duration: 0.3s;
+        margin-top: 1px;
+    }
+
+    &[aria-expanded="true"] {
+        i.bi-chevron-down {
+            transform: scaleY(-1);
+            margin-top: 0;
+        }
+    }
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: var(--bs-secondary);
+}
+
+.bg-banner {
+    background: var(--bs-secondary);
+    background: url('../images/pattern.svg'), var(--bs-secondary);
+    background-position: center;
+    background-repeat: repeat;
+    background-blend-mode: color-burn;
 }
