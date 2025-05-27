@@ -22,7 +22,7 @@
                         @include('template.file-tree', ['template' => $template])
                     </div>
                 </div>
-                <div class="card mb-3 border border-secondary">
+                <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>{{ __('Fields') }}</span>
                         <a href="{{ route('template.field.add', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary">
