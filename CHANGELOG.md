@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.1](https://github.com/kublade/kublade/compare/v1.33.0...v1.33.1) (2025-05-27)
+
+
+### Bug Fixes
+
+* corporate design adherence ([2a82f32](https://github.com/kublade/kublade/commit/2a82f32914d2d5877432d80abf89848c5f291f27))
+
 ## [1.33.0](https://github.com/kublade/kublade/compare/v1.32.1...v1.33.0) (2025-05-26)
 
 
