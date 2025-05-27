@@ -7,7 +7,7 @@
 
 // Step 1: Define your base Sass variables
 $primary:    #000000;
-$secondary:  #C62B1C;
+$secondary:  #712cf9;
 $success:    #28a745;
 $info:       #17a2b8;
 $warning:    #ffc107;
@@ -51,8 +51,26 @@ html {
     }
 }
 
-body {
-    background-color: var(--bs-body-accent);
+main {
+    position: relative;
+
+    &::before {
+        --bs-body-bg-rgb: 255, 255, 255;
+        --bs-primary-rgb: 13, 110, 253;
+        --bd-accent-rgb: 255, 228, 132;
+        --bd-violet-rgb: 113, 44, 249;
+        --bd-pink-rgb: 214, 51, 132;
+    
+        background-image: linear-gradient(180deg, rgba(var(--bs-body-bg-rgb), .01), rgba(var(--bs-body-bg-rgb), 1) 85%), radial-gradient(ellipse at top left, rgba(var(--bs-primary-rgb), .5), transparent 50%), radial-gradient(ellipse at top right, rgba(var(--bd-accent-rgb), .5), transparent 50%), radial-gradient(ellipse at center right, rgba(var(--bd-violet-rgb), .5), transparent 50%), radial-gradient(ellipse at center left, rgba(var(--bd-pink-rgb), .5), transparent 50%);
+        opacity: 0.25;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
 }
 
 .navbar {
@@ -68,9 +86,9 @@ body {
         --bs-nav-link-active-color: var(--bs-white);
 
         .btn {
-            color: var(--bs-secondary) !important;
-            background-color: var(--bs-white);
-            border-color: var(--bs-secondary);
+            color: var(--bs-btn-hover-color) !important;
+            background-color: var(--bs-btn-hover-bg);
+            border-color: var(--bs-btn-hover-border-color);
         }
     }
 
@@ -364,16 +382,15 @@ body {
 
 .dropdown-menu {
     --bs-dropdown-link-active-bg: var(--bs-secondary);
-
-    border-color: var(--bs-secondary);
 }
 
 .bg-banner {
     background: var(--bs-secondary);
-    background: url('../images/forest.png'), var(--bs-secondary);
+    background: url('../images/containers.jpg'), var(--bs-secondary);
     background-position: center;
     background-repeat: repeat;
-    background-blend-mode: darken;
+    background-blend-mode: soft-light;
+    background-size: cover;
 }
 
 .navbar-collapse {

@@ -141,7 +141,7 @@
                                     </li>
                                 @endcan
                                 <li class="nav-item dropdown ms-4">
-                                    <a id="userDropdown" class="btn btn-primary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="userDropdown" class="btn btn-secondary text-white dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }}
                                         <i class="bi bi-chevron-down"></i>
                                     </a>
