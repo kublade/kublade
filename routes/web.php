@@ -14,6 +14,9 @@ Auth::routes([
     'verify'   => false,
 ]);
 
+Route::get('/auth/social/{provider}/redirect', [App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])->name('auth.social.redirect');
+Route::get('/auth/social/{provider}/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'handleCallback'])->name('auth.social.callback');
+
 Route::middleware([
     'auth',
     IdentifyProject::class,

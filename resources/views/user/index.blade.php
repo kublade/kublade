@@ -27,7 +27,7 @@
                                     <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
                                     <td>
                                         <a href="{{ route('user.update', $user->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                        <a href="{{ route('user.delete.action', $user->id) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a> 
+                                        <a href="{{ route('user.delete.action', $user->id) }}" class="btn btn-sm btn-danger{{ Auth::id() === $user->id ? ' disabled' : '' }}"><i class="bi bi-trash"></i></a> 
                                     </td>
                                 </tr>
                             @endforeach

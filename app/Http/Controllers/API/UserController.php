@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 /**
  * Class UserController.
@@ -160,7 +161,8 @@ class UserController extends Controller
      *
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="email", type="string"),
-     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="password", type="string", nullable=true),
+     *             @OA\Property(property="password_confirmation", type="string", nullable=true),
      *             @OA\Property(property="roles", type="array", @OA\Items(type="string"), nullable=true),
      *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
      *         )
@@ -195,7 +197,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'        => ['required', 'string', 'max:255'],
             'email'       => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password'    => ['required', 'string', 'min:8', 'confirmed'],
+            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
             'roles'       => ['nullable', 'array'],
             'permissions' => ['nullable', 'array'],
         ]);
@@ -208,7 +210,7 @@ class UserController extends Controller
             $user = User::create([
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($request->password ?? Str::random(16)),
             ])
         ) {
             $user->syncRoles($request->roles ?? []);
@@ -240,7 +242,8 @@ class UserController extends Controller
      *
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="email", type="string"),
-     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="password", type="string", nullable=true),
+     *             @OA\Property(property="password_confirmation", type="string", nullable=true),
      *             @OA\Property(property="roles", type="array", @OA\Items(type="string"), nullable=true),
      *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), nullable=true),
      *         )
@@ -351,7 +354,7 @@ class UserController extends Controller
 
         if (
             $user = User::where('id', $user_id)
-                ->where('user_id', '!=', Auth::id())
+                ->where('id', '!=', Auth::id())
                 ->first()
         ) {
             $user->delete();
