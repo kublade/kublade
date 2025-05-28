@@ -18,6 +18,7 @@
 | evenement/evenement@v3.0.2 | MIT |
 | fakerphp/faker@v1.24.1 | MIT |
 | filp/whoops@2.18.0 | MIT |
+| firebase/php-jwt@v6.11.1 | BSD-3-Clause |
 | fruitcake/php-cors@v1.3.0 | MIT |
 | graham-campbell/result-type@v1.1.3 | MIT |
 | guzzlehttp/guzzle@7.9.3 | MIT |
@@ -32,6 +33,7 @@
 | laravel/prompts@v0.3.5 | MIT |
 | laravel/sail@v1.42.0 | MIT |
 | laravel/serializable-closure@v2.0.4 | MIT |
+| laravel/socialite@v5.21.0 | MIT |
 | laravel/tinker@v2.10.1 | MIT |
 | laravel/ui@v4.6.1 | MIT |
 | lcobucci/clock@3.3.1 | MIT |
@@ -41,6 +43,7 @@
 | league/flysystem@3.29.1 | MIT |
 | league/flysystem-local@3.29.0 | MIT |
 | league/mime-type-detection@1.16.0 | MIT |
+| league/oauth1-client@v1.11.0 | MIT |
 | league/uri@7.5.1 | MIT |
 | league/uri-interfaces@7.5.0 | MIT |
 | mockery/mockery@1.6.12 | BSD-3-Clause |
@@ -52,9 +55,12 @@
 | nikic/php-parser@v5.4.0 | BSD-3-Clause |
 | nunomaduro/collision@v8.8.0 | MIT |
 | nunomaduro/termwind@v2.3.0 | MIT |
+| paragonie/constant_time_encoding@v3.0.0 | MIT |
+| paragonie/random_compat@v9.99.100 | MIT |
 | phar-io/manifest@2.0.4 | BSD-3-Clause |
 | phar-io/version@3.2.1 | BSD-3-Clause |
 | phpoption/phpoption@1.9.3 | Apache-2.0 |
+| phpseclib/phpseclib@3.0.43 | MIT |
 | phpstan/phpstan@2.1.14 | MIT |
 | phpunit/php-code-coverage@11.0.9 | BSD-3-Clause |
 | phpunit/php-file-iterator@5.1.0 | BSD-3-Clause |
@@ -99,6 +105,8 @@
 | sebastian/recursion-context@6.0.2 | BSD-3-Clause |
 | sebastian/type@5.1.2 | BSD-3-Clause |
 | sebastian/version@5.0.2 | BSD-3-Clause |
+| socialiteproviders/manager@v4.8.1 | MIT |
+| socialiteproviders/microsoft-azure@5.2.0 | MIT |
 | spatie/laravel-permission@6.17.0 | MIT |
 | staabm/side-effects-detector@1.0.5 | MIT |
 | swagger-api/swagger-ui@v5.21.0 | Apache-2.0 |
