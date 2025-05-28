@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.0](https://github.com/kublade/kublade/compare/v1.33.1...v1.34.0) (2025-05-28)
+
+
+### Features
+
+* social provider login ([b92b38d](https://github.com/kublade/kublade/commit/b92b38d6beb022af4ad8d287735eab7e135aeee8))
+
 ## [1.33.1](https://github.com/kublade/kublade/compare/v1.33.0...v1.33.1) (2025-05-27)
 
 
