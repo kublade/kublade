@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -58,7 +59,7 @@ class UserController extends Controller
         Validator::make($request->toArray(), [
             'name'        => ['required', 'string', 'max:255'],
             'email'       => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password'    => ['required', 'string', 'min:8', 'confirmed'],
+            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
             'roles'       => ['nullable', 'array'],
             'permissions' => ['nullable', 'array'],
         ])->validate();
@@ -67,13 +68,13 @@ class UserController extends Controller
             $user = User::create([
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($request->password ?? Str::random(16)),
             ])
         ) {
             $user->syncRoles($request->roles ?? []);
             $user->syncPermissions($request->permissions ?? []);
 
-            return redirect()->route('user.details', ['user_id' => $user->id])->with('success', 'User created successfully.');
+            return redirect()->route('user.index')->with('success', 'User created successfully.');
         }
 
         return redirect()->back()->with('warning', 'Ooops, something went wrong.');
@@ -145,7 +146,7 @@ class UserController extends Controller
     {
         if (
             $user = User::where('id', $user_id)
-                ->where('user_id', '!=', Auth::id())
+                ->where('id', '!=', Auth::id())
                 ->first()
         ) {
             $user->delete();
