@@ -11,13 +11,11 @@ use PHPUnit\Framework\TestCase;
  * Class CpuUtilizationTest.
  *
  * Unit tests for the CpuUtilization helper class
- * Unit-Tests für die CpuUtilization-Hilfsklasse
  */
 class CpuUtilizationTest extends TestCase
 {
     /**
      * Test conversion to cores with different units.
-     * Test der Konvertierung in Kerne mit verschiedenen Einheiten.
      *
      * @dataProvider toCoreProvider
      *
@@ -32,7 +30,6 @@ class CpuUtilizationTest extends TestCase
 
     /**
      * Test handling of invalid or edge cases.
-     * Test der Behandlung ungültiger oder Grenzfälle.
      */
     public function testEdgeCases(): void
     {
@@ -53,7 +50,6 @@ class CpuUtilizationTest extends TestCase
 
     /**
      * Test decimal values with different units.
-     * Test von Dezimalwerten mit verschiedenen Einheiten.
      */
     public function testDecimalValues(): void
     {
@@ -72,25 +68,24 @@ class CpuUtilizationTest extends TestCase
 
     /**
      * Data provider for toCore tests.
-     * Daten-Provider für toCore-Tests.
      */
     public static function toCoreProvider(): array
     {
         return [
-            // Core values (no unit) / Kernwerte (ohne Einheit)
+            // Core values (no unit)
             ['1', 1.0],
             ['2', 2.0],
             ['0', 0.0],
             ['1000', 1000.0],
 
-            // Milli cores / Milli-Kerne
+            // Milli cores
             ['1000m', 1.0],      // 1000 milli cores = 1 core
             ['500m', 0.5],       // 500 milli cores = 0.5 cores
             ['100m', 0.1],       // 100 milli cores = 0.1 cores
             ['1m', 0.001],       // 1 milli core = 0.001 cores
             ['0m', 0.0],         // 0 milli cores = 0 cores
 
-            // Nano cores / Nano-Kerne
+            // Nano cores
             ['1000000000n', 1.0],    // 1000000000 nano cores = 1 core
             ['500000000n', 0.5],     // 500000000 nano cores = 0.5 cores
             ['100000000n', 0.1],     // 100000000 nano cores = 0.1 cores
@@ -99,7 +94,7 @@ class CpuUtilizationTest extends TestCase
             ['1n', 0.000000001],     // 1 nano core = 0.000000001 cores
             ['0n', 0.0],             // 0 nano cores = 0 cores
 
-            // Edge cases / Grenzfälle
+            // Edge cases
             ['', 0.0],               // Empty string
             ['0.0', 0.0],            // Zero with decimal
             ['0.00', 0.0],           // Zero with multiple decimals
