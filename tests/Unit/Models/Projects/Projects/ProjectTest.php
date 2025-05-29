@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Models\Projects;
+namespace Tests\Unit\Models\Projects\Projects;
 
 use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
