@@ -426,6 +426,182 @@ class GitTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function itCanPerformComplexGitOperations(): void
+    {
+        // Create a new repository
+        $repoPath = $this->testRepoPath . '/complex-repo';
+        $repo     = Git::create($repoPath);
+
+        // Ensure Git user identity is set for this repository
+        // This is especially important in CI environments like GitHub Actions
+        $this->setGitConfig('user.name', self::TEST_GIT_USER, false, $repoPath);
+        $this->setGitConfig('user.email', self::TEST_GIT_EMAIL, false, $repoPath);
+
+        // Test initial state
+        // In a fresh repository, there are no branches until the first commit
+        $this->assertNull($repo->activeBranch());
+        $this->assertEmpty($repo->listBranches());
+        $this->assertEmpty($repo->listTags());
+
+        // Create and commit initial file
+        file_put_contents($repoPath . '/test.txt', 'Initial content');
+        $repo->add('.');
+        $repo->commit('Initial commit');
+
+        // After first commit, we should have a default branch
+        // Note: Different Git versions might use 'main' or 'master' as default
+        $defaultBranch = $repo->activeBranch();
+        $this->assertContains($defaultBranch, ['main', 'master'], 'Default branch should be either main or master');
+
+        // Test branch operations
+        $repo->createBranch('feature-branch');
+        $this->assertContains('feature-branch', $repo->listBranches());
+
+        $repo->checkout('feature-branch');
+        $this->assertEquals('feature-branch', $repo->activeBranch());
+
+        // Make changes in feature branch
+        file_put_contents($repoPath . '/feature.txt', 'Feature content');
+        $repo->add('.');
+        $repo->commit('Add feature file');
+
+        // Test tag operations
+        $repo->addTag('v1.0.0', 'First release');
+        $this->assertContains('v1.0.0', $repo->listTags());
+
+        // Test merge operations
+        $repo->checkout($defaultBranch);
+        $this->assertEquals($defaultBranch, $repo->activeBranch());
+
+        // Create a conflict
+        file_put_contents($repoPath . '/test.txt', 'Main branch content');
+        $repo->add('.');
+        $repo->commit('Update in main branch');
+
+        // Try to merge feature branch
+        try {
+            $repo->merge('feature-branch');
+            $this->fail('Expected merge conflict was not thrown');
+        } catch (Exception $e) {
+            $this->assertStringContainsString('conflict', strtolower($e->getMessage()));
+        }
+
+        // Resolve conflict
+        file_put_contents($repoPath . '/test.txt', 'Merged content');
+        $repo->add('.');
+        $repo->commit('Merge feature branch');
+
+        // Test log operations
+        $log = $repo->log();
+        $this->assertStringContainsString('Merge feature branch', $log);
+        $this->assertStringContainsString('Update in main branch', $log);
+        $this->assertStringContainsString('Add feature file', $log);
+        $this->assertStringContainsString('Initial commit', $log);
+
+        // Test custom log format
+        $logFormat    = '%h|%s|%an|%ad';
+        $formattedLog = $repo->log($logFormat);
+        $this->assertStringContainsString('|Merge feature branch|', $formattedLog);
+
+        // Test file operations
+        $repo->rm('feature.txt');
+        $this->assertFileDoesNotExist($repoPath . '/feature.txt');
+
+        $repo->commit('Remove feature file');
+        $this->assertStringContainsString('Remove feature file', $repo->log());
+
+        // Test clean operation
+        file_put_contents($repoPath . '/untracked.txt', 'Untracked content');
+        $repo->clean(true, true);
+        $this->assertFileDoesNotExist($repoPath . '/untracked.txt');
+
+        // Test description
+        $description = 'Test repository for complex operations';
+        $repo->setDescription($description);
+        $this->assertEquals($description, $repo->getDescription());
+
+        // Test status
+        $status = $repo->status();
+        $this->assertStringContainsString('On branch ' . $defaultBranch, $status);
+        $this->assertStringContainsString('nothing to commit', $status);
+
+        // Test HTML status
+        $htmlStatus = $repo->status(true);
+        $this->assertStringContainsString('<br />', $htmlStatus);
+
+        // Test branch operations with force
+        $repo->createBranch('temp-branch');
+        $repo->checkout('temp-branch');
+        file_put_contents($repoPath . '/temp.txt', 'Temp content');
+        $repo->add('.');
+        $repo->commit('Add temp file');
+
+        // Switch back to main branch before attempting deletion
+        $repo->checkout($defaultBranch);
+        $this->assertEquals($defaultBranch, $repo->activeBranch());
+
+        // Try to delete unmerged branch (should fail)
+        try {
+            $repo->deleteBranch('temp-branch');
+            $this->fail('Expected exception when deleting unmerged branch was not thrown');
+        } catch (Exception $e) {
+            $errorMessage = strtolower($e->getMessage());
+            $this->assertTrue(
+                str_contains($errorMessage, 'not fully merged') ||
+                str_contains($errorMessage, 'cannot delete') ||
+                str_contains($errorMessage, 'used by worktree'),
+                sprintf(
+                    'Exception message "%s" does not contain expected branch deletion error text',
+                    $errorMessage
+                )
+            );
+        }
+
+        // Force delete branch
+        $repo->deleteBranch('temp-branch', true);
+        $this->assertNotContains('temp-branch', $repo->listBranches());
+
+        // Test remote operations (using a real remote repository)
+        $remoteRepo = 'https://github.com/octocat/Hello-World.git';
+
+        // Test fetch
+        try {
+            $repo->fetch();
+            $this->fail('Expected exception when fetching without remote was not thrown');
+        } catch (Exception $e) {
+            $this->assertStringContainsString('remote', strtolower($e->getMessage()));
+        }
+
+        // Test push/pull (should fail as we don't have a remote)
+        try {
+            $repo->push();
+            $this->fail('Expected exception when pushing without remote was not thrown');
+        } catch (Exception $e) {
+            $this->assertStringContainsString('remote', strtolower($e->getMessage()));
+        }
+
+        try {
+            $repo->pull();
+            $this->fail('Expected exception when pulling without remote was not thrown');
+        } catch (Exception $e) {
+            $this->assertStringContainsString('remote', strtolower($e->getMessage()));
+        }
+
+        // Test environment variables
+        $repo->setenv('GIT_AUTHOR_NAME', 'Test Author');
+        $repo->setenv('GIT_AUTHOR_EMAIL', 'test@example.com');
+
+        file_put_contents($repoPath . '/env-test.txt', 'Test environment variables');
+        $repo->add('.');
+        $repo->commit('Test environment variables');
+
+        $log = $repo->log();
+        $this->assertStringContainsString('Test Author', $log);
+    }
+
+    /**
      * Helper method to recursively delete a directory.
      *
      * @param string $dir
