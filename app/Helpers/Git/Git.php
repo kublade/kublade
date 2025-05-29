@@ -115,15 +115,16 @@ class Git
     /**
      * Checks if a variable is an instance of GitRepo.
      *
-     * Accepts a variable
-     *
-     * @param mixed $var
-     * @param   mixed   variable
+     * @param mixed $var variable to check
      *
      * @return bool
      */
-    public static function isRepo($var)
+    public static function isRepo($var): bool
     {
-        return get_class($var) == GitRepo::class;
+        if (!is_object($var)) {
+            return false;
+        }
+
+        return $var instanceof GitRepo;
     }
 }
