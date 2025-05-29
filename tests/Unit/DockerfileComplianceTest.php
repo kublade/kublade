@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Yaml\Yaml;
 use Tests\TestCase;
 
 /**
@@ -38,6 +37,13 @@ class DockerfileComplianceTest extends TestCase
         'yaml',
     ];
 
+    private array $requiredTools = [
+        'git',
+        'composer',
+        'nodejs',
+        'npm',
+    ];
+
     /**
      * @test
      */
@@ -59,10 +65,11 @@ class DockerfileComplianceTest extends TestCase
     private function findAllDockerfiles(): array
     {
         $dockerfiles = [];
-        $dockerDir = base_path('docker');
+        $dockerDir   = base_path('docker');
 
         if (is_dir($dockerDir)) {
             $files = File::allFiles($dockerDir);
+
             foreach ($files as $file) {
                 if ($file->getFilename() === 'Dockerfile' || str_starts_with($file->getFilename(), 'Dockerfile.')) {
                     $dockerfiles[] = $file->getPathname();
@@ -75,6 +82,8 @@ class DockerfileComplianceTest extends TestCase
 
     /**
      * Extract PHP version from Dockerfile path or content.
+     *
+     * @param string $dockerfilePath
      */
     private function getPhpVersionFromDockerfile(string $dockerfilePath): string
     {
@@ -85,6 +94,7 @@ class DockerfileComplianceTest extends TestCase
 
         // If not found in path, try to find in content
         $content = File::get($dockerfilePath);
+
         if (preg_match('/php(\d+\.\d+)-/', $content, $matches)) {
             return $matches[1];
         }
@@ -94,7 +104,29 @@ class DockerfileComplianceTest extends TestCase
     }
 
     /**
+     * Extract Node.js version from Dockerfile content.
+     *
+     * @param string $content
+     */
+    private function getNodeVersionFromDockerfile(string $content): ?string
+    {
+        // Try to find NODE_VERSION ARG
+        if (preg_match('/ARG\s+NODE_VERSION\s*=\s*(\d+)/', $content, $matches)) {
+            return $matches[1];
+        }
+
+        // Try to find node installation in apt-get
+        if (preg_match('/node_(\d+)\.x/', $content, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
+    }
+
+    /**
      * Validate a single Dockerfile against composer.json requirements.
+     *
+     * @param string $dockerfilePath
      */
     private function validateDockerfile(string $dockerfilePath): void
     {
@@ -102,12 +134,13 @@ class DockerfileComplianceTest extends TestCase
         $this->assertNotEmpty($content, "Dockerfile is empty: {$dockerfilePath}");
 
         $phpVersion = $this->getPhpVersionFromDockerfile($dockerfilePath);
-        
+
         // For PHP versions below 8.2, we should warn but not fail
         if (version_compare($phpVersion, '8.2', '<')) {
             $this->markTestSkipped(
                 "Dockerfile {$dockerfilePath} uses PHP {$phpVersion}, which is below the minimum required version 8.2 in composer.json"
             );
+
             return;
         }
 
@@ -136,15 +169,44 @@ class DockerfileComplianceTest extends TestCase
             );
         }
 
+        // Check for required tools
+        foreach ($this->requiredTools as $tool) {
+            $this->assertStringContainsString(
+                $tool,
+                $content,
+                "Dockerfile {$dockerfilePath} does not install {$tool}"
+            );
+        }
+
+        // Verify Node.js installation and version
+        $nodeVersion = $this->getNodeVersionFromDockerfile($content);
+        $this->assertNotNull(
+            $nodeVersion,
+            "Dockerfile {$dockerfilePath} does not specify Node.js version"
+        );
+
+        // Verify Node.js installation method
+        $this->assertTrue(
+            str_contains($content, 'nodesource') || str_contains($content, 'nodejs'),
+            "Dockerfile {$dockerfilePath} does not properly install Node.js"
+        );
+
+        // Verify npm installation
+        $this->assertTrue(
+            str_contains($content, 'npm install') || str_contains($content, 'apt-get install.*npm'),
+            "Dockerfile {$dockerfilePath} does not properly install npm"
+        );
+
         // Check for composer installation
         $this->assertStringContainsString(
             'composer',
             $content,
-            "Dockerfile {$dockerfilePath} does not install composer"
+            "Dockerfile {$dockerfilePath} does not properly install composer"
         );
 
         // Check for Laravel requirements
         $laravelExtensions = ['mbstring', 'xml', 'zip', 'bcmath'];
+
         foreach ($laravelExtensions as $extension) {
             $this->assertStringContainsString(
                 "php{$phpVersion}-{$extension}",
@@ -153,4 +215,4 @@ class DockerfileComplianceTest extends TestCase
             );
         }
     }
-} 
+}
