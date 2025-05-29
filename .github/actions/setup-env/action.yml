@@ -1,0 +1,27 @@
+name: Setup Environment
+description: 'Setup environment for PHP and Node.js'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: 'npm'
+
+    - name: Install Node.js dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Set up PHP 8.2
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        tools: composer:v2
+        extensions: curl, fileinfo, imagick, imap, json, pdo
+        coverage: xdebug
+
+    - name: Install PHP dependencies
+      run: composer install
+      shell: bash
