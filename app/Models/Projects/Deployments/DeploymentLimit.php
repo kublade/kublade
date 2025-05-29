@@ -56,6 +56,8 @@ class DeploymentLimit extends Model
      */
     protected $casts = [
         'is_active' => 'boolean',
+        'cpu'       => 'float',
+        'memory'    => 'integer',
     ];
 
     /**
