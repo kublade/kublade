@@ -23,8 +23,12 @@ class Filesize
      */
     public static function toBytes(string $value, string $unit = 'B'): int | float
     {
-        $devideBy = substr($unit, -1) === 'i' ? 1024 : 1000;
-        $baseUnit = substr($unit, 0, 1);
+        $isBinary = str_contains($unit, 'i');
+        $base     = $isBinary ? 1024 : 1000;
+
+        // Remove 'i' from binary units for prefix detection
+        $baseUnit = str_replace('i', '', $unit);
+        $baseUnit = substr($baseUnit, 0, 1);
 
         switch ($baseUnit) {
             case 'B':
@@ -78,7 +82,7 @@ class Filesize
             return (float) $value;
         }
 
-        return (float) $value * pow(1024, $power);
+        return (float) $value * pow($base, $power);
     }
 
     /**
@@ -90,15 +94,21 @@ class Filesize
      */
     public static function bytesFromString(string $str): int | float
     {
-        $format = substr($str, -2);
+        // Extract the numeric part and unit
+        if (preg_match('/^([\d.]+)\s*([kmgtpezy]?i?b)?$/i', $str, $matches)) {
+            $value = $matches[1];
+            $unit  = strtoupper($matches[2] ?? 'B');
 
-        if (!is_numeric($format)) {
-            $value = substr($str, 0, -2);
+            // Special handling for binary units
+            if (str_contains($unit, 'I')) {
+                $unit = str_replace('I', 'i', $unit);
+            }
         } else {
-            $value  = $str;
-            $format = 'B';
+            // If no unit is found, assume bytes
+            $value = $str;
+            $unit  = 'B';
         }
 
-        return self::toBytes($value, $format);
+        return self::toBytes($value, $unit);
     }
 }
