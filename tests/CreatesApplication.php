@@ -7,6 +7,11 @@ namespace Tests;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
 
+/**
+ * Trait CreatesApplication.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 trait CreatesApplication
 {
     /**

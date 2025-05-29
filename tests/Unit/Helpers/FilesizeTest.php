@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
  * Class FilesizeTest.
  *
  * Unit tests for the Filesize helper class
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class FilesizeTest extends TestCase
 {
