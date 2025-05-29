@@ -1778,12 +1778,6 @@ class TemplateController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        if ($request->default) {
-            TemplateFieldOption::where('template_field_id', '=', $request->template_field_id)->update([
-                'default' => false,
-            ]);
-        }
-
         if (
             $option = TemplateFieldOption::create([
                 'template_field_id' => $request->template_field_id,
@@ -1863,12 +1857,6 @@ class TemplateController extends Controller
         }
 
         $option = TemplateFieldOption::where('id', $request->option_id)->first();
-
-        if ($request->default) {
-            TemplateFieldOption::where('template_field_id', '=', $request->template_field_id)->update([
-                'default' => false,
-            ]);
-        }
 
         if (empty($option)) {
             return Response::generate(404, 'error', 'Option not found');

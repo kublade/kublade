@@ -74,6 +74,23 @@ class TemplateFieldOption extends Model
     ];
 
     /**
+     * Boot the model.
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(function (self $option) {
+            if ($option->default) {
+                // Remove default from other options of the same field
+                static::where('template_field_id', $option->template_field_id)
+                    ->where('id', '!=', $option->id)
+                    ->update(['default' => false]);
+            }
+        });
+    }
+
+    /**
      * Relation to template field.
      *
      * @return HasOne
