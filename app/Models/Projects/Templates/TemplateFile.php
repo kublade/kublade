@@ -8,6 +8,7 @@ use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\ReservedPort;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,6 +49,7 @@ class TemplateFile extends Model
 {
     use SoftDeletes;
     use HasUuids;
+    use HasFactory;
 
     /**
      * The table associated with the model.
