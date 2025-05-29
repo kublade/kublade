@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers\Kubernetes;
 
-use Exception;
+use App\Exceptions\HelmException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
@@ -84,7 +84,7 @@ class HelmManifests
         $response = Http::get($url);
 
         if (!$response->successful()) {
-            throw new Exception("Failed to fetch index.yaml from: $url");
+            throw new HelmException('Failed to fetch index.yaml');
         }
 
         return Yaml::parse($response->body());
@@ -102,7 +102,7 @@ class HelmManifests
         if (!isset($index['entries'][self::$chartName])) {
             $chartName = self::$chartName;
 
-            throw new Exception("Chart '$chartName' not found in repository.");
+            throw new HelmException('Failed to download chart');
         }
 
         $latest    = $index['entries'][self::$chartName][0];
@@ -165,7 +165,7 @@ class HelmManifests
         $result = Process::run($cmd);
 
         if (!$result->successful()) {
-            throw new Exception('Failed to pull OCI chart: ' . $result->errorOutput());
+            throw new HelmException('Failed to download chart');
         }
 
         return $tmpDir;
@@ -190,7 +190,7 @@ class HelmManifests
         $result = Process::run($cmd);
 
         if (!$result->successful()) {
-            throw new Exception("Failed to pull OCI chart from full ref: $ociRef\n" . $result->errorOutput());
+            throw new HelmException('Failed to download chart');
         }
 
         return $tmpDir;
@@ -218,7 +218,7 @@ class HelmManifests
             }
         }
 
-        throw new Exception('values.yaml not found in chart directory.');
+        throw new HelmException('Failed to fetch values.yaml');
     }
 
     /**
