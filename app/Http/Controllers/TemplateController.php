@@ -636,12 +636,6 @@ class TemplateController extends Controller
             'default'           => ['nullable', 'boolean'],
         ])->validate();
 
-        if ($request->default) {
-            TemplateFieldOption::where('template_field_id', '=', $request->template_field_id)->update([
-                'default' => false,
-            ]);
-        }
-
         TemplateFieldOption::create([
             'template_field_id' => $request->template_field_id,
             'label'             => $request->label,
@@ -690,12 +684,6 @@ class TemplateController extends Controller
         ])->validate();
 
         $option = TemplateFieldOption::where('id', $request->option_id)->first();
-
-        if ($request->default) {
-            TemplateFieldOption::where('template_field_id', '=', $request->template_field_id)->update([
-                'default' => false,
-            ]);
-        }
 
         if (empty($option)) {
             return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
