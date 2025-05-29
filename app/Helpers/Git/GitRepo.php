@@ -470,7 +470,7 @@ class GitRepo
             }
         }
 
-        return $branchArray;
+        return is_array($branchArray) ? $branchArray : [];
     }
 
     /**
@@ -501,11 +501,16 @@ class GitRepo
      * @param mixed $keep_asterisk
      * @param   bool    keep asterisk mark on branch name
      *
-     * @return string
+     * @return string|null
      */
-    public function activeBranch($keep_asterisk = false)
+    public function activeBranch($keep_asterisk = false): ?string
     {
-        $branchArray   = $this->listBranches(true);
+        $branchArray = $this->listBranches(true);
+
+        if (empty($branchArray)) {
+            return null;
+        }
+
         $active_branch = preg_grep("/^\*/", $branchArray);
         reset($active_branch);
 
