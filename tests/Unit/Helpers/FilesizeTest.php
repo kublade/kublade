@@ -11,13 +11,11 @@ use PHPUnit\Framework\TestCase;
  * Class FilesizeTest.
  *
  * Unit tests for the Filesize helper class
- * Unit-Tests für die Filesize-Hilfsklasse
  */
 class FilesizeTest extends TestCase
 {
     /**
-     * Test conversion to bytes with different units
-     * Test der Konvertierung in Bytes mit verschiedenen Einheiten.
+     * Test conversion to bytes with different units.
      *
      * @dataProvider toBytesProvider
      *
@@ -32,8 +30,7 @@ class FilesizeTest extends TestCase
     }
 
     /**
-     * Test conversion from string to bytes
-     * Test der Konvertierung von String zu Bytes.
+     * Test conversion from string to bytes.
      *
      * @dataProvider bytesFromStringProvider
      *
@@ -47,19 +44,16 @@ class FilesizeTest extends TestCase
     }
 
     /**
-     * Test invalid unit handling
-     * Test der Behandlung ungültiger Einheiten.
+     * Test invalid unit handling.
      */
     public function testInvalidUnitHandling(): void
     {
         // Should default to bytes (B) for invalid units
-        // Sollte bei ungültigen Einheiten auf Bytes (B) zurückfallen
         $this->assertEquals(42.0, Filesize::toBytes('42', 'X'));
     }
 
     /**
-     * Test binary units (KiB, MiB, etc.)
-     * Test der binären Einheiten (KiB, MiB, etc.).
+     * Test binary units (KiB, MiB, etc.).
      */
     public function testBinaryUnits(): void
     {
@@ -70,7 +64,6 @@ class FilesizeTest extends TestCase
 
     /**
      * Test handling of numbers without units.
-     * Test der Behandlung von Zahlen ohne Einheiten.
      */
     public function testNumbersWithoutUnits(): void
     {
@@ -90,13 +83,12 @@ class FilesizeTest extends TestCase
     }
 
     /**
-     * Data provider for toBytes tests
-     * Daten-Provider für toBytes-Tests.
+     * Data provider for toBytes tests.
      */
     public static function toBytesProvider(): array
     {
         return [
-            // Basic units / Grundlegende Einheiten
+            // Basic units
             ['1', 'B', 1.0],
             ['1', 'KB', 1000.0],
             ['1', 'MB', 1000000.0],
@@ -107,17 +99,17 @@ class FilesizeTest extends TestCase
             ['1', 'ZB', 1000000000000000000000.0],
             ['1', 'YB', 1000000000000000000000000.0],
 
-            // Decimal values / Dezimalwerte
+            // Decimal values
             ['1.5', 'KB', 1500.0],
             ['2.5', 'MB', 2500000.0],
             ['0.5', 'GB', 500000000.0],
 
-            // Case insensitivity / Groß-/Kleinschreibung
+            // Case insensitivity
             ['1', 'kb', 1000.0],
             ['1', 'Mb', 1000000.0],
             ['1', 'gb', 1000000000.0],
 
-            // Zero values / Nullwerte
+            // Zero values
             ['0', 'B', 0.0],
             ['0', 'KB', 0.0],
             ['0', 'MB', 0.0],
@@ -125,13 +117,12 @@ class FilesizeTest extends TestCase
     }
 
     /**
-     * Data provider for bytesFromString tests
-     * Daten-Provider für bytesFromString-Tests.
+     * Data provider for bytesFromString tests.
      */
     public static function bytesFromStringProvider(): array
     {
         return [
-            // Basic formats / Grundlegende Formate
+            // Basic formats
             ['1B', 1.0],
             ['1KB', 1000.0],
             ['1MB', 1000000.0],
@@ -142,22 +133,22 @@ class FilesizeTest extends TestCase
             ['1ZB', 1000000000000000000000.0],
             ['1YB', 1000000000000000000000000.0],
 
-            // Decimal values / Dezimalwerte
+            // Decimal values
             ['1.5KB', 1500.0],
             ['2.5MB', 2500000.0],
             ['0.5GB', 500000000.0],
 
-            // Case insensitivity / Groß-/Kleinschreibung
+            // Case insensitivity
             ['1kb', 1000.0],
             ['1Mb', 1000000.0],
             ['1gb', 1000000000.0],
 
-            // Numbers without unit (defaults to bytes) / Zahlen ohne Einheit (Standard: Bytes)
+            // Numbers without unit (defaults to bytes)
             ['42', 42.0],
             ['0', 0.0],
             ['1.5', 1.5],
 
-            // Binary units / Binäre Einheiten
+            // Binary units
             ['1KiB', 1024.0],
             ['1MiB', 1024 * 1024.0],
             ['1GiB', 1024 * 1024 * 1024.0],
