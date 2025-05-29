@@ -13,37 +13,52 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.9.0'
-
-      - name: Install Node.js dependencies
-        run: npm ci
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
 
       - name: Run commit lint
         run: npx commitlint --from="$(git merge-base HEAD origin/${{ github.event.pull_request.base.ref }})"
 
   check_code:
-    name: Check code
+    name: Check code style
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, curl
-
-      - name: Install Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          composer install --ignore-platform-reqs --no-scripts
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
 
       - name: Run Pint
         run: vendor/bin/pint --test
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=2G
+  
+  test_code:
+    name: Test code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
+
+      - name: Run tests
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: clover.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: clover.xml
+          flags: pull-request
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
