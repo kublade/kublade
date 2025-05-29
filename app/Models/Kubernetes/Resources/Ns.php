@@ -78,7 +78,7 @@ class Ns extends Model
      */
     public function deployment(): HasOne
     {
-        return $this->hasOne(Deployment::class, 'id', 'deployment_id');
+        return $this->hasOne(Deployment::class, 'namespace_id', 'id');
     }
 
     /**
