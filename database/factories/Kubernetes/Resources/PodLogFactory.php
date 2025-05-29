@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories\Projects\Projects;
+namespace Database\Factories\Kubernetes\Resources;
 
-use App\Models\Projects\Projects\Project;
-use App\Models\User;
+use App\Models\Kubernetes\Resources\Pod;
+use App\Models\Kubernetes\Resources\PodLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class ProjectFactory.
+ * Class PodLogFactory.
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
- * @extends Factory<Project>
+ * @extends Factory<PodLog>
  */
-class ProjectFactory extends Factory
+class PodLogFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Project::class;
+    protected $model = PodLog::class;
 
     /**
      * Define the model's default state.
@@ -32,8 +32,10 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'    => $this->faker->word(),
-            'user_id' => User::factory(),
+            'pod_id'     => Pod::factory(),
+            'logs'       => $this->faker->text(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

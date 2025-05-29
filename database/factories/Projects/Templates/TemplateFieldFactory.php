@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Database\Factories\Projects\Templates;
 
+use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateField;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Class TemplateFieldFactory.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ *
  * @extends Factory<TemplateField>
  */
 class TemplateFieldFactory extends Factory
@@ -27,7 +32,7 @@ class TemplateFieldFactory extends Factory
     public function definition(): array
     {
         return [
-            'template_id'   => null,
+            'template_id'   => Template::factory(),
             'key'           => $this->faker->word,
             'label'         => $this->faker->words(3, true),
             'type'          => $this->faker->randomElement(['input_text', 'input_hidden', 'textarea']),
