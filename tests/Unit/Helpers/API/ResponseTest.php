@@ -14,7 +14,9 @@ use Tests\CreatesApplication;
 /**
  * Class ResponseTest.
  *
- * Unit tests for the Response helper class
+ * Unit tests for the Response helper class.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class ResponseTest extends TestCase
 {

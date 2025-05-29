@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
  * Class CpuUtilizationTest.
  *
  * Unit tests for the CpuUtilization helper class
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
  */
 class CpuUtilizationTest extends TestCase
 {
