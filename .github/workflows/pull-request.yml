@@ -63,6 +63,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover clover.xml
+        env:
+          APP_KEY: ${{ secrets.TESTING_APP_KEY }}
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
