@@ -8,6 +8,10 @@ use App\Models\Projects\Templates\TemplatePort;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Class TemplatePortFactory.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ *
  * @extends Factory<TemplatePort>
  */
 class TemplatePortFactory extends Factory

@@ -163,7 +163,7 @@ class Deployment extends Model
      */
     public function namespaces(): HasMany
     {
-        return $this->hasMany(Ns::class, 'deployment_id', 'id');
+        return $this->hasMany(Ns::class, 'id', 'namespace_id');
     }
 
     /**
@@ -310,7 +310,7 @@ class Deployment extends Model
     {
         return PodLog::whereHas('pod', function ($query) {
             $query->whereHas('namespace', function ($query) {
-                $query->where('deployment_id', $this->id);
+                $query->where('id', $this->namespace_id);
             });
         })
             ->select('id', 'pod_id', 'created_at', 'updated_at', 'deleted_at')

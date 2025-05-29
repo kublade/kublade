@@ -8,6 +8,10 @@ use App\Models\Projects\Templates\TemplateFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Class TemplateFileFactory.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ *
  * @extends Factory<TemplateFile>
  */
 class TemplateFileFactory extends Factory

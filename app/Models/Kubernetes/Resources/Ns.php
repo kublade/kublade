@@ -8,6 +8,7 @@ use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @author Marcel Menk <marcel.menk@ipvx.io>
  *
  * @property string $id
- * @property string $deployment_id
+ * @property string $cluster_id
  * @property string $uuid
  * @property string $api_version
  * @property string $name
@@ -35,6 +36,7 @@ class Ns extends Model
 {
     use SoftDeletes;
     use HasUuids;
+    use HasFactory;
 
     /**
      * The table associated with the model.
