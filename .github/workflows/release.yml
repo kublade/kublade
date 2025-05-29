@@ -75,6 +75,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover clover.xml
+        env:
+          APP_KEY: ${{ secrets.TESTING_APP_KEY }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
