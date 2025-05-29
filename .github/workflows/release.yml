@@ -50,6 +50,22 @@ jobs:
   code_coverage:
     name: Code coverage
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql/mysql-server:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: 'root'
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_DATABASE: 'testing'
+          MYSQL_USER: 'testing'
+          MYSQL_PASSWORD: 'testing'
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
