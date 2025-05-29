@@ -100,19 +100,23 @@ class DeploymentCommit extends Model
      */
     public function getDiffAttribute(): Collection
     {
+        // Load relationships with field
+        $this->deployment->load(['deploymentData.field', 'deploymentSecretData.field']);
+
         return $this->commitData->map(function (DeploymentCommitData $item) {
             $current  = $this->deployment->deploymentData->where('key', $item->key)->first();
             $previous = $this->commitData->where('key', $item->key)->first()?->value;
 
-            if ($current?->value == $previous) {
+            // Compare decrypted values
+            if (decrypt($current?->value) === decrypt($previous)) {
                 return null;
             }
 
             return [
                 'type'     => 'plain',
-                'label'    => $current?->field->label,
-                'current'  => $current?->value,
-                'previous' => $previous,
+                'label'    => $current?->field?->label,
+                'current'  => decrypt($current?->value),
+                'previous' => decrypt($previous),
                 'key'      => $item->key,
             ];
         })->filter(function ($item) {
@@ -122,15 +126,16 @@ class DeploymentCommit extends Model
                 $current  = $this->deployment->deploymentSecretData->where('key', $item->key)->first();
                 $previous = $this->commitSecretData->where('key', $item->key)->first()?->value;
 
-                if ($current?->value == $previous) {
+                // Compare decrypted values
+                if (decrypt($current?->value) === decrypt($previous)) {
                     return null;
                 }
 
                 return [
                     'type'     => 'secret',
-                    'label'    => $current?->field->label,
-                    'current'  => $current?->value,
-                    'previous' => $previous,
+                    'label'    => $current?->field?->label,
+                    'current'  => decrypt($current?->value),
+                    'previous' => decrypt($previous),
                     'key'      => $item->key,
                 ];
             })

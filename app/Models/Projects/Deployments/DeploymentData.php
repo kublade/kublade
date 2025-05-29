@@ -22,6 +22,7 @@ use Sagalbot\Encryptable\Encryptable;
  *
  * @property string $id
  * @property string $deployment_id
+ * @property string $template_field_id
  * @property string $key
  * @property string $value
  * @property Carbon $created_at

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Projects\Deployments;
 
+use App\Models\Projects\Templates\TemplateField;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,7 @@ use Sagalbot\Encryptable\Encryptable;
  *
  * @property string $id
  * @property string $deployment_id
+ * @property string $template_field_id
  * @property string $key
  * @property string $value
  * @property Carbon $created_at
@@ -67,5 +69,15 @@ class DeploymentSecretData extends Model
     public function deployment(): HasOne
     {
         return $this->hasOne(Deployment::class, 'id', 'deployment_id');
+    }
+
+    /**
+     * Relation to template field.
+     *
+     * @return HasOne
+     */
+    public function field(): HasOne
+    {
+        return $this->hasOne(TemplateField::class, 'id', 'template_field_id');
     }
 }
