@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers\Git;
 
 use Exception;
+use Illuminate\Support\Facades\Process;
 
 /**
  * Git Repository Interface Class.
@@ -209,48 +210,43 @@ class GitRepo
      */
     protected function runCommand($command)
     {
-        $descriptorspec = [
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w'],
-        ];
-        $pipes = [];
+        // Get the base environment variables
+        $env = $_ENV ?: [];
 
-        /* Depending on the value of variables_order, $_ENV may be empty.
-         * In that case, we have to explicitly set the new variables with
-         * putenv, and call proc_open with env=null to inherit the reset
-         * of the system.
-         *
-         * This is kind of crappy because we cannot easily restore just those
-         * variables afterwards.
-         *
-         * If $_ENV is not empty, then we can just copy it and be done with it.
-         */
-        if (count($_ENV) === 0) {
-            $env = null;
+        // Merge with any custom environment options
+        $env = array_merge($env, $this->envopts);
 
-            foreach ($this->envopts as $k => $v) {
-                putenv(sprintf('%s=%s', $k, $v));
-            }
-        } else {
-            $env = array_merge($_ENV, $this->envopts);
-        }
-        $cwd      = $this->repoPath;
-        $resource = proc_open($command, $descriptorspec, $pipes, $cwd, $env);
+        // Run the command using Laravel's Process
+        $process = Process::run($command, null, [
+            'cwd' => $this->repoPath,
+            'env' => $env,
+        ]);
 
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-
-        foreach ($pipes as $pipe) {
-            fclose($pipe);
+        if ($process->failed()) {
+            // Combine stdout and stderr for better error reporting
+            throw new Exception($process->errorOutput() . "\n" . $process->output());
         }
 
-        $status = trim((string) proc_close($resource));
+        return trim($process->output());
+    }
 
-        if ($status) {
-            throw new Exception($stderr . "\n" . $stdout);
-        } //Not all errors are printed to stderr, so include std out as well.
+    /**
+     * Set environment variables manually.
+     *
+     * @param array $envopts
+     *
+     * @return array
+     */
+    protected function setEnvManually(array $envopts): array
+    {
+        $env = [];
 
-        return $stdout;
+        foreach ($envopts as $key => $value) {
+            putenv("$key=$value");
+            $env[$key] = $value;
+        }
+
+        return $env;
     }
 
     /**
