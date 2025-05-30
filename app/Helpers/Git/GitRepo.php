@@ -23,6 +23,18 @@ class GitRepo
 
     protected $envopts = [];
 
+    private const DEFAULT_BRANCH = 'main';
+
+    /**
+     * Configure Git to trust the repository directory.
+     *
+     * @param string $path
+     */
+    public function configureSafeDirectory(string $path): void
+    {
+        $this->run('config --global --add safe.directory "*"');
+    }
+
     /**
      * Create a new git repository.
      *
@@ -44,6 +56,9 @@ class GitRepo
             throw new Exception('"' . $repoPath . '" is already a git repository');
         } else {
             $repo = new self($repoPath, true, false);
+            
+            // Configure safe directory before any Git operations
+            $repo->configureSafeDirectory($repoPath);
 
             if (is_string($source)) {
                 if ($remoteSource) {
@@ -61,6 +76,8 @@ class GitRepo
                 }
             } else {
                 $repo->run('init');
+                // Ensure we're on the default branch after init
+                $repo->run('checkout -b ' . self::DEFAULT_BRANCH);
             }
 
             return $repo;
@@ -104,6 +121,9 @@ class GitRepo
                 $repoPath = $newPath;
 
                 if (is_dir($repoPath)) {
+                    // Configure safe directory before any Git operations
+                    $this->configureSafeDirectory($repoPath);
+
                     // Is this a work tree?
                     if (file_exists($repoPath . '/.git')) {
                         $this->repoPath = $repoPath;
@@ -135,6 +155,9 @@ class GitRepo
                     if ($parent = realpath(dirname($repoPath))) {
                         mkdir($repoPath);
                         $this->repoPath = $repoPath;
+
+                        // Configure safe directory before any Git operations
+                        $this->configureSafeDirectory($repoPath);
 
                         if ($_init) {
                             $this->run('init');
@@ -212,9 +235,14 @@ class GitRepo
     {
         // Get the base environment variables
         $env = $_ENV ?: [];
-
+        
         // Merge with any custom environment options
         $env = array_merge($env, $this->envopts);
+
+        // Add default branch configuration if not set
+        if (!isset($env['GIT_CONFIG_PARAMETERS'])) {
+            $env['GIT_CONFIG_PARAMETERS'] = "'init.defaultBranch=" . self::DEFAULT_BRANCH . "'";
+        }
 
         // Run the command using Laravel's Process
         $process = Process::run($command, null, [
@@ -373,7 +401,9 @@ class GitRepo
      */
     public function cloneFrom($source)
     {
-        return $this->run("clone --local $source " . $this->repoPath);
+        $this->run("clone --local $source " . $this->repoPath);
+        // Ensure we're on the default branch after clone
+        $this->run('checkout -b ' . self::DEFAULT_BRANCH);
     }
 
     /**
@@ -391,7 +421,9 @@ class GitRepo
      */
     public function cloneRemote($source, $reference)
     {
-        return $this->run("clone $reference $source " . $this->repoPath);
+        $this->run("clone $reference $source " . $this->repoPath);
+        // Ensure we're on the default branch after clone
+        $this->run('checkout -b ' . self::DEFAULT_BRANCH);
     }
 
     /**
