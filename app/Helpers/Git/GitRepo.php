@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers\Git;
 
 use Exception;
+use Illuminate\Support\Facades\Process;
 
 /**
  * Git Repository Interface Class.
@@ -209,48 +210,23 @@ class GitRepo
      */
     protected function runCommand($command)
     {
-        $descriptorspec = [
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w'],
-        ];
-        $pipes = [];
+        $env = count($_ENV) === 0 ? null : array_merge($_ENV, $this->envopts);
 
-        /* Depending on the value of variables_order, $_ENV may be empty.
-         * In that case, we have to explicitly set the new variables with
-         * putenv, and call proc_open with env=null to inherit the reset
-         * of the system.
-         *
-         * This is kind of crappy because we cannot easily restore just those
-         * variables afterwards.
-         *
-         * If $_ENV is not empty, then we can just copy it and be done with it.
-         */
         if (count($_ENV) === 0) {
-            $env = null;
-
             foreach ($this->envopts as $k => $v) {
                 putenv(sprintf('%s=%s', $k, $v));
             }
-        } else {
-            $env = array_merge($_ENV, $this->envopts);
-        }
-        $cwd      = $this->repoPath;
-        $resource = proc_open($command, $descriptorspec, $pipes, $cwd, $env);
-
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-
-        foreach ($pipes as $pipe) {
-            fclose($pipe);
         }
 
-        $status = trim((string) proc_close($resource));
+        $result = Process::path($this->repoPath)
+            ->env($env)
+            ->run($command);
 
-        if ($status) {
-            throw new Exception($stderr . "\n" . $stdout);
-        } //Not all errors are printed to stderr, so include std out as well.
+        if (!$result->successful()) {
+            throw new Exception($result->errorOutput() . "\n" . $result->output());
+        }
 
-        return $stdout;
+        return $result->output();
     }
 
     /**
