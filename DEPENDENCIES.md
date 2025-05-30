@@ -38,7 +38,7 @@
 | laravel/ui@v4.6.1 | MIT |
 | lcobucci/clock@3.3.1 | MIT |
 | lcobucci/jwt@4.3.0 | BSD-3-Clause |
-| league/commonmark@2.6.2 | BSD-3-Clause |
+| league/commonmark@2.7.0 | BSD-3-Clause |
 | league/config@v1.2.0 | BSD-3-Clause |
 | league/flysystem@3.29.1 | MIT |
 | league/flysystem-local@3.29.0 | MIT |
