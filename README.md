@@ -6,8 +6,9 @@ Kublade is an easy and interactive templating engine based on Laravel Blade for 
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/kublade/kublade/release.yml?label=Release
 )](https://github.com/kublade/kublade/actions/workflows/release.yml)
-![Coverage](https://img.shields.io/codecov/c/github/kublade/kublade/main?label=Coverage)
 ![Latest Release](https://img.shields.io/github/v/release/kublade/kublade?label=Latest%20Release)
+![Coverage](https://img.shields.io/codecov/c/github/kublade/kublade/main?label=Coverage)
+[![Aikido Security](https://img.shields.io/badge/Aikido-Security-blue)](https://app.aikido.dev)
 
 ## Documentation
 
