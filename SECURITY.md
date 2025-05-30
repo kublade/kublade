@@ -36,7 +36,7 @@ This information will help us triage your report more quickly.
 
 ### Code Security
 - All code changes require review before being merged
-- Automated security scanning is performed on pull requests
+- Automated security scanning is performed periodically and on every pull requests
 - Dependencies are regularly updated and monitored for known vulnerabilities
 
 ### Access Control
@@ -48,6 +48,12 @@ This information will help us triage your report more quickly.
 - Sensitive data is encrypted at rest and in transit
 - Regular security audits are performed
 - Data backups are encrypted and stored securely
+
+## Security Audit Report
+
+You can request a detailed security audit report for Kublade using Aikido:
+
+[![Aikido Security](https://app.aikido.dev/assets/badges/full-light-theme.svg)](https://app.aikido.dev/audit-report/external/wSvNhiC4t9ok2aGSxq7G7ji0/request)
 
 ## Security Updates
 
