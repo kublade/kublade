@@ -29,6 +29,7 @@
         "laravel/socialite": "^5.21",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
+        "league/commonmark": "^2.7",
         "sagalbot/encryptable": "^1.0",
         "socialiteproviders/microsoft-azure": "^5.2",
         "spatie/laravel-permission": "^6.17",
