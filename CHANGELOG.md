@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.1](https://github.com/kublade/kublade/compare/v1.34.0...v1.34.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* secure session cookie configuration ([fce08f6](https://github.com/kublade/kublade/commit/fce08f611ae2e8625932826169766f174ce46bcb))
+
 ## [1.34.0](https://github.com/kublade/kublade/compare/v1.33.1...v1.34.0) (2025-05-28)
 
 
