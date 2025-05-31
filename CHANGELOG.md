@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.1](https://github.com/kublade/kublade/compare/v1.37.0...v1.37.1) (2025-05-31)
+
+
+### Bug Fixes
+
+* reset composer file to allow proper version replacements ([9597fe5](https://github.com/kublade/kublade/commit/9597fe5077c8979f6631c5bdd0f79cea643c947b))
+
 ## [1.37.0](https://github.com/kublade/kublade/compare/v1.36.2...v1.37.0) (2025-05-31)
 
 
