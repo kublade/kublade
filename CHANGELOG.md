@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.0](https://github.com/kublade/kublade/compare/v1.36.2...v1.37.0) (2025-05-31)
+
+
+### Features
+
+* update alert dismissal ([e1bb312](https://github.com/kublade/kublade/commit/e1bb3123f492b8f9cc6ecfd66ef9adf3e1dd4b9d))
+
 ## [1.36.2](https://github.com/kublade/kublade/compare/v1.36.1...v1.36.2) (2025-05-31)
 
 
