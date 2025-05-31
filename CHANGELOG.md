@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.36.1](https://github.com/kublade/kublade/compare/v1.36.0...v1.36.1) (2025-05-31)
+
+
+### Bug Fixes
+
+* version number replacements ([dcadd01](https://github.com/kublade/kublade/commit/dcadd01830aa06ecf25ccfd853b3b60f984837b6))
+
 ## [1.36.0](https://github.com/kublade/kublade/compare/v1.35.1...v1.36.0) (2025-05-31)
 
 
