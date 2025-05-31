@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.36.0](https://github.com/kublade/kublade/compare/v1.35.1...v1.36.0) (2025-05-31)
+
+
+### Features
+
+* automatic update checks ([e4aa191](https://github.com/kublade/kublade/commit/e4aa191092b27bd908dfa5986f099c2112b2ef1b))
+
+
+### Bug Fixes
+
+* semantic release dependencies ([e81979a](https://github.com/kublade/kublade/commit/e81979a10a13c4b6e57bfb703964eff55a83ef58))
+* semantic release dependency installation ([c94ab45](https://github.com/kublade/kublade/commit/c94ab45be2991cd22c56a873555115b6829b3966))
+
 ## [1.35.1](https://github.com/kublade/kublade/compare/v1.35.0...v1.35.1) (2025-05-31)
 
 
