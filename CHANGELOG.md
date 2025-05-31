@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.3](https://github.com/kublade/kublade/compare/v1.34.2...v1.34.3) (2025-05-31)
+
+
+### Bug Fixes
+
+* wrong license in composer json ([a94e2b5](https://github.com/kublade/kublade/commit/a94e2b5b6b376565113643cd6c29034c73a5d564))
+
 ## [1.34.2](https://github.com/kublade/kublade/compare/v1.34.1...v1.34.2) (2025-05-31)
 
 
