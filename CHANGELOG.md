@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.2](https://github.com/kublade/kublade/compare/v1.34.1...v1.34.2) (2025-05-31)
+
+
+### Bug Fixes
+
+* icon only link titles ([5514b62](https://github.com/kublade/kublade/commit/5514b626105a154b252f1bf936c69d432d10cede))
+
 ## [1.34.1](https://github.com/kublade/kublade/compare/v1.34.0...v1.34.1) (2025-05-30)
 
 
