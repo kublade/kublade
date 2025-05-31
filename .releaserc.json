@@ -31,15 +31,6 @@
           }
         ],
         [
-          "@semantic-release/git",
-          {
-            "assets": [
-              "CHANGELOG.md"
-            ],
-            "message": "chore(release): version ${nextRelease.version}\n\n${nextRelease.notes}"
-          }
-        ],
-        [
           "semantic-release-replace-plugin",
           {
             "replacements": [
@@ -49,6 +40,16 @@
                 "to": "\"version\": \"${nextRelease.version}\""
               }
             ]
+          }
+        ],
+        [
+          "@semantic-release/git",
+          {
+            "assets": [
+              "CHANGELOG.md",
+              "composer.json"
+            ],
+            "message": "chore(release): version ${nextRelease.version}\n\n${nextRelease.notes}"
           }
         ]
     ]
