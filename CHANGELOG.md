@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.35.0](https://github.com/kublade/kublade/compare/v1.34.3...v1.35.0) (2025-05-31)
+
+
+### Features
+
+* template git import ([2b92b60](https://github.com/kublade/kublade/commit/2b92b60765c1dea4d6ab84390bd60c2eda00bf75))
+
 ## [1.34.3](https://github.com/kublade/kublade/compare/v1.34.2...v1.34.3) (2025-05-31)
 
 
