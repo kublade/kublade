@@ -27,6 +27,20 @@
             $authRoutes = ['login', 'register', 'password.request', 'password.email', 'password.reset', 'password.confirm'];
         @endphp
         @if (!in_array(Route::currentRouteName(), $authRoutes))
+            @if (request()->attributes->has('update'))
+                <div class="alert alert-warning rounded-0 border-0 mb-0" role="alert">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 d-flex align-items-center gap-3">
+                                <i class="bi bi-arrow-up-circle fs-5"></i>
+                                <span>
+                                {!! __('A new version (<a href=":url" target="_blank" class="text-decoration-none fw-bold">:version</a>) of Kublade is available. Please update to the latest version.', ['url' => 'https://github.com/kublade/kublade/releases/tag/' . request()->attributes->get('update')['tag_name'], 'version' => request()->attributes->get('update')['tag_name']]) !!}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <nav class="navbar navbar-expand-md navbar-light bg-secondary shadow-sm">
                 <div class="container">
                     <a class="navbar-brand py-3 me-0 bg-transparent" href="{{ request()->get('project') ? route('project.details', ['project_id' => request()->get('project')->id]) : url('/') }}">

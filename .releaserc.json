@@ -38,6 +38,18 @@
             ],
             "message": "chore(release): version ${nextRelease.version}\n\n${nextRelease.notes}"
           }
+        ],
+        [
+          "semantic-release-replace-plugin",
+          {
+            "replacements": [
+              {
+                "files": ["composer.json"],
+                "from": "0.0.0",
+                "to": "${nextRelease.version}"
+              }
+            ]
+          }
         ]
     ]
 }
