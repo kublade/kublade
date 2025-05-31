@@ -103,6 +103,14 @@ Route::middleware([
     Route::get('/roles/{role_id}/update', [App\Http\Controllers\RoleController::class, 'page_update'])->name('role.update')->middleware('ui.permission.guard:roles.update');
     Route::post('/roles/{role_id}/update', [App\Http\Controllers\RoleController::class, 'action_update'])->name('role.update.action')->middleware('ui.permission.guard:roles.update');
     Route::get('/roles/{role_id}/delete', [App\Http\Controllers\RoleController::class, 'action_delete'])->name('role.delete.action')->middleware('ui.permission.guard:roles.delete');
+
+    Route::get('/updated', function () {
+        if (request()->attributes->has('update')) {
+            return redirect()->back()->with('success', __('Kublade is still outdated. Please update to the latest version.'));
+        }
+
+        return redirect()->back()->with('success', __('Kublade is now up to date.'));
+    })->name('updated');
 });
 
 Route::get('/switch-color-mode', function () {

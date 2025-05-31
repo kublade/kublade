@@ -33,9 +33,12 @@
                         <div class="row">
                             <div class="col-md-12 d-flex align-items-center gap-3">
                                 <i class="bi bi-arrow-up-circle fs-5"></i>
-                                <span>
-                                {!! __('A new version (<a href=":url" target="_blank" class="text-decoration-none fw-bold">:version</a>) of Kublade is available. Please update to the latest version.', ['url' => 'https://github.com/kublade/kublade/releases/tag/' . request()->attributes->get('update')['tag_name'], 'version' => request()->attributes->get('update')['tag_name']]) !!}
-                                </span>
+                                <div class="d-flex align-items-center justify-content-between gap-3 w-100">
+                                    <span>{!! __('A new version (<a href=":url" target="_blank" class="text-decoration-none fw-bold">:version</a>) of Kublade is available. Please update to the latest version.', ['url' => 'https://github.com/kublade/kublade/releases/tag/' . request()->attributes->get('update')['tag_name'], 'version' => request()->attributes->get('update')['tag_name']]) !!}</span>
+                                    <a href="{{ route('updated') }}" class="btn btn-sm btn-warning">
+                                        {{ __('I\'ve updated!') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
