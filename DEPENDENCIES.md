@@ -152,6 +152,7 @@
 
 | Package | License |
 |---------|---------|
+| @fontsource-variable/nunito@5.2.5 | OFL-1.1 |
 | @svgdotjs/svg.draggable.js@3.0.6 | MIT |
 | @svgdotjs/svg.filter.js@3.0.9 | MIT |
 | @svgdotjs/svg.js@3.2.4 | MIT |
