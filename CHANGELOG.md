@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.36.2](https://github.com/kublade/kublade/compare/v1.36.1...v1.36.2) (2025-05-31)
+
+
+### Bug Fixes
+
+* push composer file by semantic ([a0b5814](https://github.com/kublade/kublade/commit/a0b5814a9b45d26bf0d384dfc567bbeb4a53e24d))
+
 ## [1.36.1](https://github.com/kublade/kublade/compare/v1.36.0...v1.36.1) (2025-05-31)
 
 
