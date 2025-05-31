@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.35.1](https://github.com/kublade/kublade/compare/v1.35.0...v1.35.1) (2025-05-31)
+
+
+### Bug Fixes
+
+* yaml generation data availability ([8a34e26](https://github.com/kublade/kublade/commit/8a34e261607c4e00cca0c1dc95ba6dcdc67eb2bd))
+
 ## [1.35.0](https://github.com/kublade/kublade/compare/v1.34.3...v1.35.0) (2025-05-31)
 
 
