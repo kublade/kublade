@@ -34,6 +34,8 @@ Route::middleware([
     Route::post('/templates/add', [App\Http\Controllers\TemplateController::class, 'action_add'])->name('template.add.action')->middleware('ui.permission.guard:templates.add');
     Route::get('/templates/import', [App\Http\Controllers\TemplateController::class, 'page_import'])->name('template.import')->middleware('ui.permission.guard:templates.import');
     Route::post('/templates/import', [App\Http\Controllers\TemplateController::class, 'action_import'])->name('template.import.action')->middleware('ui.permission.guard:templates.import');
+    Route::get('/templates/sync', [App\Http\Controllers\TemplateController::class, 'page_sync'])->name('template.sync')->middleware('ui.permission.guard:templates.sync');
+    Route::post('/templates/sync', [App\Http\Controllers\TemplateController::class, 'action_sync'])->name('template.sync.action')->middleware('ui.permission.guard:templates.sync');
     Route::get('/templates/{template_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update'])->name('template.update')->middleware('ui.permission.guard:templates.update');
     Route::post('/templates/{template_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update'])->name('template.update.action')->middleware('ui.permission.guard:templates.update');
     Route::get('/templates/{template_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete'])->name('template.delete.action')->middleware('ui.permission.guard:templates.delete');

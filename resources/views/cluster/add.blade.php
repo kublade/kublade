@@ -57,7 +57,7 @@
                                 <label for="git_branch" class="col-md-4 col-form-label text-md-end">{{ __('Branch') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="git_branch" type="text" class="form-control @error('git.branch') is-invalid @enderror" name="git[branch]" value="{{ old('git.branch') }}">
+                                    <input id="git_branch" type="text" class="form-control @error('git.branch') is-invalid @enderror" name="git[branch]" value="{{ old('git.branch') ?? 'main' }}">
 
                                     @error('git.branch')
                                         <span class="invalid-feedback" role="alert">

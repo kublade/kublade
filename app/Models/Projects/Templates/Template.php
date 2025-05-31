@@ -126,6 +126,16 @@ class Template extends Model
     }
 
     /**
+     * Relation to git credentials.
+     *
+     * @return HasOne
+     */
+    public function gitCredentials(): HasOne
+    {
+        return $this->hasOne(TemplateGitCredential::class, 'template_id', 'id');
+    }
+
+    /**
      * Get the tree of the template.
      *
      * @return Collection
@@ -201,5 +211,25 @@ class Template extends Model
                     ->where('type', '=', 'input_hidden'),
             ],
         ];
+    }
+
+    /**
+     * Get the path attribute.
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return 'templates/' . $this->id;
+    }
+
+    /**
+     * Get the repository template path attribute.
+     *
+     * @return string
+     */
+    public function getRepositoryImportPathAttribute(): string
+    {
+        return 'templates/' . $this->id . ($this->gitCredentials?->base_path ?? '');
     }
 }

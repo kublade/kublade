@@ -14,7 +14,7 @@
                         <i class="bi bi-code-square"></i>
                     @endif
                     <div class="d-flex flex-column lh-1 align-items-start">
-                        {{ $field->label ?? __('N/A') }}
+                        {{ $field->label ?? __('N/A') }}{{ $field->required ? ' *' : '' }}
                         <span class="text-muted">{{ $field->key }}</span>
                     </div>
                 </span>

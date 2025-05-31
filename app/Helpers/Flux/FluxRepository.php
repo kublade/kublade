@@ -172,7 +172,19 @@ EOL;
      */
     public static function close()
     {
+        Storage::disk('local')->deleteDirectory(self::$cluster->repositoryPath);
+
         self::$cluster    = null;
         self::$repository = null;
+    }
+
+    /**
+     * Clear the cluster repository.
+     *
+     * @param Cluster $cluster
+     */
+    public static function clear(Cluster $cluster)
+    {
+        Storage::disk('local')->deleteDirectory($cluster->repositoryPath);
     }
 }
