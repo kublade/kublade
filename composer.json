@@ -8,10 +8,10 @@
         "kubernetes",
         "blade"
     ],
-    "license": "AGPL-3.0-or-later",
+    "license": "Apache-2.0",
     "homepage": "https://kublade.org",
     "support": {
-        "docs": "https://docs.kublade.org",
+        "docs": "https://kublade.org/docs/intro",
         "email": "support@kublade.org",
         "issues": "https://github.com/kublade/kublade/issues",
         "source": "https://github.com/kublade/kublade"
