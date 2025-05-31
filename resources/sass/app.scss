@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@import '@fontsource-variable/nunito';
 
 // Variables
 @import 'variables';
@@ -16,6 +16,7 @@ $light:      #f8f9fa;
 $dark:       #343a40;
 $body-bg:    #ffffff;
 $body-color: #000000;
+$font-family-sans-serif: 'Nunito Variable', sans-serif;
 
 :root {
     --bs-body-accent: #fff8f6;

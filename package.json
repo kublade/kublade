@@ -20,6 +20,7 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "@fontsource-variable/nunito": "^5.2.5",
         "apexcharts": "^4.7.0",
         "bootstrap-icons": "^1.11.3"
     }
