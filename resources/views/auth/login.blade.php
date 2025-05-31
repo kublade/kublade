@@ -75,37 +75,37 @@
                                         <div class="col-md-8 offset-md-4 d-flex flex-column gap-3">
                                             @if (config('services.github.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'github') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-github fs-5"></i>
+                                                    <i class="bi bi-github fs-5 lh-base"></i>
                                                     {{ __('Login with GitHub') }}
                                                 </a>
                                             @endif
                                             @if (config('services.gitlab.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'gitlab') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-gitlab fs-5"></i>
+                                                    <i class="bi bi-gitlab fs-5 lh-base"></i>
                                                     {{ __('Login with GitLab') }}
                                                 </a>
                                             @endif
                                             @if (config('services.bitbucket.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'bitbucket') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-bucket-fill fs-5"></i>
+                                                    <i class="fa-brands fa-bitbucket fs-5 lh-base"></i>
                                                     {{ __('Login with Bitbucket') }}
                                                 </a>
                                             @endif
                                             @if (config('services.google.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'google') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-google fs-5"></i>
+                                                    <i class="bi bi-google fs-5 lh-base"></i>
                                                     {{ __('Login with Google') }}
                                                 </a>
                                             @endif
                                             @if (config('services.azure.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'azure') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-microsoft fs-5"></i>
+                                                    <i class="bi bi-microsoft fs-5 lh-base"></i>
                                                     {{ __('Login with Azure') }}
                                                 </a>
                                             @endif
                                             @if (config('services.slack.enabled'))
                                                 <a href="{{ route('auth.social.redirect', 'slack') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                                                    <i class="bi bi-slack fs-5"></i>
+                                                    <i class="bi bi-slack fs-5 lh-base"></i>
                                                     {{ __('Login with Slack') }}
                                                 </a>
                                             @endif
