@@ -14,7 +14,9 @@
             <div class="card border border-secondary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Clusters') }}
-                    <a href="{{ route('cluster.add', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                    <a href="{{ route('cluster.add', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
+                        <i class="bi bi-plus"></i>
+                    </a>
                 </div>
 
                 <div class="card-body p-0">
@@ -149,8 +151,12 @@
                                     </td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('cluster.update', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                            <a href="{{ route('cluster.delete.action', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                            <a href="{{ route('cluster.update', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{{ route('cluster.delete.action', ['project_id' => $cluster->project_id, 'cluster_id' => $cluster->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

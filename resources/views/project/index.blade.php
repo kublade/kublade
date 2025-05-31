@@ -99,7 +99,9 @@
                 @if (empty(request()->get('project')))
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Projects') }}
-                        <a href="{{ route('project.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                        <a href="{{ route('project.add') }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
+                            <i class="bi bi-plus"></i>
+                        </a>
                     </div>
                 @else
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -323,9 +325,15 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
-                                                <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                                <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                                <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>

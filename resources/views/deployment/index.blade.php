@@ -15,7 +15,9 @@
                 @if (!empty(request()->get('project')) && empty($deployment))
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Deployments') }}
-                        <a href="{{ route('deployment.add', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                        <a href="{{ route('deployment.add', ['project_id' => request()->get('project')->id]) }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
+                            <i class="bi bi-plus"></i>
+                        </a>
                     </div>
                 @else
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -161,7 +163,9 @@
                                                     <div class="border rounded overflow-hidden">
                                                         <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                             <span class="fs-6 py-2">{{ __('Template') }}</span>
-                                                            <a href="{{ route('template.details', ['project_id' => request()->get('project')->id, 'template_id' => $deployment->template->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-eye"></i></a>
+                                                            <a href="{{ route('template.details', ['project_id' => request()->get('project')->id, 'template_id' => $deployment->template->id]) }}" class="btn btn-sm btn-secondary text-white" title="{{ __('View') }}">
+                                                                <i class="bi bi-eye"></i>
+                                                            </a>
                                                         </h5>
                                                         <p class="mb-0 p-3 lh-1">{{ $deployment->template->name }}</p>
                                                     </div>
@@ -178,7 +182,9 @@
                                             <div class="border rounded overflow-hidden">
                                                 <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                     <span class="fs-6 py-2">{{ __('Settings') }}</span>
-                                                    <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-secondary text-white"><i class="bi bi-pencil-square"></i></a>
+                                                    <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-secondary text-white" title="{{ __('Update') }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
                                                 </h5>
                                                 <div class="p-3">
                                                     @if ($deployment->template->groupedFields->on_update->default->count() > 0 || $deployment->template->groupedFields->on_update->advanced->count() > 0)
@@ -512,9 +518,15 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
-                                                <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                                <a href="{{ route('deployment.delete.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                                <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="{{ route('deployment.delete.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>

@@ -7,7 +7,9 @@
             <div class="card border border-secondary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Roles') }}
-                    <a href="{{ route('role.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                    <a href="{{ route('role.add') }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
+                        <i class="bi bi-plus"></i>
+                    </a>
                 </div>
                 <div class="card-body p-0">
                     <table class="table">
@@ -23,8 +25,12 @@
                                     <td class="w-100">{{ $role->name }}</td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('role.update', ['role_id' => $role->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                            <a href="{{ route('role.delete.action', ['role_id' => $role->id]) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                            <a href="{{ route('role.update', ['role_id' => $role->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{{ route('role.delete.action', ['role_id' => $role->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

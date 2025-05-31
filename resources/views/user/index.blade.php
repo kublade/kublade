@@ -7,7 +7,9 @@
             <div class="card border border-secondary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Users') }}
-                    <a href="{{ route('user.add') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></a>
+                    <a href="{{ route('user.add') }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
+                        <i class="bi bi-plus"></i>
+                    </a>
                 </div>
                 <div class="card-body p-0">
                     <table class="table">
@@ -26,8 +28,12 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
                                     <td>
-                                        <a href="{{ route('user.update', $user->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                                        <a href="{{ route('user.delete.action', $user->id) }}" class="btn btn-sm btn-danger{{ Auth::id() === $user->id ? ' disabled' : '' }}"><i class="bi bi-trash"></i></a> 
+                                        <a href="{{ route('user.update', $user->id) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{{ route('user.delete.action', $user->id) }}" class="btn btn-sm btn-danger{{ Auth::id() === $user->id ? ' disabled' : '' }}" title="{{ __('Delete') }}">
+                                            <i class="bi bi-trash"></i>
+                                        </a> 
                                     </td>
                                 </tr>
                             @endforeach
