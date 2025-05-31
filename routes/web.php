@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\CheckVersion;
 use App\Http\Middleware\IdentifyProject;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::get('/auth/social/{provider}/callback', [App\Http\Controllers\Auth\Social
 Route::middleware([
     'auth',
     IdentifyProject::class,
+    CheckVersion::class,
 ])->group(function () {
     Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'page_index'])->name('project.index')->middleware('ui.permission.guard:projects.view');
     Route::get('/projects/add', [App\Http\Controllers\ProjectController::class, 'page_add'])->name('project.add')->middleware('ui.permission.guard:projects.add');
