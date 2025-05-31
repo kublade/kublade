@@ -65,6 +65,11 @@
     ];
 
     const variables = [
+      '@{{ $namespace }}',
+      '@{{ $paused }}',
+      '@{{ $limits[\'enabled\'] }}',
+      '@{{ $limits[\'cpu\'] }}',
+      '@{{ $limits[\'memory\'] }}',
       @foreach ($template->fields as $field)
         @if ($field->secret)
           '@{{ $secret[\'{!! $field->key !!}\'] }}',
@@ -73,7 +78,7 @@
         @endif
       @endforeach
       @foreach ($template->ports as $port)
-        '@{{ $ports[\'{!! $port->claim !!}\'] }}',
+        '@{{ $portClaims[\'{!! $port->claim !!}\'] }}',
       @endforeach
     ];
 

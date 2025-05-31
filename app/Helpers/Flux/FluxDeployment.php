@@ -264,9 +264,10 @@ class FluxDeployment
                 Blade::render(
                     str_replace("\t", '  ', $item->object->content),
                     [
-                        'data'   => $data,
-                        'secret' => $secretData,
-                        'limits' => [
+                        'namespace' => $deployment->uuid,
+                        'data'      => $data,
+                        'secret'    => $secretData,
+                        'limits'    => [
                             'enabled' => $deployment->limit?->is_active ? 'true' : 'false',
                             'cpu'     => $deployment->limit?->cpu,
                             'memory'  => $deployment->limit?->memory,
