@@ -45,8 +45,8 @@
             "replacements": [
               {
                 "files": ["composer.json"],
-                "from": "0.0.0",
-                "to": "${nextRelease.version}"
+                "from": "\"version\": \"0.0.0\"",
+                "to": "\"version\": \"${nextRelease.version}\""
               }
             ]
           }
