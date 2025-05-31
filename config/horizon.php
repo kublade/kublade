@@ -234,6 +234,18 @@ return [
             'timeout'      => 3600,
             'nice'         => 0,
         ],
+        'supervisor-5' => [
+            'connection'   => 'redis',
+            'queue'        => ['template_git_import'],
+            'balance'      => 'auto',
+            'maxProcesses' => 4,
+            'maxTime'      => 0,
+            'maxJobs'      => 0,
+            'memory'       => 256,
+            'tries'        => 1,
+            'timeout'      => 1800,
+            'nice'         => 0,
+        ],
     ],
 
     'environments' => [
@@ -258,12 +270,13 @@ return [
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
-        ],
-
-        'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
+            'supervisor-5' => [
+                'maxProcesses'    => 20,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
             ],
         ],
+
+        'local' => [],
     ],
 ];

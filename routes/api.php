@@ -30,6 +30,7 @@ Route::middleware([
     Route::get('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_list'])->name('api.template.list')->middleware('api.permission.guard:templates.view');
     Route::post('/templates', [App\Http\Controllers\API\TemplateController::class, 'action_add'])->name('api.template.add')->middleware('api.permission.guard:templates.add');
     Route::post('/templates/import', [App\Http\Controllers\API\TemplateController::class, 'action_import'])->name('api.template.import')->middleware('api.permission.guard:templates.import');
+    Route::post('/templates/sync', [App\Http\Controllers\API\TemplateController::class, 'action_sync'])->name('api.template.sync')->middleware('api.permission.guard:templates.sync');
     Route::get('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_get'])->name('api.template.get')->middleware('api.permission.guard:templates.view');
     Route::patch('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_update'])->name('api.template.update')->middleware('api.permission.guard:templates.update');
     Route::delete('/templates/{template_id}', [App\Http\Controllers\API\TemplateController::class, 'action_delete'])->name('api.template.delete')->middleware('api.permission.guard:templates.delete');

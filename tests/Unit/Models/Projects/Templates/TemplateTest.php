@@ -8,11 +8,13 @@ use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateDirectory;
 use App\Models\Projects\Templates\TemplateField;
 use App\Models\Projects\Templates\TemplateFile;
+use App\Models\Projects\Templates\TemplateGitCredential;
 use App\Models\Projects\Templates\TemplatePort;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection as SupportCollection;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -426,5 +428,149 @@ class TemplateTest extends TestCase
         $this->assertCount(0, $groupedFields->on_update->advanced);
         $this->assertCount(0, $groupedFields->on_update->default);
         $this->assertCount(0, $groupedFields->on_update->hidden);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanHaveGitCredentials(): void
+    {
+        // Create git credentials
+        $gitCredentials = TemplateGitCredential::factory()->create([
+            'template_id' => $this->template->id,
+        ]);
+
+        // Test the relationship
+        $this->assertInstanceOf(TemplateGitCredential::class, $this->template->gitCredentials);
+        $this->assertEquals($gitCredentials->id, $this->template->gitCredentials->id);
+        $this->assertEquals($gitCredentials->template_id, $this->template->gitCredentials->template_id);
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsCorrectPathAttribute(): void
+    {
+        $this->assertEquals('templates/' . $this->template->id, $this->template->path);
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsCorrectRepositoryImportPathAttribute(): void
+    {
+        // Create git credentials with base path
+        $gitCredentials = TemplateGitCredential::factory()->create([
+            'template_id' => $this->template->id,
+            'base_path'   => '/subdirectory',
+        ]);
+
+        $expectedPath = 'templates/' . $this->template->id . '/subdirectory';
+        $this->assertEquals($expectedPath, $this->template->repositoryImportPath);
+    }
+
+    /**
+     * @test
+     */
+    public function itSupportsSoftDeletes(): void
+    {
+        $templateId = $this->template->id;
+
+        // Delete the template
+        $this->template->delete();
+
+        // Assert it's soft deleted
+        $this->assertSoftDeleted($this->template);
+
+        // Assert it can be restored
+        $this->template->restore();
+        $this->assertNotSoftDeleted($this->template);
+
+        // Assert it can be force deleted
+        $this->template->forceDelete();
+        $this->assertDatabaseMissing('templates', ['id' => $templateId]);
+    }
+
+    /**
+     * @test
+     */
+    public function itUsesUuids(): void
+    {
+        $this->assertIsString($this->template->id);
+        $this->assertEquals(36, strlen($this->template->id)); // UUID length
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $this->template->id);
+    }
+
+    /**
+     * @test
+     */
+    public function itHandlesGroupedFieldsWithAllFieldTypes(): void
+    {
+        // Create fields with different combinations
+        $fields = [
+            // Advanced, set on create only
+            TemplateField::factory()->create([
+                'template_id'   => $this->template->id,
+                'advanced'      => true,
+                'set_on_create' => true,
+                'set_on_update' => false,
+                'type'          => 'input_text',
+            ]),
+            // Default, set on update only
+            TemplateField::factory()->create([
+                'template_id'   => $this->template->id,
+                'advanced'      => false,
+                'set_on_create' => false,
+                'set_on_update' => true,
+                'type'          => 'input_text',
+            ]),
+            // Hidden field, set on both
+            TemplateField::factory()->create([
+                'template_id'   => $this->template->id,
+                'advanced'      => false,
+                'set_on_create' => true,
+                'set_on_update' => true,
+                'type'          => 'input_hidden',
+            ]),
+            // Advanced, set on both
+            TemplateField::factory()->create([
+                'template_id'   => $this->template->id,
+                'advanced'      => true,
+                'set_on_create' => true,
+                'set_on_update' => true,
+                'type'          => 'input_text',
+            ]),
+        ];
+
+        $groupedFields = $this->template->groupedFields;
+
+        // Test all fields
+        $this->assertCount(3, $groupedFields->all); // All fields except hidden
+
+        // Test on_create fields
+        $this->assertCount(2, $groupedFields->on_create->advanced); // Both advanced fields (create-only and both)
+        $this->assertCount(0, $groupedFields->on_create->default);
+        $this->assertCount(1, $groupedFields->on_create->hidden);
+
+        // Test on_update fields
+        $this->assertCount(1, $groupedFields->on_update->advanced); // Only the both-advanced field
+        $this->assertCount(1, $groupedFields->on_update->default);
+        $this->assertCount(1, $groupedFields->on_update->hidden);
+
+        // Verify specific field types are in correct groups
+        $this->assertTrue($groupedFields->on_create->advanced->contains('id', $fields[0]->id));
+        $this->assertTrue($groupedFields->on_update->default->contains('id', $fields[1]->id));
+        $this->assertTrue($groupedFields->on_create->hidden->contains('id', $fields[2]->id));
+        $this->assertTrue($groupedFields->on_update->advanced->contains('id', $fields[3]->id));
+        $this->assertTrue($groupedFields->on_create->advanced->contains('id', $fields[3]->id)); // The both-advanced field should be in both
+    }
+
+    /**
+     * @test
+     */
+    public function itHandlesEmptyGitCredentials(): void
+    {
+        $this->assertNull($this->template->gitCredentials);
+        $this->assertEquals('templates/' . $this->template->id, $this->template->repositoryImportPath);
     }
 }

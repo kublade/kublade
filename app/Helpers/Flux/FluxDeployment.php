@@ -36,6 +36,7 @@ class FluxDeployment
      */
     public static function generate(Deployment $deployment, array $data = [], array $secretData = [], bool $replaceExisting = false)
     {
+        FluxRepository::clear($deployment->cluster);
         FluxRepository::open($deployment->cluster);
 
         if (Storage::disk('local')->exists($deployment->path) && !$replaceExisting) {
@@ -203,6 +204,7 @@ class FluxDeployment
      */
     public static function delete(Deployment $deployment)
     {
+        FluxRepository::clear($deployment->cluster);
         FluxRepository::open($deployment->cluster);
 
         if (!Storage::disk('local')->exists($deployment->path)) {

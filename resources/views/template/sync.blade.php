@@ -12,10 +12,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card border border-secondary">
-                <div class="card-header">{{ __('Import template') }}</div>
+                <div class="card-header">{{ __('Sync template') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('template.import.action') }}">
+                    <form method="POST" action="{{ route('template.sync.action') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -43,17 +43,17 @@
                         <div class="border rounded py-4 mb-3" id="git-credentials">
                             <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">
-                                    <h5>{{ __('Helm Chart') }}</h5>
+                                    <h5>{{ __('GIT Credentials') }}</h5>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="url" class="col-md-4 col-form-label text-md-end">{{ __('Repository URL') }}</label>
+                                <label for="git_url" class="col-md-4 col-form-label text-md-end">{{ __('URL') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="url" type="text" class="form-control @error('url') is-invalid @enderror" name="url" value="{{ old('url') }}" placeholder="https://charts.bitnami.com/bitnami" required>
+                                    <input id="git_url" type="text" class="form-control @error('git.url') is-invalid @enderror" name="git[url]" value="{{ old('git.url') }}" required>
 
-                                    @error('url')
+                                    @error('git.url')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -62,12 +62,12 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="chart" class="col-md-4 col-form-label text-md-end">{{ __('Helm Chart Name') }}</label>
+                                <label for="git_branch" class="col-md-4 col-form-label text-md-end">{{ __('Branch') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="chart" type="text" class="form-control @error('chart') is-invalid @enderror" name="chart" value="{{ old('chart') }}" placeholder="postgresql" required>
+                                    <input id="git_branch" type="text" class="form-control @error('git.branch') is-invalid @enderror" name="git[branch]" value="{{ old('git.branch') ?? 'main' }}">
 
-                                    @error('chart')
+                                    @error('git.branch')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -76,26 +76,54 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="repo" class="col-md-4 col-form-label text-md-end">{{ __('Repository Name') }}</label>
+                                <label for="git_credentials" class="col-md-4 col-form-label text-md-end">{{ __('Credentials') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="repo" type="text" class="form-control @error('repo') is-invalid @enderror" name="repo" value="{{ old('repo') ?? 'helm-repo' }}" placeholder="helm-repo">
+                                    <textarea id="git_credentials" type="text" class="form-control @error('git.credentials') is-invalid @enderror" name="git[credentials]">{{ old('git.credentials') }}</textarea>
 
-                                    @error('repo')
+                                    @error('git.credentials')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3">
-                                <label for="namespace" class="col-md-4 col-form-label text-md-end">{{ __('Default Resource Namespace') }}</label>
+                                <label for="git_username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="namespace" type="text" class="form-control @error('namespace') is-invalid @enderror" name="namespace" value="{{ old('namespace') ?? 'default' }}" placeholder="default">
+                                    <input id="git_username" type="text" class="form-control @error('git.username') is-invalid @enderror" name="git[username]" value="{{ old('git.username') }}">
 
-                                    @error('namespace')
+                                    @error('git.username')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="git_email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="git_email" type="email" class="form-control @error('git.email') is-invalid @enderror" name="git[email]" value="{{ old('git.email') }}">
+
+                                    @error('git.email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="git_base_path" class="col-md-4 col-form-label text-md-end">{{ __('Base Path') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="git_base_path" type="text" class="form-control @error('git.base_path') is-invalid @enderror" name="git[base_path]" value="{{ old('git.base_path') ?? '/' }}">
+
+                                    @error('git.base_path')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

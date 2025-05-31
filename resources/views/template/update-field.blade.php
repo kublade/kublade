@@ -9,6 +9,16 @@
             </a>
         </div>
     </div>
+    @if ($template->gitCredentials)
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="alert alert-secondary mb-0 d-flex align-items-center gap-3">
+                    <i class="bi bi-git fs-5"></i>
+                    {{ __('This template is synced from a Git repository. Changing the template manually may result in unexpected behavior!') }}
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card border border-secondary mb-3">
@@ -247,7 +257,13 @@
                                 <tr class="align-middle">
                                     <td>{{ $option->label }}</td>
                                     <td>{{ $option->value }}</td>
-                                    <td>{{ $option->default ? __('Yes') : __('No') }}</td>
+                                    <td>
+                                        @if ($option->default)
+                                            <i class="bi bi-check-circle text-success"></i>
+                                        @else
+                                            <i class="bi bi-x-circle text-danger"></i>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex gap-2">
                                             <a href="{{ route('template.field.option.update', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">

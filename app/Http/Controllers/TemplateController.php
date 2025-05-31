@@ -11,6 +11,7 @@ use App\Models\Projects\Templates\TemplateDirectory;
 use App\Models\Projects\Templates\TemplateField;
 use App\Models\Projects\Templates\TemplateFieldOption;
 use App\Models\Projects\Templates\TemplateFile;
+use App\Models\Projects\Templates\TemplateGitCredential;
 use App\Models\Projects\Templates\TemplatePort;
 use Exception;
 use Illuminate\Http\Request;
@@ -109,13 +110,40 @@ class TemplateController extends Controller
         Validator::make($request->toArray(), [
             'name'   => ['required', 'string', 'max:255'],
             'netpol' => ['nullable', 'boolean'],
+            'git'    => ['nullable', 'array'],
         ])->validate();
+
+        if ($request->git) {
+            Validator::make($request->git, [
+                'url'         => ['required', 'string', 'max:255'],
+                'branch'      => ['required', 'string', 'max:255'],
+                'credentials' => ['nullable', 'string'],
+                'username'    => ['required', 'string', 'max:255'],
+                'email'       => ['required', 'email', 'max:255'],
+                'base_path'   => ['required', 'string', 'max:255'],
+            ])->validate();
+        }
 
         if ($template = Template::where('id', $template_id)->first()) {
             $template->update([
                 'name'   => $request->name,
                 'netpol' => ! empty($request->netpol),
             ]);
+
+            if ($request->git) {
+                $template->gitCredentials()->updateOrCreate([
+                    'template_id' => $template->id,
+                ], [
+                    'url'         => $request->git['url'],
+                    'branch'      => $request->git['branch'],
+                    'credentials' => $request->git['credentials'],
+                    'username'    => $request->git['username'],
+                    'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
+                ]);
+            } else {
+                $template->gitCredentials()->delete();
+            }
 
             return redirect()->route('template.index')->with('success', __('Template updated.'));
         }
@@ -133,6 +161,7 @@ class TemplateController extends Controller
     public function action_delete(string $template_id)
     {
         if ($template = Template::where('id', $template_id)->first()) {
+            $template->gitCredentials()->delete();
             $template->delete();
 
             return redirect()->route('template.index')->with('success', __('Template deleted.'));
@@ -885,6 +914,64 @@ class TemplateController extends Controller
                 }
 
                 return redirect()->route('template.details', ['template_id' => $template->id])->with('success', __('Template imported.'));
+            } catch (Exception $e) {
+                return redirect()->route('template.details', ['template_id' => $template->id])->with('warning', __('Ooops, something went wrong.'));
+            }
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
+
+    /**
+     * Show the template helm chart import page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function page_sync()
+    {
+        return view('template.sync');
+    }
+
+    /**
+     * Sync a template.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_sync(Request $request)
+    {
+        $validator = Validator::make($request->toArray(), [
+            'name'            => ['required', 'string', 'max:255'],
+            'netpol'          => ['nullable', 'boolean'],
+            'git'             => ['required', 'array'],
+            'git.url'         => ['required', 'string', 'max:255'],
+            'git.branch'      => ['required', 'string', 'max:255'],
+            'git.credentials' => ['nullable', 'string'],
+            'git.username'    => ['required', 'string', 'max:255'],
+            'git.email'       => ['required', 'email', 'max:255'],
+            'git.base_path'   => ['required', 'string', 'max:255'],
+        ]);
+
+        if (
+            $template = Template::create([
+                'user_id' => Auth::id(),
+                'name'    => $request->name,
+                'netpol'  => ! empty($request->netpol),
+            ])
+        ) {
+            try {
+                TemplateGitCredential::create([
+                    'template_id' => $template->id,
+                    'url'         => $request->git['url'],
+                    'branch'      => $request->git['branch'],
+                    'credentials' => $request->git['credentials'],
+                    'username'    => $request->git['username'],
+                    'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
+                ]);
+
+                return redirect()->route('template.details', ['template_id' => $template->id])->with('success', __('Template added. Syncing...'));
             } catch (Exception $e) {
                 return redirect()->route('template.details', ['template_id' => $template->id])->with('warning', __('Ooops, something went wrong.'));
             }

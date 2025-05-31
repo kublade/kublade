@@ -10,6 +10,16 @@
                 </a>
             </div>
         </div>
+        @if ($template->gitCredentials)
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="alert alert-secondary mb-0 d-flex align-items-center gap-3">
+                        <i class="bi bi-git fs-5"></i>
+                        {{ __('This template is synced from a Git repository. Changing the template manually may result in unexpected behavior!') }}
+                    </div>
+                </div>
+            </div>
+        @endif
     @endif
     <div class="row justify-content-center">
         @if (!empty($template))
@@ -61,6 +71,9 @@
                             <a href="{{ route('template.import') }}" class="btn btn-sm btn-primary" title="{{ __('Import') }}">
                                 <i class="bi bi-download"></i>
                             </a>
+                            <a href="{{ route('template.sync') }}" class="btn btn-sm btn-secondary" title="{{ __('Sync') }}">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </a>
                             <a href="{{ route('template.add') }}" class="btn btn-sm btn-primary" title="{{ __('Add') }}">
                                 <i class="bi bi-plus"></i>
                             </a>
@@ -88,6 +101,8 @@
                             <thead class="font-monospace">
                                 <tr class="align-middle">
                                     <th class="w-100" scope="col">{{ __('Template') }}</th>
+                                    <th scope="col">{{ __('Type') }}</th>
+                                    <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
@@ -95,6 +110,24 @@
                                 @foreach ($templates as $template)
                                     <tr class="align-middle">
                                         <td class="w-100">{{ $template->name }}</td>
+                                        <td>
+                                            @if ($template->gitCredentials)
+                                                <span class="badge bg-secondary">{{ __('Git') }}</span>
+                                            @else
+                                                <span class="badge bg-primary">{{ __('Local') }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($template->gitCredentials)
+                                                @if ($template->gitCredentials->synced_at)
+                                                    <span class="badge bg-success">{{ __('Available') }}</span>
+                                                @else
+                                                    <span class="badge bg-warning">{{ __('Syncing') }}</span>
+                                                @endif
+                                            @else
+                                                <span class="badge bg-success">{{ __('Available') }}</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="d-flex gap-2">
                                                 <a href="{{ route('template.details', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">

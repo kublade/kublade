@@ -8,6 +8,7 @@ use App\Jobs\Flux\Actions\StatusMonitoring as FluxDeploymentStatusMonitoring;
 use App\Jobs\Flux\Dispatchers\DeploymentCreation as FluxDeploymentCreation;
 use App\Jobs\Flux\Dispatchers\DeploymentDeletion as FluxDeploymentDeletion;
 use App\Jobs\Flux\Dispatchers\DeploymentUpdate as FluxDeploymentUpdate;
+use App\Jobs\Template\Dispatchers\GitImport as GitTemplateImport;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
@@ -18,3 +19,4 @@ Schedule::job(new FluxDeploymentCreation(), 'dispatchers')->everyMinute();
 Schedule::job(new FluxDeploymentDeletion(), 'dispatchers')->everyMinute();
 Schedule::job(new FluxDeploymentUpdate(), 'dispatchers')->everyMinute();
 Schedule::job(new FluxDeploymentStatusMonitoring(), 'singletons')->everyMinute();
+Schedule::job(new GitTemplateImport(), 'dispatchers')->hourly();

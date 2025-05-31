@@ -12,6 +12,7 @@ use App\Models\Projects\Templates\TemplateDirectory;
 use App\Models\Projects\Templates\TemplateField;
 use App\Models\Projects\Templates\TemplateFieldOption;
 use App\Models\Projects\Templates\TemplateFile;
+use App\Models\Projects\Templates\TemplateGitCredential;
 use App\Models\Projects\Templates\TemplatePort;
 use Exception;
 use Illuminate\Http\Request;
@@ -359,6 +360,104 @@ class TemplateController extends Controller
     }
 
     /**
+     * Sync a template.
+     *
+     * @OA\Post(
+     *     path="/api/templates/sync",
+     *     summary="Sync a template",
+     *     tags={"Templates"},
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *             @OA\Property(property="git", type="object",
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Template syncing",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Template syncing"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="template", ref="#/components/schemas/Template")
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_sync(Request $request)
+    {
+        $validator = Validator::make($request->toArray(), [
+            'name'            => ['required', 'string', 'max:255'],
+            'netpol'          => ['nullable', 'boolean'],
+            'git'             => ['required', 'array'],
+            'git.url'         => ['required', 'string', 'max:255'],
+            'git.branch'      => ['required', 'string', 'max:255'],
+            'git.credentials' => ['required', 'string'],
+            'git.username'    => ['required', 'string', 'max:255'],
+            'git.email'       => ['required', 'email', 'max:255'],
+            'git.base_path'   => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return Response::generate(400, 'error', 'Validation failed', $validator->errors());
+        }
+
+        if (
+            $template = Template::create([
+                'user_id' => Auth::id(),
+                'name'    => $request->name,
+                'netpol'  => ! empty($request->netpol),
+            ])
+        ) {
+            try {
+                TemplateGitCredential::create([
+                    'template_id' => $template->id,
+                    'url'         => $request->git['url'],
+                    'branch'      => $request->git['branch'],
+                    'credentials' => $request->git['credentials'],
+                    'username'    => $request->git['username'],
+                    'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
+                ]);
+
+                return Response::generate(200, 'success', 'Template syncing', [
+                    'template' => $template->toArray(),
+                ]);
+            } catch (Exception $e) {
+                return Response::generate(500, 'error', 'Template not added');
+            }
+        }
+
+        return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+    }
+
+    /**
      * Update the template.
      *
      * @OA\Patch(
@@ -376,6 +475,14 @@ class TemplateController extends Controller
      *
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="netpol", type="boolean", nullable=true),
+     *             @OA\Property(property="git", type="object", nullable=true,
+     *                 @OA\Property(property="url", type="string"),
+     *                 @OA\Property(property="branch", type="string"),
+     *                 @OA\Property(property="credentials", type="string"),
+     *                 @OA\Property(property="username", type="string"),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="base_path", type="string"),
+     *             ),
      *         )
      *     ),
      *
@@ -415,11 +522,41 @@ class TemplateController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
+        if ($request->git) {
+            $validator = Validator::make($request->git, [
+                'url'         => ['required', 'string', 'max:255'],
+                'branch'      => ['required', 'string', 'max:255'],
+                'credentials' => ['required', 'string'],
+                'username'    => ['required', 'string', 'max:255'],
+                'email'       => ['required', 'email', 'max:255'],
+                'base_path'   => ['required', 'string', 'max:255'],
+            ]);
+
+            if ($validator->fails()) {
+                return Response::generate(400, 'error', 'Validation failed', $validator->errors());
+            }
+        }
+
         if ($template = Template::where('id', $template_id)->first()) {
             $template->update([
                 'name'   => $request->name,
                 'netpol' => ! empty($request->netpol),
             ]);
+
+            if ($request->git) {
+                $template->gitCredentials()->updateOrCreate([
+                    'template_id' => $template->id,
+                ], [
+                    'url'         => $request->git['url'],
+                    'branch'      => $request->git['branch'],
+                    'credentials' => $request->git['credentials'],
+                    'username'    => $request->git['username'],
+                    'email'       => $request->git['email'],
+                    'base_path'   => $request->git['base_path'],
+                ]);
+            } else {
+                $template->gitCredentials()->delete();
+            }
 
             return Response::generate(200, 'success', 'Template updated successfully', [
                 'template' => $template->toArray(),
@@ -476,6 +613,7 @@ class TemplateController extends Controller
         }
 
         if ($template = Template::where('id', $template_id)->first()) {
+            $template->gitCredentials()->delete();
             $template->delete();
 
             return Response::generate(200, 'success', 'Template deleted successfully', [

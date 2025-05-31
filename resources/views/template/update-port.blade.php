@@ -9,6 +9,16 @@
             </a>
         </div>
     </div>
+    @if ($template->gitCredentials)
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="alert alert-secondary mb-0 d-flex align-items-center gap-3">
+                    <i class="bi bi-git fs-5"></i>
+                    {{ __('This template is synced from a Git repository. Changing the template manually may result in unexpected behavior!') }}
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card border border-secondary">
