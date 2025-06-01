@@ -18,8 +18,9 @@
 
     @yield('css')
 
-    <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    @livewireStyles
 </head>
 <body>
     <div class="d-flex flex-column h-100 w-100 position-fixed top-0 left-0" id="app">
@@ -180,6 +181,8 @@
 
         <main class="py-4 flex-grow-1 overflow-auto position-relative{{ in_array(Route::currentRouteName(), $authRoutes) ? ' content-vertical-center' : '' }}">
             @yield('content')
+
+            <livewire:chat />
         </main>
     </div>
 
@@ -199,5 +202,7 @@
             $('.content-vertical-center').toggleClass('overflowing', $(window).height() < $('.content-vertical-center')[0].scrollHeight);
         });
     </script>
+
+    @livewireScripts
 </body>
 </html>
