@@ -182,7 +182,9 @@
         <main class="py-4 flex-grow-1 overflow-auto position-relative{{ in_array(Route::currentRouteName(), $authRoutes) ? ' content-vertical-center' : '' }}">
             @yield('content')
 
-            <livewire:chat />
+            @if (!in_array(Route::currentRouteName(), $authRoutes))
+                <livewire:chat />
+            @endif
         </main>
     </div>
 
