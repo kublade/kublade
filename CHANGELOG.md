@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.3](https://github.com/kublade/kublade/compare/v1.37.2...v1.37.3) (2025-06-01)
+
+
+### Bug Fixes
+
+* remove deprecated ressource ownership checks ([92b5131](https://github.com/kublade/kublade/commit/92b5131fbe43176071a8093386dcce18c5c26221))
+
 ## [1.37.2](https://github.com/kublade/kublade/compare/v1.37.1...v1.37.2) (2025-05-31)
 
 
