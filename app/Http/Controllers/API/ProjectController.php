@@ -271,11 +271,7 @@ class ProjectController extends Controller
             return Response::generate(400, 'error', 'Validation failed', $validator->errors());
         }
 
-        if (
-            $project = Project::where('id', $project_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($project = Project::where('id', $project_id)->first()) {
             $project->update([
                 'name' => $request->name,
             ]);

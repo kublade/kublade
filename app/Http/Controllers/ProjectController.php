@@ -103,11 +103,7 @@ class ProjectController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ])->validate();
 
-        if (
-            $project = Project::where('id', $project_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($project = Project::where('id', $project_id)->first()) {
             $project->update([
                 'name' => $request->name,
             ]);
@@ -127,11 +123,7 @@ class ProjectController extends Controller
      */
     public function action_delete(string $project_id)
     {
-        if (
-            $project = Project::where('id', $project_id)
-                ->where('user_id', '=', Auth::id())
-                ->first()
-        ) {
+        if ($project = Project::where('id', $project_id)->first()) {
             $project->delete();
 
             return redirect()->route('project.index')->with('success', __('Project deleted.'));
