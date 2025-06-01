@@ -10,6 +10,7 @@ use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentCommit;
 use App\Models\Projects\Deployments\DeploymentData;
+use App\Models\Projects\Deployments\DeploymentLimit;
 use App\Models\Projects\Deployments\DeploymentLink;
 use App\Models\Projects\Deployments\DeploymentSecretData;
 use App\Models\Projects\Projects\Project;
@@ -347,14 +348,14 @@ class DeploymentController extends Controller
                 $requestFields = (object) (array_key_exists($deployment->template->id, $request->data) ? $request->data[$deployment->template->id] : []);
 
                 $template->fields->each(function (TemplateField $field) use ($requestFields, $deployment) {
-                    if (! $field->set_on_create) {
-                        return;
-                    }
-
                     if ($field->type === 'input_radio' || $field->type === 'input_radio_image') {
-                        $option = $field->options
-                            ->where('value', '=', $requestFields->{$field->key})
-                            ->first();
+                        $option = null;
+
+                        if ($field->set_on_create) {
+                            $option = $field->options
+                                ->where('value', '=', $requestFields->{$field->key})
+                                ->first();
+                        }
 
                         if (empty($option)) {
                             $option = $field->options
@@ -370,7 +371,11 @@ class DeploymentController extends Controller
                             $value = $requestFields->{$field->key};
                         }
                     } else {
-                        $value = $requestFields->{$field->key} ?? '';
+                        if ($field->set_on_create) {
+                            $value = $requestFields->{$field->key} ?? '';
+                        } else {
+                            $value = $field->value ?? '';
+                        }
                     }
 
                     if ($field->secret) {
@@ -389,6 +394,13 @@ class DeploymentController extends Controller
                         ]);
                     }
                 });
+
+                DeploymentLimit::create([
+                    'deployment_id' => $deployment->id,
+                    'is_active'     => $request->limit ? $request->limit['is_active'] ?? false : false,
+                    'memory'        => $request->limit ? $request->limit['memory'] ?? 0 : 0,
+                    'cpu'           => $request->limit ? $request->limit['cpu'] ?? 0 : 0,
+                ]);
 
                 return Response::generate(200, 'success', 'Deployment created', [
                     'deployment' => $deployment->toArray(),
@@ -578,6 +590,14 @@ class DeploymentController extends Controller
                     });
                 }
             });
+
+            DeploymentLimit::updateOrCreate([
+                'deployment_id' => $deployment->id,
+            ], [
+                'is_active' => $request->limit ? $request->limit['is_active'] ?? false : false,
+                'memory'    => $request->limit ? $request->limit['memory'] ?? 0 : 0,
+                'cpu'       => $request->limit ? $request->limit['cpu'] ?? 0 : 0,
+            ]);
 
             $deployment->update([
                 'name' => $request->name,
