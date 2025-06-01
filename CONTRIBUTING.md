@@ -62,7 +62,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/) specifica
 
 ## Community Support
 
-- Join discussions in our community channels.
+- Join discussions in our community channels ([GitHub](https://github.com/kublade/kublade/discussions) and [Gitter](https://matrix.to/#/#kublade:gitter.im)).
 - Help others by answering questions and reviewing PRs.
 - Respect differing viewpoints and foster a welcoming environment.
 
