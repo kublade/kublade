@@ -46,6 +46,7 @@
 | league/oauth1-client@v1.11.0 | MIT |
 | league/uri@7.5.1 | MIT |
 | league/uri-interfaces@7.5.0 | MIT |
+| livewire/livewire@v3.6.3 | MIT |
 | mockery/mockery@1.6.12 | BSD-3-Clause |
 | monolog/monolog@3.9.0 | MIT |
 | myclabs/deep-copy@1.13.1 | MIT |
