@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.4](https://github.com/kublade/kublade/compare/v1.37.3...v1.37.4) (2025-06-01)
+
+
+### Bug Fixes
+
+* create all variables on deployment creation ([1660b3c](https://github.com/kublade/kublade/commit/1660b3c23894fab1305eb6c31e6c32472347b7c0))
+
 ## [1.37.3](https://github.com/kublade/kublade/compare/v1.37.2...v1.37.3) (2025-06-01)
 
 
