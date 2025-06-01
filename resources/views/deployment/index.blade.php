@@ -191,11 +191,11 @@
                                                         @foreach ($deployment->template->groupedFields->all as $field)
                                                             @if ($field->secret)
                                                                 @php
-                                                                    $value = $deployment->deploymentSecretData->where('key', $field->key)->first()->value;
+                                                                    $value = $deployment->deploymentSecretData->where('key', $field->key)->first()?->value;
                                                                 @endphp
                                                             @else
                                                                 @php
-                                                                    $value = $deployment->deploymentData->where('key', $field->key)->first()->value;
+                                                                    $value = $deployment->deploymentData->where('key', $field->key)->first()?->value;
                                                                 @endphp
                                                             @endif
                                                             <div class="row">
