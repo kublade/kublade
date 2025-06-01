@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.0](https://github.com/kublade/kublade/compare/v1.37.4...v1.38.0) (2025-06-01)
+
+
+### Features
+
+* ai companion ([e31db50](https://github.com/kublade/kublade/commit/e31db50bd3e617af95bd01059d821969552ddc6a))
+
 ## [1.37.4](https://github.com/kublade/kublade/compare/v1.37.3...v1.37.4) (2025-06-01)
 
 
