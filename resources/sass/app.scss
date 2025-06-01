@@ -434,3 +434,18 @@ main {
         align-items: flex-start;
     }
 }
+
+.ai-chat-message {
+    code, pre {
+        background-color: var(--bs-light) !important;
+        color: var(--bs-primary) !important;
+        border-radius: 0.25rem !important;
+        font-size: 0.875rem !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+}
+
+.ai-chat-mode {
+    flex: unset !important;
+    width: 7rem !important;
+}
