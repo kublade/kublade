@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.1](https://github.com/kublade/kublade/compare/v1.38.0...v1.38.1) (2025-06-01)
+
+
+### Bug Fixes
+
+* remove ai widget from auth routes ([ce259b6](https://github.com/kublade/kublade/commit/ce259b6f791fe836b69e887ddc487ee4be57f0ae))
+
 ## [1.38.0](https://github.com/kublade/kublade/compare/v1.37.4...v1.38.0) (2025-06-01)
 
 
