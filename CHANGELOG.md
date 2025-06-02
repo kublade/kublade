@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.2](https://github.com/kublade/kublade/compare/v1.38.1...v1.38.2) (2025-06-02)
+
+
+### Bug Fixes
+
+* generalize ai config ([d0eec6a](https://github.com/kublade/kublade/commit/d0eec6a64b3d59b59c6f810d1a8a5ebaf9cf50d2))
+
 ## [1.38.1](https://github.com/kublade/kublade/compare/v1.38.0...v1.38.1) (2025-06-01)
 
 
