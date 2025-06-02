@@ -63,7 +63,7 @@ class Chat extends Component
             $this->routeParameters = $route->parameters();
         }
 
-        $this->hidden = !config('openai.enabled', false);
+        $this->hidden = !config('ai.enabled', false);
 
         $this->chats = AiChat::where('user_id', Auth::id())
             ->orderByDesc('created_at')
@@ -223,8 +223,8 @@ class Chat extends Component
         }
 
         try {
-            $response = Http::withToken(config('openai.api_key'))->post(config('openai.url') . '/chat/completions', [
-                'model'    => config('openai.model'),
+            $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . '/chat/completions', [
+                'model'    => config('ai.model'),
                 'messages' => $this->messages,
             ]);
 
