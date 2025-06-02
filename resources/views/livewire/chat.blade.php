@@ -37,7 +37,7 @@
                         @endforeach
 
                         @if ($sending)
-                            <div class="mb-2 bg-primary text-white px-3 py-2 rounded me-auto ms-5 d-flex align-items-center gap-3">
+                            <div class="mb-2 bg-primary text-white px-3 py-2 rounded ms-auto me-5 d-flex align-items-center gap-3">
                                 <div class="spinner-border spinner-border-sm" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
