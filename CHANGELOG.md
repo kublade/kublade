@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.3](https://github.com/kublade/kublade/compare/v1.38.2...v1.38.3) (2025-06-03)
+
+
+### Bug Fixes
+
+* ai button position ([bdb64b2](https://github.com/kublade/kublade/commit/bdb64b25af1b0c0fdcd119027242620ff4942cb3))
+
 ## [1.38.2](https://github.com/kublade/kublade/compare/v1.38.1...v1.38.2) (2025-06-02)
 
 
