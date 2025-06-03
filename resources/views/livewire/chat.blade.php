@@ -67,7 +67,7 @@
             </div>
         </div>
     @else
-        <button class="btn btn-secondary btn-lg rounded position-absolute bottom-0 end-0 m-3 w-15 h-15 d-flex align-items-center justify-content-center{{ $hidden ? ' d-none' : '' }}" wire:click="toggle">
+        <button class="btn btn-secondary btn-lg rounded position-fixed bottom-0 end-0 m-3 w-15 h-15 d-flex align-items-center justify-content-center{{ $hidden ? ' d-none' : '' }}" wire:click="toggle">
             <i class="bi bi-robot fs-5"></i>
         </button>
     @endif
