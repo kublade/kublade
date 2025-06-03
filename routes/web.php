@@ -65,6 +65,7 @@ Route::middleware([
     Route::get('/templates/{template_id}/field/{field_id}/option/{option_id}/update', [App\Http\Controllers\TemplateController::class, 'page_update_option'])->name('template.field.option.update')->middleware('ui.permission.guard:templates.fields.options.update');
     Route::post('/templates/{template_id}/field/{field_id}/option/{option_id}/update', [App\Http\Controllers\TemplateController::class, 'action_update_option'])->name('template.field.option.update.action')->middleware('ui.permission.guard:templates.fields.options.update');
     Route::get('/templates/{template_id}/field/{field_id}/option/{option_id}/delete', [App\Http\Controllers\TemplateController::class, 'action_delete_option'])->name('template.field.option.delete.action')->middleware('ui.permission.guard:templates.fields.options.delete');
+    Route::post('/ai/tool/action', [App\Http\Controllers\AiController::class, 'action_tool_action'])->name('ai.tool.action')->middleware('ui.permission.guard:ai.tool.action');
 
     Route::get('/templates/{template_id}/port/add', [App\Http\Controllers\TemplateController::class, 'page_add_port'])->name('template.port.add')->middleware('ui.permission.guard:templates.ports.add');
     Route::post('/templates/{template_id}/port/add', [App\Http\Controllers\TemplateController::class, 'action_add_port'])->name('template.port.add.action')->middleware('ui.permission.guard:templates.ports.add');
