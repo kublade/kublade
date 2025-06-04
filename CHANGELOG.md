@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.39.0](https://github.com/kublade/kublade/compare/v1.38.3...v1.39.0) (2025-06-04)
+
+
+### Features
+
+* ai agent mode ([14a5d72](https://github.com/kublade/kublade/commit/14a5d72ce6f8ac700a6e90f16247996ac2c6369b))
+
 ## [1.38.3](https://github.com/kublade/kublade/compare/v1.38.2...v1.38.3) (2025-06-03)
 
 
