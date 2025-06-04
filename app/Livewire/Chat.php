@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -45,9 +46,31 @@ class Chat extends Component
 
     public $mode = 'ask';
 
+    public $systemPrompts = false;
+
+    public $templateId = null;
+
     public ?string $routeName = null;
 
     public array $routeParameters = [];
+
+    /**
+     * Toggle system prompts visibility.
+     */
+    public function updatedSystemPrompts()
+    {
+        $this->dispatch('chatChanged');
+    }
+
+    /**
+     * Toggle mode.
+     */
+    public function updatedMode()
+    {
+        Cookie::queue('ai_mode', $this->mode, 360);
+
+        $this->dispatch('chatChanged');
+    }
 
     /**
      * Mount the component.
@@ -58,12 +81,17 @@ class Chat extends Component
     {
         $route = $route ?? request()->route();
 
+        $this->templateId = $route->parameter('template_id');
+        $this->mode       = Cookie::get('ai_mode') ?? 'ask';
+        $this->chatId     = Cookie::get('ai_chat_id') ?? '';
+
         if ($route) {
             $this->routeName       = $route->getName();
             $this->routeParameters = $route->parameters();
         }
 
         $this->hidden = !config('ai.enabled', false);
+        $this->show   = session('from') === 'ai';
 
         $this->chats = AiChat::where('user_id', Auth::id())
             ->orderByDesc('created_at')
@@ -257,6 +285,14 @@ class Chat extends Component
     public function toggle()
     {
         $this->show = !$this->show;
+
+        if (
+            $this->show &&
+            $this->chatId !== '' &&
+            $this->chatId !== 'new'
+        ) {
+            $this->dispatch('chatChanged');
+        }
     }
 
     /**
@@ -264,6 +300,13 @@ class Chat extends Component
      */
     public function render()
     {
-        return view('livewire.chat');
+        return view('livewire.chat', [
+            'show' => $this->show,
+        ]);
+    }
+
+    public function updatedChatId($value)
+    {
+        Cookie::queue('ai_chat_id', $value, 360);
     }
 }

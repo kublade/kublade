@@ -39,7 +39,10 @@ class Context
     public static function getContext(string $type = 'all', array $route = null, bool $isChanged = false): string
     {
         if ($type === 'all') {
-            return self::getAgentRole($isChanged) . "\n\n" . self::getProductContext($isChanged) . "\n\n" . self::getRouteContext($route, $isChanged);
+            return self::getAgentRole($isChanged) . "\n\n" .
+                self::getProductContext($isChanged) . "\n\n" .
+                self::getToolContext() . "\n\n" .
+                self::getRouteContext($route, $isChanged);
         }
 
         if ($type === 'agent') {
@@ -52,6 +55,10 @@ class Context
 
         if ($type === 'route') {
             return self::getRouteContext($route, $isChanged);
+        }
+
+        if ($type === 'tool') {
+            return self::getToolContext();
         }
 
         return '';
@@ -258,5 +265,25 @@ class Context
         }
 
         return implode("\n  ", $objects);
+    }
+
+    /**
+     * Get the tool context.
+     *
+     * @return string
+     */
+    private static function getToolContext(): string
+    {
+        return 'Tool context:
+- Tool configurations are provided as XML within the "kbl-tool" tags.
+- All tools have the actions "create", "update" and "delete".
+- The template_folder tool has no content.
+- The template_file tool has the content of the file as its content unless the action is "delete".
+- If no content is provided, the tool call uses self-closing tags.
+- You have access to the following tools:
+<kbl-tool type="template_file" action="create" path="path/to/file">
+  content of the file
+</kbl-tool>
+<kbl-tool type="template_folder" action="create" path="path/to/folder" />';
     }
 }
