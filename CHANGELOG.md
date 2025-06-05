@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/kublade/kublade/compare/v1.39.0...v2.0.0) (2025-06-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* ai message storage encryption
+
+### Features
+
+* ai chat tokens limit check ([224ced3](https://github.com/kublade/kublade/commit/224ced34483f0db99211782fbf4943490dcff083))
+* encrypted ai messages storage ([b35fc6e](https://github.com/kublade/kublade/commit/b35fc6e846b768ed494e2a954d016211ddac0de6))
+
 ## [1.39.0](https://github.com/kublade/kublade/compare/v1.38.3...v1.39.0) (2025-06-04)
 
 
