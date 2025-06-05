@@ -84,6 +84,11 @@ class Chat extends Component
         $this->mode       = Cookie::get('ai_mode') ?? 'ask';
         $this->chatId     = Cookie::get('ai_chat_id') ?? '';
 
+        if (!AiChat::find($this->chatId)) {
+            $this->chatId = '';
+            Cookie::forget('ai_chat_id');
+        }
+
         if ($route) {
             $this->routeName       = $route->getName();
             $this->routeParameters = $route->parameters();

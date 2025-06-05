@@ -328,7 +328,7 @@ class Context
         })->count() === 0;
 
         if ($onlySystemMessages) {
-            throw new AiException('No user messages found in the context.');
+            throw new AiException('All user messages were filtered out of the context', 500);
         }
 
         if (self::tokenCountExceeded($messages)) {
