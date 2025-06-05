@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Sagalbot\Encryptable\Encryptable;
 
 /**
  * Class AiChatMessage.
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $ai_chat_id
  * @property string $role
  * @property string $content
+ * @property bool   $protected
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -40,6 +42,7 @@ class AiChatMessage extends Model
 {
     use SoftDeletes;
     use HasUuids;
+    use Encryptable;
 
     /**
      * The table associated with the model.
@@ -55,6 +58,24 @@ class AiChatMessage extends Model
      */
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'protected' => 'boolean',
+    ];
+
+    /**
+     * The attributes that should be encrypted.
+     *
+     * @var array
+     */
+    protected $encryptable = [
+        'content',
     ];
 
     /**

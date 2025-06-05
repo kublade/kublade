@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Helpers\AI\Context;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
@@ -96,5 +97,19 @@ if (!function_exists('processChatContent')) {
         {
             return str_replace("\n", '<br />', $string);
         }
+    }
+}
+
+if (!function_exists('filterChatMessages')) {
+    /**
+     * Filter the chat messages.
+     *
+     * @param array $messages
+     *
+     * @return array
+     */
+    function filterChatMessages(array $messages): array
+    {
+        return Context::filterDuplicateContext($messages);
     }
 }

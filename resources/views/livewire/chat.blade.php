@@ -22,7 +22,7 @@
                     </select>
                 
                     <div id="chat-messages" class="border p-4 rounded overflow-auto overflow-y-scroll flex-grow-1">
-                        @foreach ($messages as $message)
+                        @foreach (filterChatMessages($messages) as $message)
                             @if ($message['role'] !== 'system')
                                 @if ($message['role'] === 'user')
                                     <div class="mb-2 bg-secondary text-white p-3 rounded me-auto ms-5 ai-chat-message">
@@ -53,6 +53,15 @@
                     </div>
 
                     @if ($contextSet)
+                        @if (\App\Helpers\AI\Context::tokenCountExceeded($messages))
+                            <div class="alert alert-warning p-4 rounded mb-0 d-flex align-items-center gap-3">
+                                <i class="bi bi-exclamation-triangle fs-5"></i>
+                                <div>
+                                    <strong>{{ __('Warning:') }}</strong> {{ __('The conversation exceeds the maximum number of tokens. Old messages will not be transmitted. This may result in a partial loss of context.') }}
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="alert alert-secondary p-4 rounded mb-0 d-flex align-items-center gap-3">
                             <i class="bi bi-robot fs-5"></i>
                             <div>
