@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $ai_chat_id
  * @property string $role
  * @property string $content
+ * @property bool   $protected
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -55,6 +56,15 @@ class AiChatMessage extends Model
      */
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'protected' => 'boolean',
     ];
 
     /**

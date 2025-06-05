@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers\AI;
 
+use App\Exceptions\AiException;
 use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Deployments\DeploymentCommit;
@@ -32,29 +33,27 @@ class Context
      *
      * @param string     $type
      * @param array|null $route
-     * @param bool       $isChanged
      *
      * @return string
      */
-    public static function getContext(string $type = 'all', array $route = null, bool $isChanged = false): string
+    public static function getContext(string $type = 'all', array $route = null): string
     {
         if ($type === 'all') {
-            return self::getAgentRole($isChanged) . "\n\n" .
-                self::getProductContext($isChanged) . "\n\n" .
-                self::getToolContext() . "\n\n" .
-                self::getRouteContext($route, $isChanged);
+            return self::getAgentRole() . "\n\n" .
+                self::getProductContext() . "\n\n" .
+                self::getToolContext();
         }
 
         if ($type === 'agent') {
-            return self::getAgentRole($isChanged);
+            return self::getAgentRole();
         }
 
         if ($type === 'product') {
-            return self::getProductContext($isChanged);
+            return self::getProductContext();
         }
 
         if ($type === 'route') {
-            return self::getRouteContext($route, $isChanged);
+            return self::getRouteContext($route);
         }
 
         if ($type === 'tool') {
@@ -67,13 +66,11 @@ class Context
     /**
      * Get the agent role context.
      *
-     * @param bool $isChanged
-     *
      * @return string
      */
-    private static function getAgentRole(bool $isChanged = false): string
+    private static function getAgentRole(): string
     {
-        return 'Agent context' . ($isChanged ? ' (changed)' : '') . ':
+        return 'Agent context:
 - You are a DevOps expert with extended knowledge on Kubernetes and Helm.
 - You know how to utilize GitOps tools like FluxCD and ArgoCD to deploy applications to Kubernetes.
 - You are an expert on the Laravel framework and know the blade templating engine.
@@ -87,13 +84,11 @@ class Context
     /**
      * Get the product context.
      *
-     * @param bool $isChanged
-     *
      * @return string
      */
-    private static function getProductContext(bool $isChanged = false): string
+    private static function getProductContext(): string
     {
-        return 'Product context' . ($isChanged ? ' (changed)' : '') . ':
+        return 'Product context:
 - The product you are active in is called "Kublade".
 - The product is a simple templating engine for Kubernetes manifests based on the Laravel framework.
 - The homepage for the product can be found at https://kublade.org/.
@@ -118,11 +113,10 @@ class Context
      * Get the route context.
      *
      * @param ?array $route
-     * @param bool   $isChanged
      *
      * @return string
      */
-    private static function getRouteContext(?array $route, bool $isChanged = false): string
+    private static function getRouteContext(?array $route): string
     {
         if (!$route) {
             return 'Route context:
@@ -163,7 +157,7 @@ class Context
   ' . implode("\n  ", $injectableContext) . "\n\n";
         }
 
-        return $editorContext . 'Route context' . ($isChanged ? ' (changed)' : '') . ':
+        return $editorContext . 'Route context:
 - The current route is ' . $route['name'] . '.
 - Route context parameters and resulting objects are provided to you as JSON.
 - The current route parameters are: 
@@ -285,5 +279,127 @@ class Context
   content of the file
 </kbl-tool>
 <kbl-tool type="template_folder" action="create" path="path/to/folder" />';
+    }
+
+    /**
+     * Get the token count of the messages.
+     *
+     * @param array $messages
+     *
+     * @return int
+     */
+    public static function getTokenCount(array $messages): int
+    {
+        return collect($messages)->map(function ($message) {
+            return count(explode(' ', $message['content']));
+        })->sum();
+    }
+
+    /**
+     * Check if the token count of the messages exceeds the maximum number of tokens.
+     *
+     * @param array $messages
+     *
+     * @return bool
+     */
+    public static function tokenCountExceeded(array $messages): bool
+    {
+        return self::getTokenCount($messages) > config('ai.max_tokens');
+    }
+
+    /**
+     * Ensure the payload size is within the maximum number of tokens.
+     *
+     * This is a recursive function that will reduce the number of messages
+     * until the token count is within the maximum number of tokens.
+     *
+     * It will always remove the oldest messages first. Messages are always
+     * removed as pairs of user prompt and assistant response to ensure a
+     * meaningful context is kept.
+     *
+     * @param array $messages
+     *
+     * @return array
+     */
+    public static function ensureTokenCount(array $messages): array
+    {
+        $onlySystemMessages = collect($messages)->filter(function ($message) {
+            return $message['role'] !== 'system';
+        })->count() === 0;
+
+        if ($onlySystemMessages) {
+            throw new AiException('No user messages found in the context.');
+        }
+
+        if (self::tokenCountExceeded($messages)) {
+            $firstAssistantIndex = collect($messages)
+                ->keys()
+                ->first(function ($key) use ($messages) {
+                    return $messages[$key]['role'] === 'assistant';
+                });
+
+            $systemMessages = collect($messages)->filter(function ($message, $key) use ($firstAssistantIndex) {
+                return $message['role'] === 'system' &&
+                    $key <= $firstAssistantIndex &&
+                    $message['protected'];
+            });
+
+            if (!empty($firstAssistantIndex)) {
+                return self::ensureTokenCount(
+                    collect($messages)->except(range(0, $firstAssistantIndex))
+                        ->reverse()
+                        ->merge($systemMessages->reverse())
+                        ->reverse()
+                        ->values()
+                        ->toArray()
+                );
+            }
+        }
+
+        return array_values($messages);
+    }
+
+    /**
+     * Filter duplicate context.
+     *
+     * @param array $messages
+     *
+     * @return array
+     */
+    public static function filterDuplicateContext(array $messages): array
+    {
+        collect($messages)->pluck('key')
+            ->unique()
+            ->filter(function ($key) {
+                return $key !== null;
+            })
+            ->each(function ($key) use (&$messages) {
+                $lastApplicableIndex = collect($messages)->keys()->last(function ($index) use ($messages, $key) {
+                    return $messages[$index]['key'] === $key;
+                });
+
+                $messages = collect($messages)->filter(function ($message, $index) use ($key, $lastApplicableIndex) {
+                    return $message['key'] !== $key || $index === $lastApplicableIndex;
+                })->toArray();
+            });
+
+        return $messages;
+    }
+
+    /**
+     * Prepare the messages for submission to the AI API.
+     *
+     * @param array $messages
+     *
+     * @return array
+     */
+    public static function prepareSubmission(array $messages): array
+    {
+        return collect($messages)->map(function ($message) {
+            return [
+                'role'    => $message['role'],
+                'content' => $message['content'],
+            ];
+        })->toArray();
     }
 }

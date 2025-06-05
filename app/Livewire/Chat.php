@@ -13,7 +13,6 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -99,6 +98,7 @@ class Chat extends Component
 
         if ($this->chatId && $this->chatId !== 'new') {
             $this->hydrateChat();
+            $this->resetRouteContext($this->routeName);
         } else {
             $this->chatId     = '';
             $this->chat       = null;
@@ -118,8 +118,10 @@ class Chat extends Component
             if ($this->chat) {
                 $this->messages = $this->chat->messages()->get()->map(function (AiChatMessage $message) {
                     return [
-                        'role'    => $message->role,
-                        'content' => $message->content,
+                        'role'      => $message->role,
+                        'content'   => $message->content,
+                        'key'       => $message->key,
+                        'protected' => $message->protected,
                     ];
                 })->toArray();
 
@@ -163,18 +165,34 @@ class Chat extends Component
      */
     private function setContext()
     {
+        // System message for the basic agent setup
         $message = [
-            'role'    => 'system',
-            'content' => Context::getContext('all', [
-                'name'       => $this->routeName,
-                'parameters' => $this->routeParameters,
-            ], false),
+            'role'      => 'system',
+            'content'   => Context::getContext('all'),
+            'key'       => null,
+            'protected' => true,
         ];
 
         $this->messages[] = $message;
 
         $this->chat->messages()->create($message);
 
+        // System message for the route context
+        $message = [
+            'role'    => 'system',
+            'content' => Context::getContext('route', [
+                'name'       => $this->routeName,
+                'parameters' => $this->routeParameters,
+            ]),
+            'key'       => 'route',
+            'protected' => false,
+        ];
+
+        $this->messages[] = $message;
+
+        $this->chat->messages()->create($message);
+
+        // Indicate that the context setup is complete
         $this->contextSet = true;
     }
 
@@ -185,26 +203,19 @@ class Chat extends Component
      */
     private function resetRouteContext(string $routeName)
     {
-        $routeContext = collect($this->messages)
-            ->reverse()
-            ->where('role', 'system')
-            ->first();
+        $message = [
+            'role'    => 'system',
+            'content' => Context::getContext('route', [
+                'name'       => $this->routeName,
+                'parameters' => $this->routeParameters,
+            ]),
+            'key'       => 'route',
+            'protected' => false,
+        ];
 
-        $hasContext = array_key_exists('content', $routeContext ?? []) && Str::contains($routeContext['content'], 'The current route is ' . $routeName . '.');
+        $this->messages[] = $message;
 
-        if (!$hasContext) {
-            $message = [
-                'role'    => 'system',
-                'content' => Context::getContext('route', [
-                    'name'       => $this->routeName,
-                    'parameters' => $this->routeParameters,
-                ], true),
-            ];
-
-            $this->messages[] = $message;
-
-            $this->chat->messages()->create($message);
-        }
+        $this->chat->messages()->create($message);
     }
 
     /**
@@ -224,8 +235,10 @@ class Chat extends Component
         $this->userInput = '';
 
         $message = [
-            'role'    => 'user',
-            'content' => $userMessage,
+            'role'      => 'user',
+            'content'   => $userMessage,
+            'key'       => null,
+            'protected' => false,
         ];
 
         $this->messages[] = $message;
@@ -253,14 +266,20 @@ class Chat extends Component
         try {
             $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . '/chat/completions', [
                 'model'    => config('ai.model'),
-                'messages' => $this->messages,
+                'messages' => Context::prepareSubmission(
+                    Context::ensureTokenCount(
+                        Context::filterDuplicateContext($this->messages)
+                    )
+                ),
             ]);
 
             $reply = $response['choices'][0]['message']['content'] ?? 'No response';
 
             $message = [
-                'role'    => 'assistant',
-                'content' => $reply,
+                'role'      => 'assistant',
+                'content'   => $reply,
+                'key'       => null,
+                'protected' => false,
             ];
 
             $this->messages[] = $message;
@@ -305,6 +324,11 @@ class Chat extends Component
         ]);
     }
 
+    /**
+     * Updated the chat id.
+     *
+     * @param string $value
+     */
     public function updatedChatId($value)
     {
         Cookie::queue('ai_chat_id', $value, 360);
