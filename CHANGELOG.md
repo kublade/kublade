@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1](https://github.com/kublade/kublade/compare/v2.0.0...v2.0.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* flash alerts ([18f838e](https://github.com/kublade/kublade/commit/18f838ed693a2457a1d6e62aa454f58497a23ffe))
+
 ## [2.0.0](https://github.com/kublade/kublade/compare/v1.39.0...v2.0.0) (2025-06-05)
 
 
