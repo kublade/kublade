@@ -345,7 +345,7 @@ class DeploymentController extends Controller
                     'uuid'         => Str::uuid(),
                 ])
             ) {
-                $requestFields = (object) (array_key_exists($deployment->template->id, $request->data) ? $request->data[$deployment->template->id] : []);
+                $requestFields = (object) (array_key_exists($deployment->template->id, $request->data ?? []) ? $request->data[$deployment->template->id] : []);
 
                 $template->fields->each(function (TemplateField $field) use ($requestFields, $deployment) {
                     if ($field->type === 'input_radio' || $field->type === 'input_radio_image') {
@@ -547,7 +547,7 @@ class DeploymentController extends Controller
                 return Response::generate(400, 'error', 'Validation failed', $validator->errors());
             }
 
-            $requestFields = (object) (array_key_exists($deployment->template->id, $request->data) ? $request->data[$deployment->template->id] : []);
+            $requestFields = (object) (array_key_exists($deployment->template->id, $request->data ?? []) ? $request->data[$deployment->template->id] : []);
 
             $deployment->template->fields->each(function (TemplateField $field) use ($requestFields, $deployment) {
                 if (! $field->set_on_update) {

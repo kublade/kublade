@@ -34,6 +34,18 @@ class ProjectController extends Controller
             if ($has_project_id) {
                 Session::forget('project_id');
 
+                if (Session::has('error')) {
+                    return redirect()->route('project.index')->with('error', Session::get('error'));
+                } elseif (Session::has('warning')) {
+                    return redirect()->route('project.index')->with('warning', Session::get('warning'));
+                } elseif (Session::has('success')) {
+                    return redirect()->route('project.index')->with('success', Session::get('success'));
+                } elseif (Session::has('info')) {
+                    return redirect()->route('project.index')->with('info', Session::get('info'));
+                } elseif (Session::has('message')) {
+                    return redirect()->route('project.index')->with('message', Session::get('message'));
+                }
+
                 return redirect()->route('project.index');
             }
         }
