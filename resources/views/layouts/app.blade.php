@@ -180,7 +180,52 @@
         @endif
 
         <main class="py-4 flex-grow-1 overflow-auto position-relative{{ in_array(Route::currentRouteName(), $authRoutes) ? ' content-vertical-center' : '' }}">
-            @yield('content')
+            <div class="d-flex flex-column gap-4 w-100">
+                @if (
+                    !in_array(Route::currentRouteName(), $authRoutes) && (
+                        session()->has('error') || 
+                        session()->has('warning') || 
+                        session()->has('success') || 
+                        session()->has('info') || 
+                        session()->has('message')
+                    )
+                )
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if (session()->has('error'))
+                                    <div class="alert alert-danger mb-0 d-flex align-items-center gap-3" role="alert">
+                                        <i class="bi bi-exclamation-circle fs-5"></i>
+                                        {{ session()->get('error') }}
+                                    </div>
+                                @elseif (session()->has('warning'))
+                                    <div class="alert alert-warning mb-0 d-flex align-items-center gap-3" role="alert">
+                                        <i class="bi bi-exclamation-circle fs-5"></i>
+                                        {{ session()->get('warning') }}
+                                    </div>
+                                @elseif (session()->has('success'))
+                                    <div class="alert alert-success mb-0 d-flex align-items-center gap-3" role="alert">
+                                        <i class="bi bi-check-circle fs-5"></i>
+                                        {{ session()->get('success') }}
+                                    </div>
+                                @elseif (session()->has('info'))
+                                    <div class="alert alert-info mb-0 d-flex align-items-center gap-3" role="alert">
+                                        <i class="bi bi-info-circle fs-5"></i>
+                                        {{ session()->get('info') }}
+                                    </div>
+                                @elseif (session()->has('message'))
+                                    <div class="alert alert-secondary mb-0 d-flex align-items-center gap-3" role="alert">
+                                        <i class="bi bi-info-circle fs-5"></i>
+                                        {{ session()->get('message') }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            
+                @yield('content')
+            </div>
 
             @if (!in_array(Route::currentRouteName(), $authRoutes))
                 <livewire:chat />
