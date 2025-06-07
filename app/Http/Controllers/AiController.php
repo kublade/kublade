@@ -31,7 +31,14 @@ class AiController extends Controller
     public function action_tool_action(Request $request)
     {
         Validator::make($request->all(), [
-            'type' => ['required', Rule::in(['template_file', 'template_folder'])],
+            'type' => [
+                'required',
+                Rule::in([
+                    'template_file',
+                    'template_folder',
+                    'template_port',
+                ]),
+            ],
         ])->validate();
 
         try {
@@ -40,6 +47,8 @@ class AiController extends Controller
                     return $this->applyTemplateFile($request);
                 case 'template_folder':
                     return $this->applyTemplateFolder($request);
+                case 'template_port':
+                    return $this->applyTemplatePort($request);
                 default:
                     throw new AiException('Invalid tool action', 400);
             }
@@ -58,7 +67,14 @@ class AiController extends Controller
     private function applyTemplateFile(Request $request)
     {
         Validator::make($request->all(), [
-            'action'      => ['required', Rule::in(['create', 'update', 'delete'])],
+            'action' => [
+                'required',
+                Rule::in([
+                    'create',
+                    'update',
+                    'delete',
+                ]),
+            ],
             'path'        => ['required', 'string', 'max:255'],
             'content'     => ['required', 'string'],
             'template_id' => ['required', 'string', 'max:255'],
@@ -103,7 +119,14 @@ class AiController extends Controller
     private function applyTemplateFolder(Request $request)
     {
         Validator::make($request->all(), [
-            'action'      => ['required', Rule::in(['create', 'update', 'delete'])],
+            'action' => [
+                'required',
+                Rule::in([
+                    'create',
+                    'update',
+                    'delete',
+                ]),
+            ],
             'path'        => ['required', 'string', 'max:255'],
             'template_id' => ['required', 'string', 'max:255'],
         ])->validate();
@@ -151,5 +174,54 @@ class AiController extends Controller
         } catch (Exception $e) {
             throw new AiException('Failed to ensure path exists', 500);
         }
+    }
+
+    /**
+     * Apply the template port action.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function applyTemplatePort(Request $request)
+    {
+        Validator::make($request->all(), [
+            'action' => [
+                'required',
+                Rule::in([
+                    'create',
+                    'update',
+                    'delete',
+                ]),
+            ],
+            'group'          => ['required', 'string', 'max:255'],
+            'claim'          => ['required', 'string', 'max:255'],
+            'preferred_port' => ['required', 'integer'],
+            'random'         => ['required', 'boolean'],
+            'template_id'    => ['required', 'string', 'max:255'],
+        ])->validate();
+
+        $template = Template::find($request->template_id);
+
+        if (!$template) {
+            throw new AiException('Template not found', 404);
+        }
+
+        if (in_array($request->action, ['create', 'update'])) {
+            $template->ports()->updateOrCreate([
+                'group' => $request->group,
+                'claim' => $request->claim,
+            ], [
+                'preferred_port' => $request->preferred_port,
+                'random'         => $request->random,
+            ]);
+        } elseif ($request->action === 'delete') {
+            $template->ports()
+                ->where('group', $request->group)
+                ->where('claim', $request->claim)
+                ->delete();
+        }
+
+        return redirect()->back()->with('success', __('Template port applied.'))->with('from', 'ai');
     }
 }
