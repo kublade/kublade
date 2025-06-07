@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0](https://github.com/kublade/kublade/compare/v2.1.0...v2.2.0) (2025-06-07)
+
+
+### Features
+
+* **ai:** template field tool ([312f69e](https://github.com/kublade/kublade/commit/312f69ef751daf8d2eabd4894d7d30da292aa6df))
+
 ## [2.1.0](https://github.com/kublade/kublade/compare/v2.0.1...v2.1.0) (2025-06-07)
 
 
