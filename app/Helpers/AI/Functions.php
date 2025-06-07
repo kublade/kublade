@@ -23,7 +23,17 @@ if (!function_exists('processChatContent')) {
         preg_match_all($pattern, $string, $matches);
 
         collect($matches[0])->each(function ($xmlBlock) use ($mode, $templateId, &$string) {
-            $xml = simplexml_load_string($xmlBlock);
+            try {
+                $xml = simplexml_load_string($xmlBlock);
+            } catch (Exception $e) {
+                $viewContent = View::make('ai.tool-action', [
+                    'available' => false,
+                ])->render();
+
+                $string = Str::replace($xmlBlock, $viewContent, $string);
+
+                return;
+            }
 
             $attributes = collect($xml->attributes())->map(function ($val) {
                 return (string) $val;
@@ -83,6 +93,62 @@ if (!function_exists('processChatContent')) {
                         'random'         => $random,
                         'mode'           => $mode,
                         'templateId'     => $templateId,
+                    ])->render();
+
+                    $string = Str::replace($xmlBlock, $viewContent, $string);
+
+                    break;
+                case 'template_field':
+                    $advanced      = (bool) $attributes->get('advanced');
+                    $field_type    = $attributes->get('field_type');
+                    $required      = (bool) $attributes->get('required');
+                    $secret        = (bool) $attributes->get('secret');
+                    $label         = $attributes->get('label');
+                    $key           = $attributes->get('key');
+                    $value         = $attributes->get('value');
+                    $min           = (int) $attributes->get('min');
+                    $max           = (int) $attributes->get('max');
+                    $step          = (int) $attributes->get('step');
+                    $set_on_create = (bool) $attributes->get('set_on_create');
+                    $set_on_update = (bool) $attributes->get('set_on_update');
+                    $optionsArray  = [];
+
+                    if (array_key_exists('kbl-field-option', (array) $xml)) {
+                        $options      = $xml->{'kbl-field-option'};
+                        $optionsArray = iterator_to_array($options, false);
+                    }
+
+                    $options = collect($optionsArray)->map(function ($xml) {
+                        $attributes = collect($xml->attributes())->map(function ($val) {
+                            return (string) $val;
+                        });
+
+                        return [
+                            'label'   => $attributes->get('label'),
+                            'value'   => $attributes->get('value'),
+                            'default' => (bool) $attributes->get('default'),
+                        ];
+                    });
+
+                    $viewContent = View::make('ai.tool-action', [
+                        'available'     => true,
+                        'type'          => $type,
+                        'field_type'    => $field_type,
+                        'action'        => $action,
+                        'advanced'      => $advanced,
+                        'required'      => $required,
+                        'secret'        => $secret,
+                        'label'         => $label,
+                        'key'           => $key,
+                        'value'         => $value,
+                        'min'           => $min,
+                        'max'           => $max,
+                        'step'          => $step,
+                        'set_on_create' => $set_on_create,
+                        'set_on_update' => $set_on_update,
+                        'options'       => $options,
+                        'mode'          => $mode,
+                        'templateId'    => $templateId,
                     ])->render();
 
                     $string = Str::replace($xmlBlock, $viewContent, $string);

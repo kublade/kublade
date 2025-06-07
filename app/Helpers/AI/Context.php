@@ -274,13 +274,21 @@ class Context
 - The template_folder tool has no content.
 - The template_port tool has no content.
 - The template_file tool has the content of the file as its content unless the action is "delete".
+- The template_field tool can generate fields of the following types: "input_text", "input_number", "input_range", "input_radio", "input_radio_image", "input_checkbox", "input_hidden", "select" and "textarea".
+- The template_field tool has a list of available options as its content unless the action is "delete" or the type is anything other than "input_radio", "input_radio_image" or "select".
+- The template_field tool has the additional attributes "min", "max" and "step" only if the type is either "input_number" or "input_range".
 - If no content is provided, the tool call uses self-closing tags.
 - You have access to the following tools:
 <kbl-tool type="template_file" action="create" path="path/to/file">
   content of the file
 </kbl-tool>
 <kbl-tool type="template_folder" action="create" path="path/to/folder" />
-<kbl-tool type="template_port" action="create" group="group" claim="claim" preferred_port="preferred_port" random="true" />';
+<kbl-tool type="template_port" action="create" group="group" claim="claim" preferred_port="preferred_port" random="true" />
+<kbl-tool type="template_field" action="create" field_type="input_text" label="label" key="key" value="value" required="true" secret="false" set_on_create="true" set_on_update="true" />
+<kbl-tool type="template_field" action="update" field_type="select" label="label" key="key" value="value" required="true" secret="false" set_on_create="true" set_on_update="true">
+  <kbl-field-option label="label" value="value" default="true" />
+</kbl-tool>
+';
     }
 
     /**
