@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/kublade/kublade/compare/v2.0.1...v2.1.0) (2025-06-07)
+
+
+### Features
+
+* **ai:** template port tool ([40fe35e](https://github.com/kublade/kublade/commit/40fe35e211e1eab9cf2bdae098aa9f37d21c640b))
+
+
+### Bug Fixes
+
+* **ai:** file and folder tool ([b4e86e1](https://github.com/kublade/kublade/commit/b4e86e142cf92eb773bc1509fe9f2061ed08285f))
+
 ## [2.0.1](https://github.com/kublade/kublade/compare/v2.0.0...v2.0.1) (2025-06-06)
 
 
