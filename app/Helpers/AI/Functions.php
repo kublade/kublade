@@ -31,10 +31,10 @@ if (!function_exists('processChatContent')) {
 
             $type   = $attributes->get('type');
             $action = $attributes->get('action');
-            $path   = $attributes->get('path');
 
             switch ($type) {
                 case 'template_file':
+                    $path    = $attributes->get('path');
                     $content = Str::of($xmlBlock)
                         ->after('>')
                         ->beforeLast('</kbl-tool>')
@@ -54,6 +54,7 @@ if (!function_exists('processChatContent')) {
 
                     break;
                 case 'template_folder':
+                    $path        = $attributes->get('path');
                     $viewContent = View::make('ai.tool-action', [
                         'available'  => true,
                         'type'       => $type,
@@ -66,14 +67,30 @@ if (!function_exists('processChatContent')) {
                     $string = Str::replace($xmlBlock, $viewContent, $string);
 
                     break;
+                case 'template_port':
+                    $group          = $attributes->get('group');
+                    $claim          = $attributes->get('claim');
+                    $preferred_port = (int) $attributes->get('preferred_port');
+                    $random         = (bool) $attributes->get('random');
+
+                    $viewContent = View::make('ai.tool-action', [
+                        'available'      => true,
+                        'type'           => $type,
+                        'action'         => $action,
+                        'group'          => $group,
+                        'claim'          => $claim,
+                        'preferred_port' => $preferred_port,
+                        'random'         => $random,
+                        'mode'           => $mode,
+                        'templateId'     => $templateId,
+                    ])->render();
+
+                    $string = Str::replace($xmlBlock, $viewContent, $string);
+
+                    break;
                 default:
                     $viewContent = View::make('ai.tool-action', [
-                        'available'  => false,
-                        'type'       => $type,
-                        'action'     => $action,
-                        'path'       => $path,
-                        'mode'       => $mode,
-                        'templateId' => $templateId,
+                        'available' => false,
                     ])->render();
 
                     $string = Str::replace($xmlBlock, $viewContent, $string);

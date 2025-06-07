@@ -272,13 +272,15 @@ class Context
 - Tool configurations are provided as XML within the "kbl-tool" tags.
 - All tools have the actions "create", "update" and "delete".
 - The template_folder tool has no content.
+- The template_port tool has no content.
 - The template_file tool has the content of the file as its content unless the action is "delete".
 - If no content is provided, the tool call uses self-closing tags.
 - You have access to the following tools:
 <kbl-tool type="template_file" action="create" path="path/to/file">
   content of the file
 </kbl-tool>
-<kbl-tool type="template_folder" action="create" path="path/to/folder" />';
+<kbl-tool type="template_folder" action="create" path="path/to/folder" />
+<kbl-tool type="template_port" action="create" group="group" claim="claim" preferred_port="preferred_port" random="true" />';
     }
 
     /**
