@@ -1,0 +1,13 @@
+name: example-tool
+description: An example MCP tool that generates a response based on a prompt
+url: https://api.example.com/mcp-tool
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{ env('MCP_API_KEY') }}
+input:
+  prompt: "{{ $prompt }}"
+  context: "{{ $context }}"
+output:
+  type: json
+  path: $.result
