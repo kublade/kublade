@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://github.com/kublade/kublade/compare/v2.2.0...v2.3.0) (2025-06-09)
+
+
+### Features
+
+* deployment limit ui ([e404755](https://github.com/kublade/kublade/commit/e40475568e847eb78899db5d11e5610e6b347ad8))
+
 ## [2.2.0](https://github.com/kublade/kublade/compare/v2.1.0...v2.2.0) (2025-06-07)
 
 
