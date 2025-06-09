@@ -31,4 +31,9 @@ return [
      * Exceeding the maximum number of tokens will result in context truncation.
      */
     'max_tokens' => env('AI_MAX_TOKENS', 100000),
+
+    /**
+     * The path to the prompt routing vectors.
+     */
+    'prompt_routing_vectors_file' => env('AI_PROMPT_ROUTING_VECTORS_FILE', 'ai/prompt-routing-vectors.json'),
 ];
