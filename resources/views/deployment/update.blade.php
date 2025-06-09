@@ -247,6 +247,44 @@
                             <input type="hidden" id="input_{{ $field->id }}" name="data[{{ $deployment->template->id }}][{{ $field->key }}]" value="{{ $value ?? $field->value }}">
                         @endforeach
 
+                        <div class="border rounded py-4 mb-3 fields" id="limits{{ $deployment->template->id }}">
+                            <div class="row mb-2">
+                                <div class="col-md-6 offset-md-4">
+                                    <h5>{{ __('Limits') }}</h5>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="limit_is_active" class="col-md-4 col-form-label text-md-end">{{ __('Enable') }}</label>
+
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <input id="limit_is_active" type="checkbox" class="form-check-input" name="limit[is_active]" value="1" {{ $deployment->limit?->is_active ? 'checked' : '' }}>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="limit_memory" class="col-md-4 col-form-label text-md-end">{{ __('Memory') }}</label>
+
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control @error('limit.memory') is-invalid @enderror" id="limit_memory" name="limit[memory]" value="{{ $deployment->limit?->memory }}">
+                                        <span class="input-group-text">{{ __('Bytes') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <label for="limit_cpu" class="col-md-4 col-form-label text-md-end">{{ __('CPU') }}</label>
+
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control @error('limit.cpu') is-invalid @enderror" id="limit_cpu" name="limit[cpu]" value="{{ $deployment->limit?->cpu }}" step="0.001">
+                                        <span class="input-group-text">{{ __('Cores') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
