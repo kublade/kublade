@@ -179,7 +179,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="border rounded overflow-hidden">
+                                            <div class="border rounded overflow-hidden mb-3">
                                                 <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                     <span class="fs-6 py-2">{{ __('Settings') }}</span>
                                                     <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-secondary text-white" title="{{ __('Update') }}">
@@ -215,6 +215,39 @@
                                                         <div class="alert alert-info mb-0 d-flex align-items-center gap-3">
                                                             <i class="bi bi-info-circle fs-5"></i>
                                                             {{ __('No settings') }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="border rounded overflow-hidden">
+                                                <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
+                                                    <span class="fs-6 py-2">{{ __('Limits') }}</span>
+                                                    <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-secondary text-white" title="{{ __('Update') }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                </h5>
+                                                <div class="p-3">
+                                                    @if ($deployment->limit?->is_active)
+                                                        <div class="row">
+                                                            <div class="col-md">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text align-items-start" id="field{{ $field->id }}">{{ __('Memory') }}</span>
+                                                                    <input type="text" class="form-control" aria-label="{{ __('Memory') }}" aria-describedby="field{{ $field->id }}" value="{{ $deployment->limit?->memory }}" readonly>
+                                                                    <span class="input-group-text">{{ __('Bytes') }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text align-items-start" id="field{{ $field->id }}">{{ __('CPU') }}</span>
+                                                                    <input type="text" class="form-control" aria-label="{{ __('CPU') }}" aria-describedby="field{{ $field->id }}" value="{{ $deployment->limit?->cpu }}" readonly>
+                                                                    <span class="input-group-text">{{ __('Cores') }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <div class="alert alert-warning mb-0 d-flex align-items-center gap-3">
+                                                            <i class="bi bi-exclamation-triangle fs-5"></i>
+                                                            {{ __('No limit set') }}
                                                         </div>
                                                     @endif
                                                 </div>
