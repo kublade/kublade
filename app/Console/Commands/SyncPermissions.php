@@ -7,6 +7,13 @@ namespace App\Console\Commands;
 use App\Helpers\PermissionSet;
 use Illuminate\Console\Command;
 
+/**
+ * Class SyncPermissions.
+ *
+ * This class is the command to sync the permissions.
+ *
+ * @author Marcel Menk <marcel.menk@ipvx.io>
+ */
 class SyncPermissions extends Command
 {
     /**
@@ -14,7 +21,7 @@ class SyncPermissions extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-permissions';
+    protected $signature = 'kbl:permissions:sync';
 
     /**
      * The console command description.

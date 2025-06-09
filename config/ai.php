@@ -10,9 +10,29 @@ return [
     'enabled' => env('AI_ENABLED', false),
 
     /**
-     * The model to use.
+     * The model to use for chat completions.
      */
     'model' => env('AI_MODEL', 'o4-mini'),
+
+    /**
+     * The endpoint to use for chat completions.
+     */
+    'chat_completions_endpoint' => env('AI_CHAT_COMPLETIONS_ENDPOINT', '/v1/chat/completions'),
+
+    /**
+     * The model to use for embeddings.
+     */
+    'embedding_model' => env('AI_EMBEDDING_MODEL', 'text-embedding-3-small'),
+
+    /**
+     * The endpoint to use for embeddings.
+     */
+    'embedding_endpoint' => env('AI_EMBEDDING_ENDPOINT', '/v1/embeddings'),
+
+    /**
+     * Whether to use remote embedding.
+     */
+    'remote_embedding' => env('AI_REMOTE_EMBEDDING', true),
 
     /**
      * The API key to use.
@@ -22,7 +42,7 @@ return [
     /**
      * The URL to use.
      */
-    'url' => env('AI_URL', 'https://api.openai.com/v1'),
+    'url' => env('AI_URL', 'https://api.openai.com'),
 
     /**
      * The maximum number of tokens to use.
@@ -35,5 +55,5 @@ return [
     /**
      * The path to the prompt routing vectors.
      */
-    'prompt_routing_vectors_file' => env('AI_PROMPT_ROUTING_VECTORS_FILE', 'ai/prompt-routing-vectors.json'),
+    'prompt_routing_vectors_file' => env('AI_PROMPT_ROUTING_VECTORS_FILE', '/ai/prompt-routing-vectors.json'),
 ];

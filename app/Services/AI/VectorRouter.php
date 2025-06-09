@@ -91,4 +91,32 @@ class VectorRouter
 
         return ($normA && $normB) ? $dot / (sqrt($normA) * sqrt($normB)) : 0.0;
     }
+
+    /**
+     * Publish the vector to the database.
+     *
+     * @param string $prompt
+     * @param string $action
+     * @param array  $embedding
+     * @param string $source
+     */
+    public function publish(string $prompt, string $action, array $embedding, string $source): void
+    {
+        $vectors = array_filter($this->vectors, function ($vector) use ($prompt) {
+            return $vector['prompt'] !== $prompt;
+        });
+
+        $vectors[] = [
+            'prompt'    => $prompt,
+            'action'    => $action,
+            'source'    => $source,
+            'embedding' => array_values($embedding),
+        ];
+
+        $vectors = array_values($vectors);
+
+        $this->vectors = $vectors;
+
+        Storage::disk('local')->put(config('ai.prompt_routing_vectors_file'), json_encode($this->vectors));
+    }
 }

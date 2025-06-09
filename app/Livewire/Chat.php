@@ -269,7 +269,7 @@ class Chat extends Component
         }
 
         try {
-            $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . '/chat/completions', [
+            $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . config('ai.chat_completions_endpoint'), [
                 'model'    => config('ai.model'),
                 'messages' => Context::prepareSubmission(
                     Context::ensureTokenCount(
