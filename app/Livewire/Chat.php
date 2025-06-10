@@ -8,6 +8,7 @@ use App\Exceptions\AiException;
 use App\Helpers\AI\Context;
 use App\Models\AI\AiChat;
 use App\Models\AI\AiChatMessage;
+use App\Services\AI\McpHandler;
 use App\Services\AI\VectorRouter;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
