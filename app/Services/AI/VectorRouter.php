@@ -20,14 +20,21 @@ class VectorRouter
 {
     protected array $vectors = [];
 
+    protected VectorSimulator $simulator;
+
+    protected VectorApi $api;
+
     /**
      * Construct the vector router.
      *
      * @param string $path
      * @param bool   $createIfNotExists
      */
-    public function __construct(?string $path = null, bool $createIfNotExists = false)
+    public function __construct(?string $path = null, bool $createIfNotExists = true)
     {
+        $this->simulator = new VectorSimulator();
+        $this->api       = new VectorApi();
+
         $path = $path ?? config('ai.prompt_routing_vectors_file');
 
         try {
@@ -38,7 +45,7 @@ class VectorRouter
                 Storage::disk('local')->put($path, json_encode([]));
             }
 
-            $this->vectors = json_decode(Storage::disk('local')->get($path), true);
+            $this->vectors = json_decode(Storage::disk('local')->get($path), false);
         } catch (Throwable $e) {
             $this->vectors = [];
 
@@ -49,26 +56,34 @@ class VectorRouter
     /**
      * Find the nearest vector in the database.
      *
-     * @param array $embedding
-     * @param float $minScore
+     * @param array  $embedding
+     * @param string $source
+     * @param float  $minScore
      *
-     * @return array|null
+     * @return object|null
      */
-    public function findNearest(array $embedding, float $minScore = 0.75): ?array
+    public function findNearest(array $embedding, string $source = 'api', float $minScore = 0.75): ?object
     {
         $best      = null;
         $bestScore = -1;
 
         foreach ($this->vectors as $entry) {
-            $score = $this->cosineSimilarity($embedding, $entry['embedding']);
+            if ($entry->source !== $source) {
+                continue;
+            }
+
+            $score = $this->cosineSimilarity($embedding, $entry->embedding);
 
             if ($score > $bestScore) {
-                $best      = $entry;
+                $best      = (array) $entry;
                 $bestScore = $score;
             }
         }
 
-        return $bestScore >= $minScore ? $best + ['score' => $bestScore] : null;
+        return $bestScore >= $minScore ? (object) [
+            ...$best,
+            'score' => $bestScore,
+        ] : null;
     }
 
     /**
@@ -103,10 +118,10 @@ class VectorRouter
     public function publish(string $prompt, string $action, array $embedding, string $source): void
     {
         $vectors = array_filter($this->vectors, function ($vector) use ($prompt) {
-            return $vector['prompt'] !== $prompt;
+            return $vector->prompt !== $prompt;
         });
 
-        $vectors[] = [
+        $vectors[] = (object) [
             'prompt'    => $prompt,
             'action'    => $action,
             'source'    => $source,
@@ -118,5 +133,37 @@ class VectorRouter
         $this->vectors = $vectors;
 
         Storage::disk('local')->put(config('ai.prompt_routing_vectors_file'), json_encode($this->vectors));
+    }
+
+    /**
+     * Get the vectors from the prompt.
+     *
+     * @param string $prompt
+     *
+     * @return array
+     */
+    public function getVectorsFromPrompt(string $prompt): object
+    {
+        if (!config('ai.remote_embedding')) {
+            return (object) [
+                'prompt'    => $prompt,
+                'source'    => 'simulator',
+                'embedding' => $this->simulator->getVectorsFromPrompt($prompt),
+            ];
+        }
+
+        try {
+            return (object) [
+                'prompt'    => $prompt,
+                'source'    => 'api',
+                'embedding' => $this->api->getVectorsFromPrompt($prompt),
+            ];
+        } catch (Throwable $e) {
+            return (object) [
+                'prompt'    => $prompt,
+                'source'    => 'simulator',
+                'embedding' => $this->simulator->getVectorsFromPrompt($prompt),
+            ];
+        }
     }
 }

@@ -63,41 +63,29 @@ class McpHandler
     /**
      * Handle the MCP request.
      *
-     * @param string      $prompt
-     * @param string|null $context
-     *
      * @return string
      */
-    public function handle(string $prompt, ?string $context = null): string
+    public function handle(): string
     {
         if (!$this->provider) {
             throw new AiException('MCP provider not set', 400);
         }
 
-        $method = strtolower($this->provider['method']);
+        $headers = $this->provider['headers'] ?? [];
+        $input   = $this->provider['input'] ?? [];
+        $method  = strtolower($this->provider['method']);
+        $url     = $this->provider['url'];
 
-        if (!empty($this->provider['headers'])) {
-            $httpClient = Http::withHeaders($this->provider['headers'])
-                ->{$method}(
-                    $this->provider['url'],
-                    !empty($this->provider['input']) ? $this->provider['input'] : []
-                );
-        } else {
-            $httpClient = Http::{$method}(
-                $this->provider['url'],
-                !empty($this->provider['input']) ? $this->provider['input'] : []
-            );
-        }
-
-        $response = $httpClient->body();
-        $jsonData = json_decode($response, true);
+        $httpClient = Http::withHeaders($headers)->{$method}($url, $input);
+        $response   = $httpClient->body();
+        $jsonData   = json_decode($response, true);
 
         if (json_last_error() === JSON_ERROR_NONE) {
             if (isset($this->provider['output']['path'])) {
                 $path = explode('.', ltrim($this->provider['output']['path'], '$.'));
 
                 try {
-                    return $this->getJsonData($jsonData, $path);
+                    return json_encode($this->getJsonData($jsonData, $path));
                 } catch (AiException $e) {
                     throw new AiException('Path not found in JSON data', 400);
                 }

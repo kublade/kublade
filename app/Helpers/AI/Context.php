@@ -412,4 +412,18 @@ class Context
             ];
         })->toArray();
     }
+
+    /**
+     * Extract the tool context from the messages.
+     *
+     * @param array $messages
+     *
+     * @return string
+     */
+    public static function extractSystemMessages(array $messages): string
+    {
+        return collect($messages)->filter(function ($message) {
+            return $message['role'] === 'system';
+        })->implode("\n\n");
+    }
 }
