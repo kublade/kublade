@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\AI;
 
 use App\Exceptions\AiException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -45,7 +46,15 @@ class VectorRouter
                 Storage::disk('local')->put($path, json_encode([]));
             }
 
-            $this->vectors = json_decode(Storage::disk('local')->get($path), false);
+            $cachedVectors = Cache::get('mcp_routing_vectors');
+
+            if ($cachedVectors) {
+                $this->vectors = $cachedVectors;
+            } else {
+                $this->vectors = json_decode(Storage::disk('local')->get($path), false);
+
+                Cache::forever('mcp_routing_vectors', $this->vectors);
+            }
         } catch (Throwable $e) {
             $this->vectors = [];
 
@@ -133,6 +142,8 @@ class VectorRouter
         $this->vectors = $vectors;
 
         Storage::disk('local')->put(config('ai.prompt_routing_vectors_file'), json_encode($this->vectors));
+
+        Cache::forever('mcp_routing_vectors', $this->vectors);
     }
 
     /**
