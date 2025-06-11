@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0](https://github.com/kublade/kublade/compare/v2.3.0...v2.4.0) (2025-06-11)
+
+
+### Features
+
+* **ai:** mcp call handler ([0f95c08](https://github.com/kublade/kublade/commit/0f95c08982bd18e7dd3c7aceea412af9ccd15694))
+* **ai:** mcp call router ([29544d0](https://github.com/kublade/kublade/commit/29544d0af25850ed3a6d439bfee3caa1cb879d33))
+* **ai:** vector db in-memory cache ([23696a9](https://github.com/kublade/kublade/commit/23696a9b53779e0a54c85d09a0ead22440a3df5b))
+* **ai:** vector generation artisan command ([e4ef891](https://github.com/kublade/kublade/commit/e4ef891d7befd1fa885dd9692636ee7a13d37beb))
+* **ai:** vector router implementation ([b59866c](https://github.com/kublade/kublade/commit/b59866c2763d775d77088981a417d8268347dd8b))
+
+
+### Bug Fixes
+
+* environment variables example ([953158d](https://github.com/kublade/kublade/commit/953158dd733c68b912d397b055f3d6d75b5f7661))
+* missing mcp handler import ([99e3ab6](https://github.com/kublade/kublade/commit/99e3ab63664aeaae5ab72d2651d9666e7163ab3a))
+
 ## [2.3.0](https://github.com/kublade/kublade/compare/v2.2.0...v2.3.0) (2025-06-09)
 
 
