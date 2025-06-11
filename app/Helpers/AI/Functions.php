@@ -196,3 +196,21 @@ if (!function_exists('filterChatMessages')) {
         return Context::filterDuplicateContext($messages);
     }
 }
+
+if (!function_exists('ensureSpaceBeforeNewLine')) {
+    /**
+     * Ensure a space before a new line.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    function ensureSpaceBeforeNewLine($string): string
+    {
+        return collect(explode("\n", $string))
+            ->map(function ($line) {
+                return '    ' . ltrim($line);
+            })
+            ->implode("\n");
+    }
+}

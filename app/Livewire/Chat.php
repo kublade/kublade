@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Exceptions\AiException;
 use App\Helpers\AI\Context;
 use App\Models\AI\AiChat;
 use App\Models\AI\AiChatMessage;
+use App\Services\AI\McpHandler;
+use App\Services\AI\VectorRouter;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Route;
@@ -180,7 +183,10 @@ class Chat extends Component
 
         $this->messages[] = $message;
 
-        $this->chat->messages()->create($message);
+        AiChatMessage::create([
+            'ai_chat_id' => $this->chat->id,
+            ...$message,
+        ]);
 
         // System message for the route context
         $message = [
@@ -195,7 +201,10 @@ class Chat extends Component
 
         $this->messages[] = $message;
 
-        $this->chat->messages()->create($message);
+        AiChatMessage::create([
+            'ai_chat_id' => $this->chat->id,
+            ...$message,
+        ]);
 
         // Indicate that the context setup is complete
         $this->contextSet = true;
@@ -220,7 +229,10 @@ class Chat extends Component
 
         $this->messages[] = $message;
 
-        $this->chat->messages()->create($message);
+        AiChatMessage::create([
+            'ai_chat_id' => $this->chat->id,
+            ...$message,
+        ]);
     }
 
     /**
@@ -248,7 +260,10 @@ class Chat extends Component
 
         $this->messages[] = $message;
 
-        $this->chat->messages()->create($message);
+        AiChatMessage::create([
+            'ai_chat_id' => $this->chat->id,
+            ...$message,
+        ]);
 
         $this->sending = true;
 
@@ -269,7 +284,49 @@ class Chat extends Component
         }
 
         try {
-            $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . '/chat/completions', [
+            try {
+                $vectorRouter = new VectorRouter(config('ai.prompt_routing_vectors_file'), true);
+                $vectors      = $vectorRouter->getVectorsFromPrompt($message);
+                $nearest      = $vectorRouter->findNearest($vectors->embedding);
+
+                if (!$nearest) {
+                    throw new AiException('No nearest vector found', 404);
+                }
+
+                $mcpHandler = new McpHandler(
+                    $nearest->action,
+                    $message,
+                    Context::extractSystemMessages(
+                        Context::ensureTokenCount(
+                            Context::filterDuplicateContext($this->messages)
+                        )
+                    )
+                );
+
+                $reply = $mcpHandler->handle();
+
+                $message = [
+                    'role'      => 'system',
+                    'content'   => $reply,
+                    'key'       => 'mcp',
+                    'protected' => false,
+                ];
+
+                $this->messages[] = $message;
+
+                AiChatMessage::create([
+                    'ai_chat_id' => $this->chat->id,
+                    ...$message,
+                ]);
+            } catch (Exception $e) {
+                /**
+                 * Silently ignore the error and continue with the normal flow.
+                 * A missing MCP call is not a critical error. It just means that
+                 * some additional, user defined context may be missing.
+                 */
+            }
+
+            $response = Http::withToken(config('ai.api_key'))->post(config('ai.url') . config('ai.chat_completions_endpoint'), [
                 'model'    => config('ai.model'),
                 'messages' => Context::prepareSubmission(
                     Context::ensureTokenCount(
@@ -278,7 +335,11 @@ class Chat extends Component
                 ),
             ]);
 
-            $reply = $response['choices'][0]['message']['content'] ?? 'No response';
+            $reply = $response['choices'][0]['message']['content'];
+
+            if (empty($reply)) {
+                throw new AiException('No response from the API', 500);
+            }
 
             $message = [
                 'role'      => 'assistant',
@@ -286,21 +347,25 @@ class Chat extends Component
                 'key'       => null,
                 'protected' => false,
             ];
-
-            $this->messages[] = $message;
-
         } catch (Exception $e) {
             $message = [
-                'role'    => 'assistant',
-                'content' => 'Sorry, there was an error processing your request.',
+                'role'      => 'assistant',
+                'content'   => 'Sorry, there was an error processing your request.',
+                'key'       => null,
+                'protected' => false,
             ];
-        } finally {
-            $this->chat->messages()->create($message);
-
-            $this->sending = false;
-
-            $this->dispatch('chatChanged');
         }
+
+        $this->messages[] = $message;
+
+        AiChatMessage::create([
+            'ai_chat_id' => $this->chat->id,
+            ...$message,
+        ]);
+
+        $this->sending = false;
+
+        $this->dispatch('chatChanged');
     }
 
     /**
