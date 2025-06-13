@@ -242,11 +242,11 @@
 
     <script>
         $(document).ready(function() {
-            $('.content-vertical-center').toggleClass('overflowing', $(window).height() < $('.content-vertical-center')[0].scrollHeight);
+            $('.content-vertical-center').toggleClass('overflowing', $(window).height() < $('.content-vertical-center')[0]?.scrollHeight);
         });
 
         $(window).on('resize', function() {
-            $('.content-vertical-center').toggleClass('overflowing', $(window).height() < $('.content-vertical-center')[0].scrollHeight);
+            $('.content-vertical-center').toggleClass('overflowing', $(window).height() < $('.content-vertical-center')[0]?.scrollHeight);
         });
     </script>
 
