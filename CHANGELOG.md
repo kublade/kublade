@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.2](https://github.com/kublade/kublade/compare/v2.4.1...v2.4.2) (2025-06-13)
+
+
+### Bug Fixes
+
+* chart colors ([c9c34df](https://github.com/kublade/kublade/commit/c9c34dfe279e81d40b24eb16e5ffeaa8c6b91a35))
+
 ## [2.4.1](https://github.com/kublade/kublade/compare/v2.4.0...v2.4.1) (2025-06-13)
 
 
