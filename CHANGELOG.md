@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.3](https://github.com/kublade/kublade/compare/v2.4.2...v2.4.3) (2025-06-13)
+
+
+### Bug Fixes
+
+* login overflow identification ([d1f2443](https://github.com/kublade/kublade/commit/d1f244370502459bab7aa6bc432ce876f1fd0c40))
+
 ## [2.4.2](https://github.com/kublade/kublade/compare/v2.4.1...v2.4.2) (2025-06-13)
 
 
