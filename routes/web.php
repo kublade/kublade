@@ -107,7 +107,7 @@ Route::middleware([
 
     Route::get('/updated', function () {
         if (request()->attributes->has('update')) {
-            return redirect()->back()->with('success', __('Kublade is still outdated. Please update to the latest version.'));
+            return redirect()->back()->with('warning', __('Kublade is still outdated. Please update to the latest version.'));
         }
 
         return redirect()->back()->with('success', __('Kublade is now up to date.'));
