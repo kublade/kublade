@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.1](https://github.com/kublade/kublade/compare/v2.4.0...v2.4.1) (2025-06-13)
+
+
+### Bug Fixes
+
+* update failure warning alert type ([9c56d44](https://github.com/kublade/kublade/commit/9c56d442ab2db8ff2918742588dd1af68b8a534e))
+
 ## [2.4.0](https://github.com/kublade/kublade/compare/v2.3.0...v2.4.0) (2025-06-11)
 
 
