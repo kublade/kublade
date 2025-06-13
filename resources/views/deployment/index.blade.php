@@ -580,9 +580,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             const chartColors = [
-                '#ff2b1c',
-                '#ff7a6f',
-                '#b31f15',
+                '#712cf9',
+                '#210b3f',
+                '#c6aefc',
             ];
 
             const options = {
