@@ -502,6 +502,10 @@ main {
     .app__screenshot-footer {
         background-color: var(--browser-color);
         border: 0;
+
+        @media (max-width: 767px) {
+            display: none !important;
+        }
     }
 
     &--panel {
