@@ -21,11 +21,25 @@ $font-family-sans-serif: 'Nunito Variable', sans-serif;
 
 :root {
     --bs-body-accent: #fff8f6;
+    --browser-color: #ebedf0;
 }
 
 html {
     &[data-bs-theme="dark"] {
         --bs-body-accent: #1a1d21;
+        --browser-color: #1a1d21;
+
+        .card {
+            &.border-secondary {
+                .card-header, .card-footer {
+                    .btn {
+                        color: var(--bs-white);
+                        background-color: var(--bs-dark);
+                        border-color: var(--bs-dark);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -64,9 +78,10 @@ main {
         --bd-pink-rgb: 214, 51, 132;
     
         background-image: linear-gradient(180deg, rgba(var(--bs-body-bg-rgb), .01), rgba(var(--bs-body-bg-rgb), 1) 85%), radial-gradient(ellipse at top left, rgba(var(--bs-primary-rgb), .5), transparent 50%), radial-gradient(ellipse at top right, rgba(var(--bd-accent-rgb), .5), transparent 50%), radial-gradient(ellipse at center right, rgba(var(--bd-violet-rgb), .5), transparent 50%), radial-gradient(ellipse at center left, rgba(var(--bd-pink-rgb), .5), transparent 50%);
+        background-size: cover;
         opacity: 0.25;
         content: '';
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -451,10 +466,10 @@ main {
 }
 
 .app__screenshot {
-    border-color: #ebedf0;
+    border: 0;
 
     .app__screenshot-browserbar {
-        background-color: #ebedf0;
+        background-color: var(--browser-color);
         height: 2.5rem;
         padding: 0.5rem 0.75rem;
         display: flex;
@@ -477,6 +492,43 @@ main {
             &:nth-child(3) { 
                 background-color: #29C840;
             }
+        }
+    }
+
+    .app__screenshot-browsercontent {
+        scale: 1;
+    }
+
+    .app__screenshot-footer {
+        background-color: var(--browser-color);
+        border: 0;
+    }
+
+    &--panel {
+        width: calc(100% - 2rem);
+        height: calc(100% - 2rem);
+        margin: 1rem;
+        scale: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: visible;
+
+        &::before {
+            --bs-body-bg-rgb: 255, 255, 255;
+            --bs-primary-rgb: 13, 110, 253;
+            --bd-accent-rgb: 255, 228, 132;
+            --bd-violet-rgb: 113, 44, 249;
+            --bd-pink-rgb: 214, 51, 132;
+            background-image: linear-gradient(180deg, rgba(var(--bs-body-bg-rgb), 0.01), rgba(var(--bs-body-bg-rgb), 1) 85%), radial-gradient(ellipse at top left, rgba(var(--bs-primary-rgb), 0.5), transparent 50%), radial-gradient(ellipse at top right, rgba(var(--bd-accent-rgb), 0.5), transparent 50%), radial-gradient(ellipse at center right, rgba(var(--bd-violet-rgb), 0.5), transparent 50%), radial-gradient(ellipse at center left, rgba(var(--bd-pink-rgb), 0.5), transparent 50%);
+            opacity: 0.25;
+            content: "";
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            width: calc(100% + 2rem);
+            height: calc(100% + 2rem);
+            z-index: -1;
         }
     }
 }
