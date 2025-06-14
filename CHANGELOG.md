@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5.0](https://github.com/kublade/kublade/compare/v2.4.3...v2.5.0) (2025-06-14)
+
+
+### Features
+
+* login form floating labels ([89bf32f](https://github.com/kublade/kublade/commit/89bf32fab42f002f65622b2d9dc737cb4ea81e33))
+* login theme improvements ([1c15571](https://github.com/kublade/kublade/commit/1c155719d1f921bb1a8999824b7dec5f1afeafaf))
+
 ## [2.4.3](https://github.com/kublade/kublade/compare/v2.4.2...v2.4.3) (2025-06-13)
 
 
