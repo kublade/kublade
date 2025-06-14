@@ -56,7 +56,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/AI/Functions.php"
+            "app/Helpers/AI/Functions.php",
+            "app/Helpers/Horizon/Functions.php"
         ]
     },
     "autoload-dev": {

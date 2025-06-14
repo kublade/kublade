@@ -49,8 +49,14 @@ class CheckVersion
                 $composerContent['version'] = 'v' . $composerContent['version'];
             }
 
+            $request->attributes->add([
+                'version' => $composerContent['version'],
+            ]);
+
             if ($newestRelease['tag_name'] > $composerContent['version']) {
-                $request->attributes->add(['update' => $newestRelease]);
+                $request->attributes->add([
+                    'update' => $newestRelease,
+                ]);
             }
         } catch (Exception $e) {
         }

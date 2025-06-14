@@ -36,6 +36,51 @@
             <div class="card-body p-0 app__screenshot-browsercontent overflow-hidden">
                 @include('layouts.content', ['authRoutes' => $authRoutes])
             </div>
+            <div class="card-footer small app__screenshot-footer d-flex gap-2 justify-content-between align-items-center">
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    {{ __('Latency') }}
+                    <span class="badge bg-secondary text-lowercase">
+                        <livewire:latency />
+                    </span>
+                </div>
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        {{ __('Worker Status') }}
+                        @php
+                            $horizonStatus = getHorizonStatus();
+                        @endphp
+                        @if ($horizonStatus === 'paused')
+                            <span class="badge bg-warning">{{ __('Paused') }}</span>
+                        @elseif ($horizonStatus === 'running')
+                            <span class="badge bg-success">{{ __('Running') }}</span>
+                        @else
+                            <span class="badge bg-danger">{{ __('Stopped') }}</span>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        {{ __('Version') }}
+                        @if (request()->attributes->get('update'))
+                            <span class="badge bg-danger text-lowercase">{{ request()->attributes->get('version') }}</span>
+                        @else
+                            <span class="badge bg-secondary text-lowercase">{{ request()->attributes->get('version') }}</span>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        {{ __('Environment') }}
+                        @if (config('app.env') === 'local')
+                            <span class="badge bg-danger">{{ config('app.env') }}</span>
+                        @else
+                            <span class="badge bg-secondary">{{ config('app.env') }}</span>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        @if (config('app.debug'))
+                            {{ __('Debug') }}
+                            <span class="badge bg-danger">{{ __('Enabled') }}</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     @else
         @include('layouts.content', ['authRoutes' => $authRoutes])

@@ -28,6 +28,18 @@ html {
     &[data-bs-theme="dark"] {
         --bs-body-accent: #1a1d21;
         --browser-color: #1a1d21;
+
+        .card {
+            &.border-secondary {
+                .card-header, .card-footer {
+                    .btn {
+                        color: var(--bs-white);
+                        background-color: var(--bs-dark);
+                        border-color: var(--bs-dark);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -454,7 +466,7 @@ main {
 }
 
 .app__screenshot {
-    border-color: var(--browser-color);
+    border: 0;
 
     .app__screenshot-browserbar {
         background-color: var(--browser-color);
@@ -487,6 +499,11 @@ main {
         scale: 1;
     }
 
+    .app__screenshot-footer {
+        background-color: var(--browser-color);
+        border: 0;
+    }
+
     &--panel {
         width: calc(100% - 2rem);
         height: calc(100% - 2rem);
@@ -497,7 +514,7 @@ main {
         left: 0;
         overflow: visible;
 
-        &:before {
+        &::before {
             --bs-body-bg-rgb: 255, 255, 255;
             --bs-primary-rgb: 13, 110, 253;
             --bd-accent-rgb: 255, 228, 132;
