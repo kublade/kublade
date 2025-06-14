@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card app__screenshot">
+            <div class="card app__screenshot shadow-lg">
                 <div class="card-header app__screenshot-browserbar">
                     <div class="app__screenshot-browserbar-button"></div>
                     <div class="app__screenshot-browserbar-button"></div>
