@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.1](https://github.com/kublade/kublade/compare/v2.7.0...v2.7.1) (2025-06-14)
+
+
+### Bug Fixes
+
+* app status indicators ([d1ed8e8](https://github.com/kublade/kublade/commit/d1ed8e8591f3c3de1924bfbddc470e8d27c81add))
+
 ## [2.7.0](https://github.com/kublade/kublade/compare/v2.6.0...v2.7.0) (2025-06-14)
 
 
