@@ -449,3 +449,34 @@ main {
     flex: unset !important;
     width: 7rem !important;
 }
+
+.app__screenshot {
+    border-color: #ebedf0;
+
+    .app__screenshot-browserbar {
+        background-color: #ebedf0;
+        height: 2.5rem;
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        align-items: center;
+    
+        > .app__screenshot-browserbar-button {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+    
+            &:nth-child(1) {
+                background-color: #FF5F57;
+            }
+    
+            &:nth-child(2) {
+                background-color: #FEBD2F;
+            }
+    
+            &:nth-child(3) { 
+                background-color: #29C840;
+            }
+        }
+    }
+}
