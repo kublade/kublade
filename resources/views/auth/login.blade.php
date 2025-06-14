@@ -4,8 +4,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-body p-0">
+            <div class="card app__screenshot">
+                <div class="card-header app__screenshot-browserbar">
+                    <div class="app__screenshot-browserbar-button"></div>
+                    <div class="app__screenshot-browserbar-button"></div>
+                    <div class="app__screenshot-browserbar-button"></div>
+                </div>
+                <div class="card-body p-0 app__screenshot-browsercontent">
                     <div class="row">
                         <div class="col-md-6">
                             <a href="{{ url('/') }}" class="d-flex flex-column align-items-center justify-content-center gap-3 bg-banner h-100 p-5 text-white navbar-brand">

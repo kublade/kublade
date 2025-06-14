@@ -4,7 +4,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card app__screenshot">
+                <div class="card-header app__screenshot-browserbar">
+                    <div class="app__screenshot-browserbar-button"></div>
+                    <div class="app__screenshot-browserbar-button"></div>
+                    <div class="app__screenshot-browserbar-button"></div>
+                </div>
+                <div class="card-body p-0 app__screenshot-browsercontent">
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col-md-6">
