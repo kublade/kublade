@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0](https://github.com/kublade/kublade/compare/v2.5.0...v2.6.0) (2025-06-14)
+
+
+### Features
+
+* spaced form fields ([9ce86a1](https://github.com/kublade/kublade/commit/9ce86a1aa567123fccdfe804a0e16f3a11994466))
+
 ## [2.5.0](https://github.com/kublade/kublade/compare/v2.4.3...v2.5.0) (2025-06-14)
 
 
