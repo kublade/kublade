@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.0](https://github.com/kublade/kublade/compare/v2.7.1...v2.8.0) (2025-06-15)
+
+
+### Features
+
+* magic link authentication ([4b01283](https://github.com/kublade/kublade/commit/4b01283686595fc64142072521e288242b3eaca9))
+
 ## [2.7.1](https://github.com/kublade/kublade/compare/v2.7.0...v2.7.1) (2025-06-14)
 
 
