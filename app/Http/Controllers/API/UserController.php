@@ -7,9 +7,13 @@ namespace App\Http\Controllers\API;
 use App\Helpers\API\Response;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -266,6 +270,7 @@ class UserController extends Controller
      *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
      *
@@ -333,6 +338,7 @@ class UserController extends Controller
      *
      *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
      *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
      * )
      *
@@ -361,6 +367,76 @@ class UserController extends Controller
 
             return Response::generate(200, 'success', 'User deleted successfully', [
                 'user' => $user->toArray(),
+            ]);
+        }
+
+        return Response::generate(404, 'error', 'User not found');
+    }
+
+    /**
+     * Generate a magic link for the user.
+     *
+     * @OA\Post(
+     *     path="/api/users/{user_id}/magic-link",
+     *     summary="Generate a magic link for the user",
+     *     tags={"Users"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/user_id"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Magic link generated successfully",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Magic link generated successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", ref="#/components/schemas/User"),
+     *                 @OA\Property(property="link", type="string", example="https://example.com/auth/magic-link/1234567890"),
+     *                 @OA\Property(property="expires_at", type="string", example="2025-01-01T00:00:00.000000Z")
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
+     * @param string $user_id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function action_magic_link(string $user_id)
+    {
+        $validator = Validator::make([
+            'user_id' => $user_id,
+        ], [
+            'user_id' => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return Response::generate(400, 'error', 'Validation failed', $validator->errors());
+        }
+
+        if ($user = User::where('id', $user_id)->first()) {
+            $expires_at = Carbon::now()->addMinutes(15);
+
+            $link = URL::temporarySignedRoute(
+                'auth.magic.token',
+                $expires_at,
+                ['token' => Crypt::encryptString($user->id)]
+            );
+
+            Cache::put('magic_link_' . $user->id, $link, $expires_at);
+
+            return Response::generate(200, 'success', 'Magic link generated successfully', [
+                'user'       => $user->toArray(),
+                'link'       => $link,
+                'expires_at' => $expires_at->toISOString(),
             ]);
         }
 
