@@ -85,6 +85,7 @@ Route::middleware([
     Route::get('/users/{user_id}', [App\Http\Controllers\API\UserController::class, 'action_get'])->name('api.user.get')->middleware('api.permission.guard:users.view');
     Route::patch('/users/{user_id}', [App\Http\Controllers\API\UserController::class, 'action_update'])->name('api.user.update')->middleware('api.permission.guard:users.update');
     Route::delete('/users/{user_id}', [App\Http\Controllers\API\UserController::class, 'action_delete'])->name('api.user.delete')->middleware('api.permission.guard:users.delete');
+    Route::post('/users/{user_id}/magic-link', [App\Http\Controllers\API\UserController::class, 'action_magic_link'])->name('api.user.magic-link')->middleware('api.permission.guard:users.magic-link');
 
     Route::get('/roles', [App\Http\Controllers\API\RoleController::class, 'action_list'])->name('api.role.list')->middleware('api.permission.guard:roles.view');
     Route::post('/roles', [App\Http\Controllers\API\RoleController::class, 'action_add'])->name('api.role.add')->middleware('api.permission.guard:roles.add');

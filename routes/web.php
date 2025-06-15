@@ -18,6 +18,8 @@ Auth::routes([
 Route::get('/auth/social/{provider}/redirect', [App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])->name('auth.social.redirect');
 Route::get('/auth/social/{provider}/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'handleCallback'])->name('auth.social.callback');
 
+Route::get('/auth/magic-link/{token}', [App\Http\Controllers\Auth\MagicLinkController::class, 'handle'])->name('auth.magic.token');
+
 Route::middleware([
     'auth',
     IdentifyProject::class,
