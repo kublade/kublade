@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.0](https://github.com/kublade/kublade/compare/v2.8.0...v2.9.0) (2025-06-19)
+
+
+### Features
+
+* deployment approval process ([702c996](https://github.com/kublade/kublade/commit/702c9960eaebdb277aaa4b07d15959f257a92131))
+
+
+### Bug Fixes
+
+* disable auto-approval on deployment creation ([e30068f](https://github.com/kublade/kublade/commit/e30068f4216c72312b53e252f2f86bab4cf992a1))
+* modified status tests ([fef2b78](https://github.com/kublade/kublade/commit/fef2b787a7e850e5d7b45f7248d6b33f17436232))
+* navigation items permissions check ([a87404d](https://github.com/kublade/kublade/commit/a87404daa61b98cf188d9d2bff7e2845535dee83))
+* template field value fallback ([cc4e3f3](https://github.com/kublade/kublade/commit/cc4e3f352e42c7e658a32579859e426a073be6b7))
+
 ## [2.8.0](https://github.com/kublade/kublade/compare/v2.7.1...v2.8.0) (2025-06-15)
 
 
