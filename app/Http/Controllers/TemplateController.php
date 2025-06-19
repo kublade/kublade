@@ -332,7 +332,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return redirect()->route('template.details_file', ['template_id' => $template_id, 'file_id' => $file->id])->with('success', __('File added.'));
@@ -393,7 +394,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return redirect()->route('template.details_file', ['template_id' => $template_id, 'file_id' => $file->id])->with('success', __('File updated.'));
@@ -425,7 +427,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return redirect()->route('template.details', ['template_id' => $template_id])->with('success', __('File deleted.'));

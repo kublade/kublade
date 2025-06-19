@@ -1134,7 +1134,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return Response::generate(200, 'success', 'File added successfully', [
@@ -1224,7 +1225,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return Response::generate(200, 'success', 'File updated successfully', [
@@ -1295,7 +1297,8 @@ class TemplateController extends Controller
                     $query->where('id', $template_id);
                 })
                 ->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
 
             return Response::generate(200, 'success', 'File deleted successfully', [

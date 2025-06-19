@@ -30,6 +30,7 @@ class DeploymentUpdate extends Job
             ->whereNotNull('creation_dispatched_at')
             ->where('update', '=', true)
             ->where('delete', '=', false)
+            ->whereNotNull('approved_at')
             ->each(function (Deployment $deployment) {
                 if ($deployment->cluster->status === Status::STATUS_OFFLINE) {
                     return;
@@ -40,6 +41,7 @@ class DeploymentUpdate extends Job
                 ]))->onQueue('flux_deployment'));
 
                 $deployment->update([
+                    'approved_at'          => null,
                     'update'               => false,
                     'update_dispatched_at' => Carbon::now(),
                 ]);

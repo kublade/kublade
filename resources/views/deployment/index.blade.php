@@ -22,6 +22,9 @@
                 @else
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Deployment') }}
+                        <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
+                            <i class="bi bi-check2"></i>
+                        </a>
                     </div>
                 @endif
 
@@ -553,6 +556,9 @@
                                             <div class="d-flex gap-2">
                                                 <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
                                                     <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-success text-white{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
+                                                    <i class="bi bi-check2"></i>
                                                 </a>
                                                 <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
                                                     <i class="bi bi-pencil"></i>

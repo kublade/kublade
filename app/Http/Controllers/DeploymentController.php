@@ -339,6 +339,7 @@ class DeploymentController extends Controller
                     'template_id'  => $template->id,
                     'name'         => $request->name,
                     'uuid'         => Str::uuid(),
+                    'approved_at'  => Carbon::now(),
                 ])
             ) {
                 $requestFields = (object) (array_key_exists($deployment->template->id, $request->data ?? []) ? $request->data[$deployment->template->id] : []);
@@ -562,7 +563,10 @@ class DeploymentController extends Controller
 
             $deployment->update([
                 'name' => $request->name,
-                ...($deployment->deployed_at ? ['update' => true] : []),
+                ...($deployment->deployed_at ? [
+                    'update'      => true,
+                    'approved_at' => null,
+                ] : []),
             ]);
 
             return redirect()->route('deployment.index', ['project_id' => $project_id, 'deployment_id' => $deployment->id])->with('success', __('Deployment updated.'));
@@ -666,7 +670,8 @@ class DeploymentController extends Controller
             ! $targetDeployment->delete
         ) {
             $targetDeployment->update([
-                'update' => true,
+                'update'      => true,
+                'approved_at' => null,
             ]);
         }
 
@@ -748,11 +753,45 @@ class DeploymentController extends Controller
 
             if (!empty($commit->deployment->deployed_at)) {
                 $commit->deployment->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
             }
         });
 
         return redirect()->route('deployment.details', ['project_id' => $project_id, 'deployment_id' => $deployment_id, 'tab' => 'versions'])->with('success', __('Commit reverted.'));
+    }
+
+    /**
+     * Approve the deployment.
+     *
+     * @param string $project_id
+     * @param string $deployment_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_approve(string $project_id, string $deployment_id)
+    {
+        Validator::make([
+            'deployment_id' => $deployment_id,
+        ], [
+            'deployment_id' => ['required', 'string'],
+        ])->validate();
+
+        $deployment = Deployment::where('id', '=', $deployment_id)->first();
+
+        if (empty($deployment)) {
+            return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+        }
+
+        if ($deployment->approved_at) {
+            return redirect()->back()->with('warning', __('Deployment already approved.'));
+        }
+
+        $deployment->update([
+            'approved_at' => Carbon::now(),
+        ]);
+
+        return redirect()->back()->with('success', __('Deployment approved.'));
     }
 }
