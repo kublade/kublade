@@ -66,12 +66,12 @@
                                         <a class="nav-link" href="{{ route('project.details', ['project_id' => request()->get('project')->id]) }}">Dashboard</a>
                                     </li>
                                 @endcan
-                                @can('clusters.view')
+                                @can('projects.' . request()->get('project')->id . ' . clusters.view')
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('cluster.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Clusters') }}</a>
                                     </li>
                                 @endcan
-                                @can('deployments.view')
+                                @can('projects.' . request()->get('project')->id . ' . deployments.view')
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('deployment.index', ['project_id' => request()->get('project')->id]) }}">{{ __('Deployments') }}</a>
                                     </li>

@@ -41,7 +41,6 @@ class DeploymentUpdate extends Job
                 ]))->onQueue('flux_deployment'));
 
                 $deployment->update([
-                    'approved_at'          => null,
                     'update'               => false,
                     'update_dispatched_at' => Carbon::now(),
                 ]);
