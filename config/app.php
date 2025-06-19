@@ -125,4 +125,13 @@ return [
         'store'  => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Framed Mode
+    |--------------------------------------------------------------------------
+    |
+    | This value determines whether the application should be framed.
+    */
+    'framed' => env('APP_FRAMED', false),
+
 ];
