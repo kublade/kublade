@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.10.0](https://github.com/kublade/kublade/compare/v2.9.0...v2.10.0) (2025-06-19)
+
+
+### Features
+
+* windowed style switch ([5db518f](https://github.com/kublade/kublade/commit/5db518f415cbe5a753e3bf8cd6cd48cb4a9ed2d9))
+
 ## [2.9.0](https://github.com/kublade/kublade/compare/v2.8.0...v2.9.0) (2025-06-19)
 
 
