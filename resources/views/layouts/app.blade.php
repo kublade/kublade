@@ -27,8 +27,8 @@
         $authRoutes = ['login', 'register', 'password.request', 'password.email', 'password.reset', 'password.confirm'];
     @endphp
     @if (!in_array(Route::currentRouteName(), $authRoutes))
-        <div class="card app__screenshot app__screenshot--panel shadow-lg">
-            <div class="card-header app__screenshot-browserbar flex-shrink-0">
+        <div class="card app__screenshot app__screenshot--panel shadow-lg{{ !config('app.framed') ? ' m-0 w-100 h-100' : '' }}">
+            <div class="card-header app__screenshot-browserbar flex-shrink-0{{ !config('app.framed') ? ' d-none' : '' }}">
                 <div class="app__screenshot-browserbar-button"></div>
                 <div class="app__screenshot-browserbar-button"></div>
                 <div class="app__screenshot-browserbar-button"></div>
@@ -36,7 +36,7 @@
             <div class="card-body p-0 app__screenshot-browsercontent overflow-hidden">
                 @include('layouts.content', ['authRoutes' => $authRoutes])
             </div>
-            <div class="card-footer small app__screenshot-footer d-flex gap-2 justify-content-between align-items-center">
+            <div class="card-footer small app__screenshot-footer d-flex gap-2 justify-content-between align-items-center{{ !config('app.framed') ? ' rounded-0' : '' }}">
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     {{ __('Latency') }}
                     <span class="badge bg-secondary text-lowercase">
