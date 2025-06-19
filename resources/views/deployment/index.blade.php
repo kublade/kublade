@@ -22,6 +22,11 @@
                 @else
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Deployment') }}
+                        @can('projects.' . request()->get('project')->id . ' . deployments.' . $deployment->id . '.approve')
+                            <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
+                                <i class="bi bi-check2"></i>
+                            </a>
+                        @endcan
                     </div>
                 @endif
 
@@ -554,6 +559,11 @@
                                                 <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
+                                                @can('projects.' . request()->get('project')->id . ' . deployments.' . $deployment->id . '.approve')
+                                                    <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-success text-white{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
+                                                        <i class="bi bi-check2"></i>
+                                                    </a>
+                                                @endcan
                                                 <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

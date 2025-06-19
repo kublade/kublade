@@ -30,6 +30,7 @@ class DeploymentUpdate extends Job
             ->whereNotNull('creation_dispatched_at')
             ->where('update', '=', true)
             ->where('delete', '=', false)
+            ->whereNotNull('approved_at')
             ->each(function (Deployment $deployment) {
                 if ($deployment->cluster->status === Status::STATUS_OFFLINE) {
                     return;

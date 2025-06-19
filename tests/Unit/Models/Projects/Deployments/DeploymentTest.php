@@ -350,6 +350,11 @@ class DeploymentTest extends TestCase
     public function itCanGetStatus(): void
     {
         // Test pending status
+        $this->assertEquals('<span class="badge bg-primary">' . __('Approving') . '</span>', $this->deployment->status);
+
+        // Test approving status
+        $this->deployment->approved_at = now();
+        $this->deployment->save();
         $this->assertEquals('<span class="badge bg-info">' . __('Pending') . '</span>', $this->deployment->status);
 
         // Test deployed status
@@ -374,6 +379,11 @@ class DeploymentTest extends TestCase
     public function itCanGetSimpleStatus(): void
     {
         // Test pending status
+        $this->assertEquals(__('Approving'), $this->deployment->simpleStatus);
+
+        // Test approved status
+        $this->deployment->approved_at = now();
+        $this->deployment->save();
         $this->assertEquals(__('Pending'), $this->deployment->simpleStatus);
 
         // Test deployed status

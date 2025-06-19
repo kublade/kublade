@@ -16,6 +16,7 @@ use App\Models\Projects\Deployments\DeploymentSecretData;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
 use App\Models\Projects\Templates\TemplateField;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -601,7 +602,10 @@ class DeploymentController extends Controller
 
             $deployment->update([
                 'name' => $request->name,
-                ...($deployment->deployed_at ? ['update' => true] : []),
+                ...($deployment->deployed_at ? [
+                    'update'      => true,
+                    'approved_at' => null,
+                ] : []),
             ]);
 
             return Response::generate(200, 'success', 'Deployment updated', [
@@ -796,7 +800,8 @@ class DeploymentController extends Controller
             ! $targetDeployment->delete
         ) {
             $targetDeployment->update([
-                'update' => true,
+                'update'      => true,
+                'approved_at' => null,
             ]);
         }
 
@@ -954,13 +959,84 @@ class DeploymentController extends Controller
 
             if (!empty($commit->deployment->deployed_at)) {
                 $commit->deployment->update([
-                    'update' => true,
+                    'update'      => true,
+                    'approved_at' => null,
                 ]);
             }
         });
 
         return Response::generate(200, 'success', 'Commit reverted', [
             'commit' => $commit->toArray(),
+        ]);
+    }
+
+    /**
+     * Approve the deployment.
+     *
+     * @OA\Patch(
+     *     path="/projects/{project_id}/deployments/{deployment_id}/approve",
+     *     summary="Approve a deployment",
+     *     tags={"Deployments"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/project_id"),
+     *     @OA\Parameter(ref="#/components/parameters/deployment_id"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deployment approved",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Deployment approved"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="deployment", ref="#/components/schemas/Deployment")
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=400, ref="#/components/responses/ValidationErrorResponse"),
+     *     @OA\Response(response=401, ref="#/components/responses/UnauthorizedResponse"),
+     *     @OA\Response(response=404, ref="#/components/responses/NotFoundResponse"),
+     *     @OA\Response(response=500, ref="#/components/responses/ServerErrorResponse")
+     * )
+     *
+     * @param string $project_id
+     * @param string $deployment_id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function action_approve(string $project_id, string $deployment_id)
+    {
+        $validator = Validator::make([
+            'project_id'    => $project_id,
+            'deployment_id' => $deployment_id,
+        ], [
+            'project_id'    => ['required', 'string', 'max:255'],
+            'deployment_id' => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return Response::generate(400, 'error', 'Validation failed', $validator->errors());
+        }
+
+        $deployment = Deployment::where('id', '=', $deployment_id)->first();
+
+        if (empty($deployment)) {
+            return Response::generate(404, 'error', 'Deployment not found');
+        }
+
+        if ($deployment->approved_at) {
+            return Response::generate(400, 'error', 'Deployment already approved');
+        }
+
+        $deployment->update([
+            'approved_at' => Carbon::now(),
+        ]);
+
+        return Response::generate(200, 'success', 'Deployment approved', [
+            'deployment' => $deployment->toArray(),
         ]);
     }
 }

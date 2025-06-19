@@ -99,6 +99,7 @@ class Deployment extends Model
         'paused'                 => 'boolean',
         'update'                 => 'boolean',
         'delete'                 => 'boolean',
+        'approved_at'            => 'datetime',
         'deployed_at'            => 'datetime',
         'deployment_updated_at'  => 'datetime',
         'creation_dispatched_at' => 'datetime',
@@ -238,6 +239,10 @@ class Deployment extends Model
             return '<span class="badge bg-danger">' . __('Deleting') . '</span>';
         }
 
+        if (! $this->approved_at) {
+            return '<span class="badge bg-primary">' . __('Approving') . '</span>';
+        }
+
         if ($this->update) {
             return '<span class="badge bg-warning text-body">' . __('Updating') . '</span>';
         }
@@ -258,6 +263,10 @@ class Deployment extends Model
     {
         if ($this->delete) {
             return __('Deleting');
+        }
+
+        if (! $this->approved_at) {
+            return __('Approving');
         }
 
         if ($this->update) {
