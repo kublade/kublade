@@ -344,7 +344,6 @@ class DeploymentController extends Controller
                     'template_id'  => $template->id,
                     'name'         => $request->name,
                     'uuid'         => Str::uuid(),
-                    'approved_at'  => Carbon::now(),
                 ])
             ) {
                 $requestFields = (object) (array_key_exists($deployment->template->id, $request->data ?? []) ? $request->data[$deployment->template->id] : []);
