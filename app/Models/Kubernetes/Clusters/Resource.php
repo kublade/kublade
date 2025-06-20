@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Kubernetes\Clusters;
 
+use App\Traits\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,7 @@ class Resource extends Model
 {
     use SoftDeletes;
     use HasUuids;
+    use LogsActivity;
 
     public const TYPE_LIMIT = 'limit';
 

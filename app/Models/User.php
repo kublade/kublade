@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\Projects\Projects\Project;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -66,6 +67,7 @@ class User extends Authenticatable implements JWTSubject
         HasRoles::hasPermissionTo as originalHasPermissionTo;
     }
     use Notifiable;
+    use LogsActivity;
 
     /**
      * The table associated with the model.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Projects\Templates;
 
+use App\Traits\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,6 +64,7 @@ class TemplateField extends Model
     use SoftDeletes;
     use HasUuids;
     use HasFactory;
+    use LogsActivity;
 
     /**
      * The table associated with the model.

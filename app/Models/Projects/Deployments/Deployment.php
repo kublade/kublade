@@ -9,6 +9,7 @@ use App\Models\Kubernetes\Resources\Ns;
 use App\Models\Kubernetes\Resources\PodLog;
 use App\Models\Projects\Projects\Project;
 use App\Models\Projects\Templates\Template;
+use App\Traits\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -73,6 +74,7 @@ class Deployment extends Model
     use SoftDeletes;
     use HasUuids;
     use HasFactory;
+    use LogsActivity;
 
     /**
      * The table associated with the model.
