@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.2](https://github.com/kublade/kublade/compare/v2.11.1...v2.11.2) (2025-06-21)
+
+
+### Bug Fixes
+
+* activity controller classname ([436fc46](https://github.com/kublade/kublade/commit/436fc4683d680f669acc80670df647c6b66667f6))
+
+## [2.11.1](https://github.com/kublade/kublade/compare/v2.11.0...v2.11.1) (2025-06-21)
+
+
+### Bug Fixes
+
+* automatic permissions sync ([755a2ff](https://github.com/kublade/kublade/commit/755a2ff91be99e77805607cf369a5bf2da6a1660))
+
+## [2.11.0](https://github.com/kublade/kublade/compare/v2.10.0...v2.11.0) (2025-06-21)
+
+
+### Features
+
+* extensive activity logging ([c2a728e](https://github.com/kublade/kublade/commit/c2a728e81ab9e0acc24ef3d93095029e38ccf26f))
+
 ## [2.10.0](https://github.com/kublade/kublade/compare/v2.9.0...v2.10.0) (2025-06-19)
 
 
