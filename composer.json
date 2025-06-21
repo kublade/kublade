@@ -3,7 +3,7 @@
     "name": "kublade/kublade",
     "type": "project",
     "description": "The easy and interactive Kubernetes deployment templating engine.",
-    "version": "2.11.0",
+    "version": "2.11.1",
     "keywords": [
         "laravel",
         "kubernetes",

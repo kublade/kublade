@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.1](https://github.com/kublade/kublade/compare/v2.11.0...v2.11.1) (2025-06-21)
+
+
+### Bug Fixes
+
+* automatic permissions sync ([755a2ff](https://github.com/kublade/kublade/commit/755a2ff91be99e77805607cf369a5bf2da6a1660))
+
 ## [2.11.0](https://github.com/kublade/kublade/compare/v2.10.0...v2.11.0) (2025-06-21)
 
 
