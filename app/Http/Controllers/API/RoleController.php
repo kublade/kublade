@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\API\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
@@ -202,6 +203,8 @@ class RoleController extends Controller
                 'name' => $request->name,
             ])
         ) {
+            Artisan::call('kbl:permissions:sync');
+
             $role->syncPermissions($request->permissions ?? []);
 
             return Response::generate(200, 'success', 'Role created successfully', [
@@ -273,6 +276,8 @@ class RoleController extends Controller
             $role->update([
                 'name' => $request->name,
             ]);
+
+            Artisan::call('kbl:permissions:sync');
 
             $role->syncPermissions($request->permissions ?? []);
 
