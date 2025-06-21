@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.2](https://github.com/kublade/kublade/compare/v2.11.1...v2.11.2) (2025-06-21)
+
+
+### Bug Fixes
+
+* activity controller classname ([436fc46](https://github.com/kublade/kublade/commit/436fc4683d680f669acc80670df647c6b66667f6))
+
 ## [2.11.1](https://github.com/kublade/kublade/compare/v2.11.0...v2.11.1) (2025-06-21)
 
 
