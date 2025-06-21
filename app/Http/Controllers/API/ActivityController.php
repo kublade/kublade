@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Validator;
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
  */
-class RoleController extends Controller
+class ActivityController extends Controller
 {
     /**
      * List the activities.
