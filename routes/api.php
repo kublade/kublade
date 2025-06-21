@@ -21,6 +21,8 @@ Route::middleware([
     'api.guard',
     IdentifyProject::class,
 ])->group(function () {
+    Route::get('/activities', [App\Http\Controllers\API\ActivityController::class, 'action_list'])->name('api.activity.list')->middleware('api.permission.guard:activities.view');
+
     Route::get('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_list'])->name('api.project.list')->middleware('api.permission.guard:projects.view');
     Route::post('/projects', [App\Http\Controllers\API\ProjectController::class, 'action_add'])->name('api.project.add')->middleware('api.permission.guard:projects.add');
     Route::get('/projects/{project_id}', [App\Http\Controllers\API\ProjectController::class, 'action_get'])->name('api.project.get')->middleware('api.permission.guard:projects.view');

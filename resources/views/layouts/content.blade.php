@@ -115,6 +115,11 @@
                                     </div>
                                 </li>
                             @endcan
+                            @can('activities.view')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('activity.index') }}">{{ __('Activities') }}</a>
+                                </li>
+                            @endcan
                             @can('dark-mode')
                                 <li class="nav-item ms-4">
                                     <a class="nav-link" href="{{ route('switch-color-mode') }}">

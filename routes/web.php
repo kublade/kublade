@@ -25,6 +25,8 @@ Route::middleware([
     IdentifyProject::class,
     CheckVersion::class,
 ])->group(function () {
+    Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'page_index'])->name('activity.index')->middleware('ui.permission.guard:activities.view');
+
     Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'page_index'])->name('project.index')->middleware('ui.permission.guard:projects.view');
     Route::get('/projects/add', [App\Http\Controllers\ProjectController::class, 'page_add'])->name('project.add')->middleware('ui.permission.guard:projects.add');
     Route::post('/projects/add', [App\Http\Controllers\ProjectController::class, 'action_add'])->name('project.add.action')->middleware('ui.permission.guard:projects.add');
