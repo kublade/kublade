@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.0](https://github.com/kublade/kublade/compare/v2.10.0...v2.11.0) (2025-06-21)
+
+
+### Features
+
+* extensive activity logging ([c2a728e](https://github.com/kublade/kublade/commit/c2a728e81ab9e0acc24ef3d93095029e38ccf26f))
+
 ## [2.10.0](https://github.com/kublade/kublade/compare/v2.9.0...v2.10.0) (2025-06-19)
 
 
