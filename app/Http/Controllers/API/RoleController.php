@@ -27,7 +27,7 @@ use Spatie\Permission\Models\Role;
  *     required=true,
  *     description="The ID of the role",
  *
- *     @OA\Schema(type="string")
+ *     @OA\Schema(type="integer")
  * )
  *
  * @author Marcel Menk <marcel.menk@ipvx.io>
