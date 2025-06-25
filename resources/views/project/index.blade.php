@@ -243,103 +243,105 @@
                             </div>
                         </div>
                     @else
-                        <table class="table">
-                            <thead class="font-monospace">
-                                <tr class="align-middle">
-                                    <th class="w-100" scope="col">{{ __('Project') }}</th>
-                                    <th>{{ __('Statistics') }}</th>
-                                    <th scope="col">{{ __('Actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($projects as $project)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="font-monospace">
                                     <tr class="align-middle">
-                                        <td class="w-100">{{ $project->name }}</td>
-                                        <td>
-                                            <div class="d-flex gap-2">
-                                                <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                    <span class="small fw-bold">{{ __('CPU') }}</span>
-                                                    <div class="border rounded d-flex gap-3 align-items-center">
-                                                        @if ($project->clusterStatistics['alerts']['critical']['cpu'])
-                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @elseif ($project->clusterStatistics['alerts']['warning']['cpu'])
-                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @else
-                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @endif
-                                                        <span class="me-3">
-                                                            <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['cpu'], 2) }}%</span><br>
-                                                            <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['cpu'], 2) }}% / {{ number_format($project->clusterStatistics['metrics']['capacity']['cpu'], 0) }}%</span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                    <span class="small fw-bold">{{ __('Memory') }}</span>
-                                                    <div class="border rounded d-flex gap-3 align-items-center">
-                                                        @if ($project->clusterStatistics['alerts']['critical']['memory'])
-                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @elseif ($project->clusterStatistics['alerts']['warning']['memory'])
-                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @else
-                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @endif
-                                                        <span class="me-3">
-                                                            <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['memory'], 2) }}%</span><br>
-                                                            <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['memory'], 2) }}GiB / {{ number_format($project->clusterStatistics['metrics']['capacity']['memory'], 0) }}GiB</span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                    <span class="small fw-bold">{{ __('Storage') }}</span>
-                                                    <div class="border rounded d-flex gap-3 align-items-center">
-                                                        @if ($project->clusterStatistics['alerts']['critical']['storage'])
-                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @elseif ($project->clusterStatistics['alerts']['warning']['storage'])
-                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @else
-                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @endif
-                                                        <span class="me-3">
-                                                            <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['storage'], 2) }}%</span><br>
-                                                            <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['storage'], 2) }}GiB / {{ number_format($project->clusterStatistics['metrics']['capacity']['storage'], 0) }}GiB</span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                    <span class="small fw-bold">{{ __('Pods') }}</span>
-                                                    <div class="border rounded d-flex gap-3 align-items-center">
-                                                        @if ($project->clusterStatistics['alerts']['critical']['pods'])
-                                                            <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @elseif ($project->clusterStatistics['alerts']['warning']['pods'])
-                                                            <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @else
-                                                            <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                        @endif
-                                                        <span class="me-3">
-                                                            <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['pods'], 2) }}%</span><br>
-                                                            <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['pods'], 0) }} / {{ number_format($project->clusterStatistics['metrics']['capacity']['pods'], 0) }}</span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex gap-2">
-                                                <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                                <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        <th class="w-100" scope="col">{{ __('Project') }}</th>
+                                        <th>{{ __('Statistics') }}</th>
+                                        <th scope="col">{{ __('Actions') }}</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($projects as $project)
+                                        <tr class="align-middle">
+                                            <td class="w-100">{{ $project->name }}</td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                        <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                        <div class="border rounded d-flex gap-3 align-items-center">
+                                                            @if ($project->clusterStatistics['alerts']['critical']['cpu'])
+                                                                <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @elseif ($project->clusterStatistics['alerts']['warning']['cpu'])
+                                                                <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @else
+                                                                <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @endif
+                                                            <span class="me-3">
+                                                                <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['cpu'], 2) }}%</span><br>
+                                                                <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['cpu'], 2) }}% / {{ number_format($project->clusterStatistics['metrics']['capacity']['cpu'], 0) }}%</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                        <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                        <div class="border rounded d-flex gap-3 align-items-center">
+                                                            @if ($project->clusterStatistics['alerts']['critical']['memory'])
+                                                                <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @elseif ($project->clusterStatistics['alerts']['warning']['memory'])
+                                                                <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @else
+                                                                <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @endif
+                                                            <span class="me-3">
+                                                                <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['memory'], 2) }}%</span><br>
+                                                                <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['memory'], 2) }}GiB / {{ number_format($project->clusterStatistics['metrics']['capacity']['memory'], 0) }}GiB</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                        <span class="small fw-bold">{{ __('Storage') }}</span>
+                                                        <div class="border rounded d-flex gap-3 align-items-center">
+                                                            @if ($project->clusterStatistics['alerts']['critical']['storage'])
+                                                                <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @elseif ($project->clusterStatistics['alerts']['warning']['storage'])
+                                                                <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @else
+                                                                <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @endif
+                                                            <span class="me-3">
+                                                                <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['storage'], 2) }}%</span><br>
+                                                                <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['storage'], 2) }}GiB / {{ number_format($project->clusterStatistics['metrics']['capacity']['storage'], 0) }}GiB</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                        <span class="small fw-bold">{{ __('Pods') }}</span>
+                                                        <div class="border rounded d-flex gap-3 align-items-center">
+                                                            @if ($project->clusterStatistics['alerts']['critical']['pods'])
+                                                                <i class="bi bi-exclamation-circle text-danger fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @elseif ($project->clusterStatistics['alerts']['warning']['pods'])
+                                                                <i class="bi bi-exclamation-triangle text-warning fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @else
+                                                                <i class="bi bi-check-circle text-success fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                            @endif
+                                                            <span class="me-3">
+                                                                <span class="lh-1">{{ number_format($project->clusterStatistics['metrics']['utilization']['pods'], 2) }}%</span><br>
+                                                                <span class="small lh-1 text-nowrap">{{ number_format($project->clusterStatistics['metrics']['usage']['pods'], 0) }} / {{ number_format($project->clusterStatistics['metrics']['capacity']['pods'], 0) }}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('project.details', ['project_id' => $project->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('project.update', ['project_id' => $project->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a href="{{ route('project.delete.action', ['project_id' => $project->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{ $projects->links('pagination::bootstrap-5') }}
                     @endif
                 </div>
