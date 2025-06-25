@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="card-body{{ !empty($file) ? ' p-0 pt-3 overflow-hidden rounded' : '' }}{{ empty($template) ? ' p-0' : '' }}">
+                <div class="card-body{{ !empty($file) ? ' p-0 pt-3 overflow-hidden rounded' : '' }}{{ empty($template) ? ' d-flex flex-column gap-4 p-0' : '' }}">
                     @if (!empty($template))
                         @if (!empty($file))
                             <form action="{{ route('template.file.update.action', ['template_id' => $template->id, 'file_id' => $file->id]) }}" method="POST">

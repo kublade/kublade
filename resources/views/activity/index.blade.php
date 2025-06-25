@@ -9,7 +9,7 @@
                     {{ __('Activities') }}
                 </div>
 
-                <div class="card-body d-flex flex-column gap-4{{ empty($deployment) ? ' p-0' : '' }}">
+                <div class="card-body d-flex flex-column gap-4 p-0">
                     <table class="table">
                         <thead class="font-monospace">
                             <tr class="align-middle">

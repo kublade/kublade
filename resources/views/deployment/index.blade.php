@@ -378,7 +378,7 @@
                                                 <h5 class="bg-light ps-3 pe-2 py-2 mb-0 border-bottom d-flex justify-content-between align-items-center gap-3">
                                                     <span class="fs-6 py-2">{{ __('Versions') }}</span>
                                                 </h5>
-                                                <div>
+                                                <div class="d-flex flex-column gap-4">
                                                     @php	
                                                         $commits = $deployment->commits()->paginate(10);
                                                     @endphp

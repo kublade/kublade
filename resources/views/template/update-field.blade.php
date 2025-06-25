@@ -242,7 +242,7 @@
                     </a>
                 </div>
 
-                <div class="card-body p-0">
+                <div class="card-body d-flex flex-column gap-4 p-0">
                     <table class="table">
                         <thead class="font-monospace">
                             <tr class="align-middle">
@@ -259,9 +259,9 @@
                                     <td>{{ $option->value }}</td>
                                     <td>
                                         @if ($option->default)
-                                            <i class="bi bi-check-circle text-success"></i>
+                                            <i class="bi bi-check-circle text-success fs-5"></i>
                                         @else
-                                            <i class="bi bi-x-circle text-danger"></i>
+                                            <i class="bi bi-x-circle text-danger fs-5"></i>
                                         @endif
                                     </td>
                                     <td>

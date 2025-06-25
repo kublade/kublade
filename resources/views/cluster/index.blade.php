@@ -19,7 +19,7 @@
                     </a>
                 </div>
 
-                <div class="card-body p-0">
+                <div class="card-body d-flex flex-column gap-4 p-0">
                     <table class="table">
                         <thead class="font-monospace">
                             <tr class="align-middle">

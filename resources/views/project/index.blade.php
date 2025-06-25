@@ -109,7 +109,7 @@
                     </div>
                 @endif
 
-                <div class="card-body{{ empty(request()->get('project')) ? ' p-0' : '' }}">
+                <div class="card-body{{ empty(request()->get('project')) ? ' d-flex flex-column gap-4 p-0' : '' }}">
                     @if (!empty(request()->get('project')))
                         <div class="row row-gap-3">
                             <div class="col-md-6">
