@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.4](https://github.com/kublade/kublade/compare/v2.11.3...v2.11.4) (2025-06-25)
+
+
+### Bug Fixes
+
+* responsive tables ([c325936](https://github.com/kublade/kublade/commit/c325936d0b78e401ca9038f37f84880cf3887486))
+
 ## [2.11.3](https://github.com/kublade/kublade/compare/v2.11.2...v2.11.3) (2025-06-25)
 
 
