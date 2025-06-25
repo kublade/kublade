@@ -97,54 +97,56 @@
                             {{ __('No file selected.') }}
                         @endif
                     @else
-                        <table class="table">
-                            <thead class="font-monospace">
-                                <tr class="align-middle">
-                                    <th class="w-100" scope="col">{{ __('Template') }}</th>
-                                    <th scope="col">{{ __('Type') }}</th>
-                                    <th scope="col">{{ __('Status') }}</th>
-                                    <th scope="col">{{ __('Actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($templates as $template)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="font-monospace">
                                     <tr class="align-middle">
-                                        <td class="w-100">{{ $template->name }}</td>
-                                        <td>
-                                            @if ($template->gitCredentials)
-                                                <span class="badge bg-secondary">{{ __('Git') }}</span>
-                                            @else
-                                                <span class="badge bg-primary">{{ __('Local') }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($template->gitCredentials)
-                                                @if ($template->gitCredentials->synced_at)
-                                                    <span class="badge bg-success">{{ __('Available') }}</span>
-                                                @else
-                                                    <span class="badge bg-warning">{{ __('Syncing') }}</span>
-                                                @endif
-                                            @else
-                                                <span class="badge bg-success">{{ __('Available') }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex gap-2">
-                                                <a href="{{ route('template.details', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                                <a href="{{ route('template.update', ['template_id' => $template->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <a href="{{ route('template.delete.action', ['template_id' => $template->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        <th class="w-100" scope="col">{{ __('Template') }}</th>
+                                        <th scope="col">{{ __('Type') }}</th>
+                                        <th scope="col">{{ __('Status') }}</th>
+                                        <th scope="col">{{ __('Actions') }}</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($templates as $template)
+                                        <tr class="align-middle">
+                                            <td class="w-100">{{ $template->name }}</td>
+                                            <td>
+                                                @if ($template->gitCredentials)
+                                                    <span class="badge bg-secondary">{{ __('Git') }}</span>
+                                                @else
+                                                    <span class="badge bg-primary">{{ __('Local') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($template->gitCredentials)
+                                                    @if ($template->gitCredentials->synced_at)
+                                                        <span class="badge bg-success">{{ __('Available') }}</span>
+                                                    @else
+                                                        <span class="badge bg-warning">{{ __('Syncing') }}</span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge bg-success">{{ __('Available') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('template.details', ['template_id' => $template->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('template.update', ['template_id' => $template->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a href="{{ route('template.delete.action', ['template_id' => $template->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{ $templates->links('pagination::bootstrap-5') }}
                     @endif
                 </div>

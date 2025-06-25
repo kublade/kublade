@@ -382,65 +382,67 @@
                                                     @php	
                                                         $commits = $deployment->commits()->paginate(10);
                                                     @endphp
-                                                    <table class="table">
-                                                        <thead class="font-monospace">
-                                                            <tr>
-                                                                <th>{{ __('Hash') }}</th>
-                                                                <th class="w-100">{{ __('Message') }}</th>
-                                                                <th>{{ __('Created At') }}</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($commits as $commit)
-                                                                <tr class="align-middle">
-                                                                    <td>{{ $commit->hash }}</td>
-                                                                    <td class="w-100">{!! str_replace("\n", '<br>', $commit->message) !!}</td>
-                                                                    <td class="text-nowrap">{{ $commit->created_at->format('Y-m-d H:i:s') }}</td>
-                                                                </tr>
-                                                                <tr class="border-bottom-0">
-                                                                    <td colspan="4">
-                                                                        <a href="#" class="d-flex align-items-center gap-2 justify-content-between text-decoration-none small collapsed" data-bs-toggle="collapse" data-bs-target="#commit{{ $commit->id }}">
-                                                                            <div class="d-flex align-items-center gap-2">
-                                                                                <i class="bi bi-file-earmark-diff"></i>
-                                                                                {{ __('Show diff') }}
-                                                                            </div>
-                                                                            <i class="bi bi-chevron-right"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
+                                                    <div class="table-responsive">	
+                                                        <table class="table">
+                                                            <thead class="font-monospace">
                                                                 <tr>
-                                                                    <td class="p-0" colspan="4">
-                                                                        <div class="collapse" id="commit{{ $commit->id }}">
-                                                                            <div class="p-3 border-top">
-                                                                                @if ($commit->diff->count() > 0)
-                                                                                    @foreach ($commit->diff as $diff)
-                                                                                        <span class="small mb-2 fw-bold d-block">{{ $diff['label'] }}</span>
-                                                                                        <div class="input-group{{ !$loop->last ? ' mb-3' : '' }}">
-                                                                                            <input type="text" class="form-control border border-danger rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['current'] }}" readonly>
-                                                                                            <span class="input-group-text align-items-center border-0 bg-transparent">
-                                                                                                <i class="bi bi-arrow-right"></i>
-                                                                                            </span>
-                                                                                            <input type="text" class="form-control border border-success rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['previous'] }}" readonly>
-                                                                                        </div>
-                                                                                    @endforeach
-                                                                                    <div class="row mt-3">
-                                                                                        <div class="col-md">
-                                                                                            <a href="{{ route('deployment.commit.revert.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'commit_id' => $commit->id]) }}" class="btn btn-primary">{{ __('Revert') }}</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @else
-                                                                                    <div class="alert alert-info mb-0 d-flex align-items-center gap-3">
-                                                                                        <i class="bi bi-info-circle fs-5"></i>
-                                                                                        {{ __('No changes') }}
-                                                                                    </div>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
+                                                                    <th>{{ __('Hash') }}</th>
+                                                                    <th class="w-100">{{ __('Message') }}</th>
+                                                                    <th>{{ __('Created At') }}</th>
                                                                 </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($commits as $commit)
+                                                                    <tr class="align-middle">
+                                                                        <td>{{ $commit->hash }}</td>
+                                                                        <td class="w-100">{!! str_replace("\n", '<br>', $commit->message) !!}</td>
+                                                                        <td class="text-nowrap">{{ $commit->created_at->format('Y-m-d H:i:s') }}</td>
+                                                                    </tr>
+                                                                    <tr class="border-bottom-0">
+                                                                        <td colspan="4">
+                                                                            <a href="#" class="d-flex align-items-center gap-2 justify-content-between text-decoration-none small collapsed" data-bs-toggle="collapse" data-bs-target="#commit{{ $commit->id }}">
+                                                                                <div class="d-flex align-items-center gap-2">
+                                                                                    <i class="bi bi-file-earmark-diff"></i>
+                                                                                    {{ __('Show diff') }}
+                                                                                </div>
+                                                                                <i class="bi bi-chevron-right"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="p-0" colspan="4">
+                                                                            <div class="collapse" id="commit{{ $commit->id }}">
+                                                                                <div class="p-3 border-top">
+                                                                                    @if ($commit->diff->count() > 0)
+                                                                                        @foreach ($commit->diff as $diff)
+                                                                                            <span class="small mb-2 fw-bold d-block">{{ $diff['label'] }}</span>
+                                                                                            <div class="input-group{{ !$loop->last ? ' mb-3' : '' }}">
+                                                                                                <input type="text" class="form-control border border-danger rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['current'] }}" readonly>
+                                                                                                <span class="input-group-text align-items-center border-0 bg-transparent">
+                                                                                                    <i class="bi bi-arrow-right"></i>
+                                                                                                </span>
+                                                                                                <input type="text" class="form-control border border-success rounded" aria-label="{{ $diff['label'] }}" aria-describedby="field{{ $diff['key'] }}" value="{{ $diff['previous'] }}" readonly>
+                                                                                            </div>
+                                                                                        @endforeach
+                                                                                        <div class="row mt-3">
+                                                                                            <div class="col-md">
+                                                                                                <a href="{{ route('deployment.commit.revert.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id, 'commit_id' => $commit->id]) }}" class="btn btn-primary">{{ __('Revert') }}</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="alert alert-info mb-0 d-flex align-items-center gap-3">
+                                                                                            <i class="bi bi-info-circle fs-5"></i>
+                                                                                            {{ __('No changes') }}
+                                                                                        </div>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                     {{ $deployment->commits()->paginate(10)->links('pagination::bootstrap-5') }}
                                                 </div>
                                             </div>
@@ -469,113 +471,115 @@
                             </div>
                         </div>
                     @else
-                        <table class="table">
-                            <thead class="font-monospace">
-                                <tr class="align-middle">
-                                    <th class="w-100" scope="col">{{ __('Deployment') }}</th>
-                                    <th scope="col">{{ __('Template') }}</th>
-                                    <th scope="col">{{ __('Cluster') }}</th>
-                                    <th scope="col">{{ __('Namespace') }}</th>
-                                    <th scope="col">{{ __('Status') }}</th>
-                                    <th scope="col">{{ __('Statistics') }}</th>
-                                    <th scope="col">{{ __('Actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($deployments as $deployment)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="font-monospace">
                                     <tr class="align-middle">
-                                        <td class="w-100">{{ $deployment->name ?? __('N/A') }}</td>
-                                        <td>{{ $deployment->template->name }}</td>
-                                        <td>{{ $deployment->cluster->name }}</td>
-                                        <td>
-                                            <span class="text-nowrap badge bg-light text-body">{{ $deployment->uuid }}</span>
-                                        </td>
-                                        <td>{!! $deployment->status !!}</td>
-                                        <td>
-                                            @if ($deployment->statistics)
-                                                <div class="d-flex gap-2">
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('CPU') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-cpu fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ number_format($deployment->statistics['cpu'], 2) }}%</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('Memory') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-memory fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ number_format($deployment->statistics['memory'], 2) }}GiB</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('Storage') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-device-hdd fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ number_format($deployment->statistics['storage'], 2) }}GiB</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="d-flex gap-2">
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('CPU') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-cpu fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ __('N/A') }}</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('Memory') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-memory fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ __('N/A') }}</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-1 flex-grow-1">
-                                                        <span class="small fw-bold">{{ __('Storage') }}</span>
-                                                        <div class="border rounded d-flex gap-3 align-items-center">
-                                                            <i class="bi bi-device-hdd fs-4 bg-light p-3 lh-1 rounded"></i>
-                                                            <span class="me-3">
-                                                                <span class="lh-1">{{ __('N/A') }}</span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex gap-2">
-                                                <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                                @can('projects.' . request()->get('project')->id . ' . deployments.' . $deployment->id . '.approve')
-                                                    <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-success text-white{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
-                                                        <i class="bi bi-check2"></i>
-                                                    </a>
-                                                @endcan
-                                                <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <a href="{{ route('deployment.delete.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        <th class="w-100" scope="col">{{ __('Deployment') }}</th>
+                                        <th scope="col">{{ __('Template') }}</th>
+                                        <th scope="col">{{ __('Cluster') }}</th>
+                                        <th scope="col">{{ __('Namespace') }}</th>
+                                        <th scope="col">{{ __('Status') }}</th>
+                                        <th scope="col">{{ __('Statistics') }}</th>
+                                        <th scope="col">{{ __('Actions') }}</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($deployments as $deployment)
+                                        <tr class="align-middle">
+                                            <td class="w-100">{{ $deployment->name ?? __('N/A') }}</td>
+                                            <td>{{ $deployment->template->name }}</td>
+                                            <td>{{ $deployment->cluster->name }}</td>
+                                            <td>
+                                                <span class="text-nowrap badge bg-light text-body">{{ $deployment->uuid }}</span>
+                                            </td>
+                                            <td>{!! $deployment->status !!}</td>
+                                            <td>
+                                                @if ($deployment->statistics)
+                                                    <div class="d-flex gap-2">
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-cpu fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ number_format($deployment->statistics['cpu'], 2) }}%</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-memory fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ number_format($deployment->statistics['memory'], 2) }}GiB</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('Storage') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-device-hdd fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ number_format($deployment->statistics['storage'], 2) }}GiB</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex gap-2">
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('CPU') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-cpu fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ __('N/A') }}</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('Memory') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-memory fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ __('N/A') }}</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex flex-column gap-1 flex-grow-1">
+                                                            <span class="small fw-bold">{{ __('Storage') }}</span>
+                                                            <div class="border rounded d-flex gap-3 align-items-center">
+                                                                <i class="bi bi-device-hdd fs-4 bg-light p-3 lh-1 rounded"></i>
+                                                                <span class="me-3">
+                                                                    <span class="lh-1">{{ __('N/A') }}</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('deployment.details', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-primary" title="{{ __('View') }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    @can('projects.' . request()->get('project')->id . ' . deployments.' . $deployment->id . '.approve')
+                                                        <a href="{{ route('deployment.approve.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-success text-white{{ $deployment->approved_at ? ' disabled' : '' }}" title="{{ __('Approve') }}">
+                                                            <i class="bi bi-check2"></i>
+                                                        </a>
+                                                    @endcan
+                                                    <a href="{{ route('deployment.update', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a href="{{ route('deployment.delete.action', ['project_id' => request()->get('project')->id, 'deployment_id' => $deployment->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{ $deployments->links('pagination::bootstrap-5') }}
                     @endif
                 </div>

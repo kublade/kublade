@@ -243,41 +243,43 @@
                 </div>
 
                 <div class="card-body d-flex flex-column gap-4 p-0">
-                    <table class="table">
-                        <thead class="font-monospace">
-                            <tr class="align-middle">
-                                <th class="w-100" scope="col">{{ __('Label') }}</th>
-                                <th scope="col">{{ __('Value') }}</th>
-                                <th scope="col">{{ __('Default') }}</th>
-                                <th scope="col">{{ __('Actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($options as $option)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="font-monospace">
                                 <tr class="align-middle">
-                                    <td>{{ $option->label }}</td>
-                                    <td>{{ $option->value }}</td>
-                                    <td>
-                                        @if ($option->default)
-                                            <i class="bi bi-check-circle text-success fs-5"></i>
-                                        @else
-                                            <i class="bi bi-x-circle text-danger fs-5"></i>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <a href="{{ route('template.field.option.update', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a href="{{ route('template.field.option.delete.action', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
+                                    <th class="w-100" scope="col">{{ __('Label') }}</th>
+                                    <th scope="col">{{ __('Value') }}</th>
+                                    <th scope="col">{{ __('Default') }}</th>
+                                    <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($options as $option)
+                                    <tr class="align-middle">
+                                        <td>{{ $option->label }}</td>
+                                        <td>{{ $option->value }}</td>
+                                        <td>
+                                            @if ($option->default)
+                                                <i class="bi bi-check-circle text-success fs-5"></i>
+                                            @else
+                                                <i class="bi bi-x-circle text-danger fs-5"></i>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('template.field.option.update', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="{{ route('template.field.option.delete.action', ['template_id' => $template->id, 'field_id' => $field->id, 'option_id' => $option->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $options->links('pagination::bootstrap-5') }}
                 </div>
             </div>

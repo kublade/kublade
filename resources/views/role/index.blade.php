@@ -12,31 +12,33 @@
                     </a>
                 </div>
                 <div class="card-body d-flex flex-column gap-4 p-0">
-                    <table class="table">
-                        <thead class="font-monospace">
-                            <tr class="align-middle">
-                                <th class="w-100" scope="col">{{ __('Role') }}</th>
-                                <th scope="col">{{ __('Actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $role)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="font-monospace">
                                 <tr class="align-middle">
-                                    <td class="w-100">{{ $role->name }}</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <a href="{{ route('role.update', ['role_id' => $role->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a href="{{ route('role.delete.action', ['role_id' => $role->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
+                                    <th class="w-100" scope="col">{{ __('Role') }}</th>
+                                    <th scope="col">{{ __('Actions') }}</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($roles as $role)
+                                    <tr class="align-middle">
+                                        <td class="w-100">{{ $role->name }}</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('role.update', ['role_id' => $role->id]) }}" class="btn btn-sm btn-warning" title="{{ __('Update') }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="{{ route('role.delete.action', ['role_id' => $role->id]) }}" class="btn btn-sm btn-danger" title="{{ __('Delete') }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $roles->links('pagination::bootstrap-5') }}
                 </div>
             </div>
