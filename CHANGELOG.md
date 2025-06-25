@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.3](https://github.com/kublade/kublade/compare/v2.11.2...v2.11.3) (2025-06-25)
+
+
+### Bug Fixes
+
+* table pagination alignment ([93851b9](https://github.com/kublade/kublade/commit/93851b9cd8fb6f37cfffecc960504b1e52ab5fa0))
+
 ## [2.11.2](https://github.com/kublade/kublade/compare/v2.11.1...v2.11.2) (2025-06-21)
 
 
