@@ -8,6 +8,7 @@ use App\Models\Kubernetes\Clusters\Cluster;
 use App\Models\Kubernetes\Clusters\GitCredential;
 use App\Models\Kubernetes\Clusters\K8sCredential;
 use App\Models\Kubernetes\Clusters\Ns;
+use App\Models\Kubernetes\Clusters\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -73,6 +74,17 @@ class ClusterController extends Controller
             'namespace'                 => ['required', 'array'],
             'namespace.utility'         => ['required', 'string', 'max:255'],
             'namespace.ingress'         => ['required', 'string', 'max:255'],
+            'resources'                 => ['required', 'array'],
+            'resources.alert'           => ['required', 'array'],
+            'resources.alert.cpu'       => ['required', 'numeric'],
+            'resources.alert.memory'    => ['required', 'numeric'],
+            'resources.alert.storage'   => ['required', 'numeric'],
+            'resources.alert.pods'      => ['required', 'numeric'],
+            'resources.limit'           => ['required', 'array'],
+            'resources.limit.cpu'       => ['required', 'numeric'],
+            'resources.limit.memory'    => ['required', 'numeric'],
+            'resources.limit.storage'   => ['required', 'numeric'],
+            'resources.limit.pods'      => ['required', 'numeric'],
         ])->validate();
 
         if (
@@ -110,6 +122,24 @@ class ClusterController extends Controller
                 'cluster_id' => $cluster->id,
                 'name'       => $request->namespace['ingress'],
                 'type'       => Ns::TYPE_INGRESS,
+            ]);
+
+            Resource::create([
+                'cluster_id' => $cluster->id,
+                'type'       => Resource::TYPE_ALERT,
+                'cpu'        => $request->resources['alert']['cpu'],
+                'memory'     => $request->resources['alert']['memory'],
+                'storage'    => $request->resources['alert']['storage'],
+                'pods'       => $request->resources['alert']['pods'],
+            ]);
+
+            Resource::create([
+                'cluster_id' => $cluster->id,
+                'type'       => Resource::TYPE_LIMIT,
+                'cpu'        => $request->resources['limit']['cpu'],
+                'memory'     => $request->resources['limit']['memory'],
+                'storage'    => $request->resources['limit']['storage'],
+                'pods'       => $request->resources['limit']['pods'],
             ]);
 
             return redirect()->route('cluster.index', ['project_id' => $request->project_id])->with('success', __('Cluster created successfully.'));
@@ -169,6 +199,17 @@ class ClusterController extends Controller
             'namespace'                 => ['required', 'array'],
             'namespace.utility'         => ['required', 'string', 'max:255'],
             'namespace.ingress'         => ['required', 'string', 'max:255'],
+            'resources'                 => ['required', 'array'],
+            'resources.alert'           => ['required', 'array'],
+            'resources.alert.cpu'       => ['required', 'numeric'],
+            'resources.alert.memory'    => ['required', 'numeric'],
+            'resources.alert.storage'   => ['required', 'numeric'],
+            'resources.alert.pods'      => ['required', 'numeric'],
+            'resources.limit'           => ['required', 'array'],
+            'resources.limit.cpu'       => ['required', 'numeric'],
+            'resources.limit.memory'    => ['required', 'numeric'],
+            'resources.limit.storage'   => ['required', 'numeric'],
+            'resources.limit.pods'      => ['required', 'numeric'],
         ])->validate();
 
         if ($cluster = Cluster::where('id', $cluster_id)->first()) {
@@ -235,6 +276,42 @@ class ClusterController extends Controller
                     'cluster_id' => $cluster->id,
                     'name'       => $request->namespace['ingress'],
                     'type'       => Ns::TYPE_INGRESS,
+                ]);
+            }
+
+            if ($cluster->alert) {
+                $cluster->alert->update([
+                    'cpu'     => $request->resources['alert']['cpu'],
+                    'memory'  => $request->resources['alert']['memory'],
+                    'storage' => $request->resources['alert']['storage'],
+                    'pods'    => $request->resources['alert']['pods'],
+                ]);
+            } else {
+                Resource::create([
+                    'cluster_id' => $cluster->id,
+                    'type'       => Resource::TYPE_ALERT,
+                    'cpu'        => $request->resources['alert']['cpu'],
+                    'memory'     => $request->resources['alert']['memory'],
+                    'storage'    => $request->resources['alert']['storage'],
+                    'pods'       => $request->resources['alert']['pods'],
+                ]);
+            }
+
+            if ($cluster->limit) {
+                $cluster->limit->update([
+                    'cpu'     => $request->resources['limit']['cpu'],
+                    'memory'  => $request->resources['limit']['memory'],
+                    'storage' => $request->resources['limit']['storage'],
+                    'pods'    => $request->resources['limit']['pods'],
+                ]);
+            } else {
+                Resource::create([
+                    'cluster_id' => $cluster->id,
+                    'type'       => Resource::TYPE_LIMIT,
+                    'cpu'        => $request->resources['limit']['cpu'],
+                    'memory'     => $request->resources['limit']['memory'],
+                    'storage'    => $request->resources['limit']['storage'],
+                    'pods'       => $request->resources['limit']['pods'],
                 ]);
             }
 
