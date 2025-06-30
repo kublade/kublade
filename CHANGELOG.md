@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.12.0](https://github.com/kublade/kublade/compare/v2.11.4...v2.12.0) (2025-06-30)
+
+
+### Features
+
+* configurable cluster limits ([1cc5891](https://github.com/kublade/kublade/commit/1cc5891ab525da1583fd68d476bbe364378184b3))
+
 ## [2.11.4](https://github.com/kublade/kublade/compare/v2.11.3...v2.11.4) (2025-06-25)
 
 
