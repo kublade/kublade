@@ -224,6 +224,163 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="border rounded py-4" id="warnings">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 offset-md-4">
+                                            <h5>{{ __('Warnings') }}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_alert_cpu" class="col-md-4 col-form-label text-md-end">{{ __('CPU') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_alert_cpu" type="number" class="form-control @error('resources.alert.cpu') is-invalid @enderror" name="resources[alert][cpu]" value="{{ old('resources.alert.cpu') ?? $cluster->alert?->cpu ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.alert.cpu')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_alert_memory" class="col-md-4 col-form-label text-md-end">{{ __('Memory') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_alert_memory" type="number" class="form-control @error('resources.alert.memory') is-invalid @enderror" name="resources[alert][memory]" value="{{ old('resources.alert.memory') ?? $cluster->alert?->memory ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.alert.memory')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_alert_storage" class="col-md-4 col-form-label text-md-end">{{ __('Storage') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_alert_storage" type="number" class="form-control @error('resources.alert.storage') is-invalid @enderror" name="resources[alert][storage]" value="{{ old('resources.alert.storage') ?? $cluster->alert?->storage ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.alert.storage')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_alert_pods" class="col-md-4 col-form-label text-md-end">{{ __('Pods') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_alert_pods" type="number" class="form-control @error('resources.alert.pods') is-invalid @enderror" name="resources[alert][pods]" value="{{ old('resources.alert.pods') ?? $cluster->alert?->pods ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.alert.pods')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="border rounded py-4" id="warnings">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 offset-md-4">
+                                            <h5>{{ __('Limits') }}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_limit_cpu" class="col-md-4 col-form-label text-md-end">{{ __('CPU') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_limit_cpu" type="number" class="form-control @error('resources.limit.cpu') is-invalid @enderror" name="resources[limit][cpu]" value="{{ old('resources.limit.cpu') ?? $cluster->limit?->cpu ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.limit.cpu')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_limit_memory" class="col-md-4 col-form-label text-md-end">{{ __('Memory') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_limit_memory" type="number" class="form-control @error('resources.limit.memory') is-invalid @enderror" name="resources[limit][memory]" value="{{ old('resources.limit.memory') ?? $cluster->limit?->memory ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.limit.memory')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_limit_storage" class="col-md-4 col-form-label text-md-end">{{ __('Storage') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_limit_storage" type="number" class="form-control @error('resources.limit.storage') is-invalid @enderror" name="resources[limit][storage]" value="{{ old('resources.limit.storage') ?? $cluster->limit?->storage ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.limit.storage')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="resources_limit_pods" class="col-md-4 col-form-label text-md-end">{{ __('Pods') }}</label>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input id="resources_limit_pods" type="number" class="form-control @error('resources.limit.pods') is-invalid @enderror" name="resources[limit][pods]" value="{{ old('resources.limit.pods') ?? $cluster->limit?->pods ?? 80 }}">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+
+                                            @error('resources.limit.pods')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
