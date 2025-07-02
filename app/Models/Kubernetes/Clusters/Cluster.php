@@ -171,6 +171,16 @@ class Cluster extends Model
     }
 
     /**
+     * Relation to provisioner meta.
+     *
+     * @return HasMany
+     */
+    public function provisionerMeta(): HasMany
+    {
+        return $this->hasMany(ClusterProvisionerMeta::class, 'cluster_id', 'id');
+    }
+
+    /**
      * Get the utility namespace.
      *
      * @return Ns|null

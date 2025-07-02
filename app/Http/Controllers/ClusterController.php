@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Interfaces\ClusterProvisionerMetaInterface;
+use App\Helpers\ClusterProvisioning;
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Clusters\ClusterProvisionerConfig;
+use App\Models\Kubernetes\Clusters\ClusterProvisionerMeta;
 use App\Models\Kubernetes\Clusters\GitCredential;
 use App\Models\Kubernetes\Clusters\K8sCredential;
 use App\Models\Kubernetes\Clusters\Ns;
@@ -45,7 +49,22 @@ class ClusterController extends Controller
      */
     public function page_add()
     {
-        return view('cluster.add');
+        $provisioners = ClusterProvisioning::provisioners();
+
+        return view('cluster.add', [
+            'provisioners' => ClusterProvisionerConfig::where('project_id', '=', $request->project_id)
+                ->get()
+                ->map(function ($item) use ($provisioners) {
+                    $provisionerClass = $provisioners->get($item->provisioner);
+
+                    if (! $provisionerClass || ! $item->value) {
+                        return null;
+                    }
+
+                    return new $provisionerClass($item->value);
+                })
+                ->filter(),
+        ]);
     }
 
     /**
@@ -85,7 +104,52 @@ class ClusterController extends Controller
             'resources.limit.memory'    => ['required', 'numeric'],
             'resources.limit.storage'   => ['required', 'numeric'],
             'resources.limit.pods'      => ['required', 'numeric'],
+            'provision'                 => ['required', 'boolean'],
         ])->validate();
+
+        if ($request->provision) {
+            // TODO: Create asynchronously with queue
+
+            $provisioners      = ClusterProvisioning::provisioners();
+            $provisionerClass  = $provisioners->get($request->provisioner['name']);
+            $provisionerConfig = ClusterProvisionerConfig::where('project_id', '=', $request->project_id)
+                ->where('provisioner', '=', $request->provisioner['name'])
+                ->first();
+
+            if (! $provisionerClass || ! $provisionerConfig) {
+                return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+            }
+
+            $provisioner = new $provisionerClass($provisionerConfig->value);
+
+            $provisionerValidation = [
+                'provisioner'        => ['required', 'array'],
+                'provisioner.name'   => ['required', 'string', 'max:255'],
+                'provisioner.config' => ['required', 'array'],
+                ...(
+                    $provisioner::getOptions()->mapWithKeys(function ($item, $key) {
+                        return [
+                            'provisioner.config.' . $key => [
+                                ...($item->required ? ['required'] : ['nullable']),
+                                ...($item->type === 'text' ? ['string', 'max:255'] : []),
+                                ...($item->type === 'number' ? ['numeric'] : []),
+                                ...($item->type === 'boolean' ? ['boolean'] : []),
+                                ...($item->type === 'array' ? ['array'] : []),
+                                ...($item->type === 'object' ? ['array'] : []),
+                            ],
+                        ];
+                    })->toArray()
+                ),
+            ];
+
+            Validator::make($request->all(), $provisionerValidation)->validate();
+
+            $providerResponse = $provisioner->create($request->provisioner['config']);
+
+            if (! $providerResponse) {
+                return redirect()->back()->with('warning', __('Ooops, something went wrong.'));
+            }
+        }
 
         if (
             $cluster = Cluster::create([
@@ -141,6 +205,25 @@ class ClusterController extends Controller
                 'storage'    => $request->resources['limit']['storage'],
                 'pods'       => $request->resources['limit']['pods'],
             ]);
+
+            if (
+                $request->provision &&
+                !empty($providerResponse)
+            ) {
+                ClusterProvisionerMeta::create([
+                    'cluster_id' => $cluster->id,
+                    'key'        => 'provisioner',
+                    'value'      => $request->provisioner['name'],
+                ]);
+
+                $providerResponse->each(function (ClusterProvisionerMetaInterface $item) use ($cluster) {
+                    ClusterProvisionerMeta::create([
+                        'cluster_id' => $cluster->id,
+                        'key'        => $item->key,
+                        'value'      => $item->value,
+                    ]);
+                });
+            }
 
             return redirect()->route('cluster.index', ['project_id' => $request->project_id])->with('success', __('Cluster created successfully.'));
         }

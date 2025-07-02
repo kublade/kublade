@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Projects\Projects;
 
 use App\Models\Kubernetes\Clusters\Cluster;
+use App\Models\Kubernetes\Clusters\ClusterProvisionerConfig;
 use App\Models\Projects\Deployments\Deployment;
 use App\Models\User;
 use App\Traits\LogsActivity;
@@ -93,6 +94,16 @@ class Project extends Model
     public function deployments(): HasMany
     {
         return $this->hasMany(Deployment::class, 'project_id', 'id');
+    }
+
+    /**
+     * Relation to cluster provisioner configs.
+     *
+     * @return HasMany
+     */
+    public function clusterProvisionerConfigs(): HasMany
+    {
+        return $this->hasMany(ClusterProvisionerConfig::class, 'project_id', 'id');
     }
 
     /**
